@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Navi : MonoBehaviour {
 
+	public static Navi S;
+	
 	public float lerpTime;
 	public float lerpSpeed;
 	public float xOffset;
@@ -13,6 +15,19 @@ public class Navi : MonoBehaviour {
 	float startTime;
 	Vector3 end;
 	float length;
+
+	// Set the luminosity. Accepts values from 0, 100.
+	public int Luminosity {
+		set {
+			if (value < 0 || value > 100) return;
+
+			// TODO
+		}
+	}
+
+	void Awake() {
+		Navi.S = this;
+	}
 
 	// Use this for initialization
 	void Start () {
