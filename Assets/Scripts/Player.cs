@@ -13,7 +13,7 @@ public class Player : MonoBehaviour {
 	Material lightMaterial;
 	Walk walk;
 	Swim swim;
-	
+
 	void Awake() {
 		S = this;
 	}
@@ -34,7 +34,21 @@ public class Player : MonoBehaviour {
 
 	void OnCollisionExit2D(Collision2D c) {
 	}
-	
+
+	void OnTriggerEnter2D(Collider2D collider) {
+		if (collider.tag == "water") {
+			this.walk.enabled = false;
+			this.swim.enabled = true;
+		}
+	}
+
+	void OnTriggerExit2D(Collider2D collider) {
+		if (collider.tag == "water") {
+			this.walk.enabled = true;
+			this.swim.enabled = false;
+		}
+	}
+
 	// Update is called once per frame
 	void Update () {
 		/* Colors */
