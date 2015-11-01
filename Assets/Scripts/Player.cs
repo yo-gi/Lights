@@ -12,6 +12,7 @@ public class Player : MonoBehaviour {
 	public static Player S;
 	public string color = "white";
 	Material lightMaterial;
+	bool doubleJump = false;
 
 	void Awake() {
 		S = this;
@@ -33,29 +34,35 @@ public class Player : MonoBehaviour {
 		/* Movement */
 		Rigidbody2D r = GetComponent<Rigidbody2D>();
 		if (Input.GetKey(KeyCode.A)) {
-			r.AddForce(new Vector2((-1f * runSpeed) + -1f * r.velocity.x, 0), ForceMode2D.Force);
+			r.velocity = new Vector2(-1f * runSpeed, r.velocity.y);
+			//r.AddForce(new Vector2((-1f * runSpeed) + -1f * r.velocity.x, 0), ForceMode2D.Force);
 		}
 		if (Input.GetKey(KeyCode.D)) {
-			r.AddForce(new Vector2(runSpeed - r.velocity.x, 0), ForceMode2D.Force);
+			r.velocity = new Vector2(runSpeed, r.velocity.y);
+			//r.AddForce(new Vector2(runSpeed - r.velocity.x, 0), ForceMode2D.Force);
 		}
 		if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D)) {
 			r.velocity = new Vector2(0, r.velocity.y);
 		}
-		if (Input.GetKey(KeyCode.W)) {
+		if (Input.GetKeyDown(KeyCode.W)) {
+			if (doubleJump) {
+				r.velocity = new Vector2(r.velocity.x, jumpHeight);
+				doubleJump = false;
+				print ("false");
+			}
 			RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, -Vector2.up, 0.45f, ~(1 << 10));
 			foreach(RaycastHit2D hit in hits) {
 				if (hit.collider != null) {
-					print (hit.point);
 					Platform p = hit.collider.GetComponent<Platform>();
-					if (p != null) print (p.gameObject.name);
 					if (p == null || p.started) {
 						r.velocity = new Vector2(r.velocity.x, jumpHeight);
+						doubleJump = true;
+						print ("true");
 						break;
 					}
 				}
 			}
-		} else if (!Input.GetKey(KeyCode.W)) {
-			//r.velocity = new Vector2(r.velocity.x, 0);
+
 		}
 
 		/* Colors */
