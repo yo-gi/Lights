@@ -2,19 +2,18 @@
 using System.Collections;
 
 public class Player : MonoBehaviour {
-
-	public float runSpeed;
-	public float jumpHeight;
-	public float friction;
+	
 	public GameObject bombPrefab;
 	public float lifeTime;
 
 	public LightColor color;
 
+
 	public static Player S;
 	Material lightMaterial;
-	bool doubleJump = false;
-
+	Walk walk;
+	Swim swim;
+	
 	void Awake() {
 		S = this;
 	}
@@ -22,6 +21,12 @@ public class Player : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		lightMaterial = GameObject.Find("Navi").GetComponent<DynamicLight>().lightMaterial;
+		walk = GetComponent<Walk>();
+		swim = GetComponent<Swim>();
+
+		// TODO: This will not work if player starts in water.
+		walk.enabled = true;
+		swim.enabled = false;
 	}
 
 	void OnCollisionEnter2D(Collision2D c) {
@@ -32,40 +37,6 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		/* Movement */
-		Rigidbody2D r = GetComponent<Rigidbody2D>();
-		if (Input.GetKey(KeyCode.A)) {
-			r.velocity = new Vector2(-1f * runSpeed, r.velocity.y);
-			//r.AddForce(new Vector2((-1f * runSpeed) + -1f * r.velocity.x, 0), ForceMode2D.Force);
-		}
-		if (Input.GetKey(KeyCode.D)) {
-			r.velocity = new Vector2(runSpeed, r.velocity.y);
-			//r.AddForce(new Vector2(runSpeed - r.velocity.x, 0), ForceMode2D.Force);
-		}
-		if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D)) {
-			r.velocity = new Vector2(0, r.velocity.y);
-		}
-		if (Input.GetKeyDown(KeyCode.W)) {
-			if (doubleJump) {
-				r.velocity = new Vector2(r.velocity.x, jumpHeight);
-				doubleJump = false;
-				print ("false");
-			}
-			RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, -Vector2.up, 0.45f, ~(1 << 10));
-			foreach(RaycastHit2D hit in hits) {
-				if (hit.collider != null) {
-					Platform p = hit.collider.GetComponent<Platform>();
-					if (p == null || p.started) {
-						r.velocity = new Vector2(r.velocity.x, jumpHeight);
-						doubleJump = true;
-						print ("true");
-						break;
-					}
-				}
-			}
-
-		}
-
 		/* Colors */
 		if (Input.GetKey(KeyCode.Alpha1)) {
 			switchColors(LightColor.White);
