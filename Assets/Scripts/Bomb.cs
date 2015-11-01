@@ -32,7 +32,9 @@ public class Bomb : MonoBehaviour {
 	void activatePlatforms() {
 		Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.5f, (1 << 8));
 		foreach (Collider2D c in colliders) {
-			if (c.gameObject.tag == (Player.S.color)) {
+			print("here's one!");
+			if (MainCam.S.getColorfromString(c.gameObject.tag) == (Player.S.color)) {
+				print("here's a good one!");
 				c.gameObject.GetComponent<Platform>().activate();
 				print (c.gameObject.name);
 			}

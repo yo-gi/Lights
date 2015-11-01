@@ -9,8 +9,9 @@ public class Player : MonoBehaviour {
 	public GameObject bombPrefab;
 	public float lifeTime;
 
+	public LightColor color;
+
 	public static Player S;
-	public string color = "white";
 	Material lightMaterial;
 	bool doubleJump = false;
 
@@ -67,20 +68,20 @@ public class Player : MonoBehaviour {
 
 		/* Colors */
 		if (Input.GetKey(KeyCode.Alpha1)) {
-			switchColors("white");
+			switchColors(LightColor.White);
 		} else if (Input.GetKey(KeyCode.Alpha2)) {
-			switchColors ("orange");
+			switchColors (LightColor.Red);
 		} else if (Input.GetKey(KeyCode.Alpha3)) {
-			switchColors("blue");
+			switchColors(LightColor.Blue);
 		} else if (Input.GetKey(KeyCode.Alpha4)) {
-			switchColors("green");
+			switchColors(LightColor.Yellow);
 		}
 
 		if (Input.GetKey(KeyCode.R) && MainCam.level != 1) {
 			Door.switchLevels(MainCam.level - 1);
-			foreach (string col in Bullets.colors) {
-				if (col == "white") continue;
-				GameObject[] switches = GameObject.FindGameObjectsWithTag(col);
+			foreach (LightColor col in Bullets.colors) {
+				if (col == LightColor.White) continue;
+				GameObject[] switches = GameObject.FindGameObjectsWithTag(MainCam.S.colortoString(col));
 				foreach (GameObject o in switches) {
 					if (o.GetComponent<Rotate>() != null) {
 						o.GetComponent<Switch>().activate();
@@ -101,7 +102,7 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	void toggleObjectsWithTag(string tag, bool toggle) {
+	/*void toggleObjectsWithTag(string tag, bool toggle) {
 		GameObject[] oldColorObjects = GameObject.FindGameObjectsWithTag(tag);
 		foreach (GameObject obj in oldColorObjects) {
 			obj.GetComponent<PolygonCollider2D>().enabled = toggle;
@@ -116,10 +117,10 @@ public class Player : MonoBehaviour {
 				s.color = newC;
 			}
 		}
-	}
+	}*/
 	
-	public void switchColors(string newColor) {
-		string oldColor = color;
+	public void switchColors(LightColor newColor) {
+		LightColor oldColor = color;
 		color = newColor;
 
 		/*if (oldColor != "white")
@@ -128,16 +129,16 @@ public class Player : MonoBehaviour {
 			toggleObjectsWithTag(color, true);
 		*/
 		switch(color) {
-		case "orange":
+		case LightColor.Red:
 			lightMaterial.color = new Color(229/255f, 149/255f, 0f, 1f);
 			break;
-		case "white":
+		case LightColor.White:
 			lightMaterial.color = Color.white;
 			break;
-		case "blue":
+		case LightColor.Blue:
 			lightMaterial.color = new Color(83/255f, 161/255f, 200/255f, 1f);
 			break;
-		case "green":
+		case LightColor.Yellow:
 			lightMaterial.color = new Color(93f/255f, 238f/255f, 142f/255f, 1f);
 			break;
 		default:

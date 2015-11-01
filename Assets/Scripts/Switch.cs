@@ -18,8 +18,8 @@ public class Switch : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D c) {
 		if (c.gameObject.name == "Player") {
-			//Player.S.switchColors(gameObject.tag);
-			Bullets.incrementColor(gameObject.tag);
+			//Player.S.switchColors(MainCam.S.getColorfromString(gameObject.tag));
+			Bullets.incrementColor(MainCam.S.getColorfromString(gameObject.tag));
 			deactivate();
 		}
 	}
