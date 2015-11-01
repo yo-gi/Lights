@@ -25,8 +25,8 @@ public class Player : MonoBehaviour {
 		swim = GetComponent<Swim>();
 
 		// TODO: This will not work if player starts in water.
-		walk.enabled = false;
-		swim.enabled = true;
+		walk.enabled = true;
+		swim.enabled = false;
 	}
 
 	void OnCollisionEnter2D(Collision2D c) {

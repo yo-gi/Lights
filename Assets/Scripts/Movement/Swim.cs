@@ -15,6 +15,10 @@ public class Swim : MonoBehaviour {
 	public void Start() {
 		this.rigidBody.gravityScale = this.swimGravity;
 	}
+
+	public void OnDisable() {
+		this.rigidBody.gravityScale = 1f;
+	}
 	
 	public void Update() {
 		var velocity = this.rigidBody.velocity;
