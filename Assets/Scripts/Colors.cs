@@ -18,6 +18,20 @@ public class Colors {
     private static readonly Color Yellow = new Color(1, 1, 0);
     private static readonly Color Red = new Color(1, 0, 0);
 
+    private static Material mat = Resources.Load("LightMaterialGradient") as Material;
+    private static readonly Material NoneMaterial = MakeMaterial(mat, None);
+    private static readonly Material WhiteMaterial = MakeMaterial(mat, White);
+    private static readonly Material BlueMaterial = MakeMaterial(mat, Blue);
+    private static readonly Material YellowMaterial = MakeMaterial(mat, Yellow);
+    private static readonly Material RedMaterial = MakeMaterial(mat, Red);
+
+    private static Material MakeMaterial(Material mat, Color color)
+    {
+        Material copy = Material.Instantiate(mat);
+        copy.color = color;
+        return copy;
+    }
+
     public static Color GetColor(LightColor color)
     {
         switch (color)
