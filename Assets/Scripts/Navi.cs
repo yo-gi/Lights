@@ -17,13 +17,17 @@ public class Navi : MonoBehaviour {
 	float length;
 
 	// Set the luminosity. Accepts values from 0, 100.
-	public int Luminosity {
+	public int Luminosity = 1;
+	/*{
+		get {
+			return 0;
+		}
 		set {
 			if (value < 0 || value > 100) return;
 
 			// TODO
 		}
-	}
+	}*/
 
 	void Awake() {
 		Navi.S = this;
@@ -45,6 +49,10 @@ public class Navi : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		/*if (Luminosity <= 0) {
+			Luminosity = 100;
+			Door.switchLevels(MainCam.level == 1 ? 5 : MainCam.level - 1);
+		}*/
 		float distanceCovered = (Time.time - startTime) * lerpSpeed;
 		float fracCovered = distanceCovered/length;
 		transform.position = Vector3.Lerp(transform.position, end, fracCovered);

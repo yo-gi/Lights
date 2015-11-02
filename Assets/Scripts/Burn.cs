@@ -26,8 +26,17 @@ public class Burn : MonoBehaviour {
 	void Update () {
 		if (timeRemaining > Time.time && Time.time > nextTick && Player.S.color != LightColor.Red) {
 			//change limin
-			print("fire tick!");
+			Navi.S.Luminosity -= 1;
+			print ("fire tick: " + Navi.S.Luminosity);
 			nextTick = Time.time + burnRate;
+			timeRemaining = Time.time;
+			Door.switchLevels(MainCam.level == 1 ? 5 : MainCam.level - 1);
+		} else if(timeRemaining < Time.time) {
+			Navi.S.Luminosity++;
+			if(Navi.S.Luminosity > 100)
+			{
+				Navi.S.Luminosity = 100;
+			}
 		}
 	}
 }
