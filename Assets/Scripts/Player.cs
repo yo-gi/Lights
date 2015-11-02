@@ -10,8 +10,7 @@ public class Player : MonoBehaviour {
 	public GameObject water;
 	
 	public static Player S;
-
-	Material lightMaterial;
+    
 	Walk walk;
 	Swim swim;
 
@@ -21,7 +20,6 @@ public class Player : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		lightMaterial = GameObject.Find("Navi").GetComponent<DynamicLight>().lightMaterial;
 		walk = GetComponent<Walk>();
 		swim = GetComponent<Swim>();
 
@@ -111,24 +109,18 @@ public class Player : MonoBehaviour {
 		}
 	}*/
 	
-    public void switchColors(LightColor newColor) {
-		LightColor oldColor = color;
-		color = newColor;
-
-        /*if (oldColor != "white")
+    public void switchColors(LightColor newColor)
+    {
+        /*
+        LightColor oldColor = color;
+        if (oldColor != "white")
 			toggleObjectsWithTag(oldColor, false);
 		if (color != "white")
 			toggleObjectsWithTag(color, true);
 		*/
-
-        Color colorObject = Colors.GetColor(color);
-        lightMaterial.color = colorObject;
-        Navi.S.ChangeColor(colorObject);
-	}
-
-	void OnApplicationQuit() {
-		lightMaterial.color = Color.white;
-	}
+        color = newColor;
+        Navi.S.ChangeColor(color);
+    }
 }
 
 

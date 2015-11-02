@@ -11,6 +11,7 @@ public class Navi : MonoBehaviour {
 	public float yOffset;
 
 	GameObject player;
+    DynamicLight lightScript;
     SpriteRenderer sprite;
 
 	float startTime;
@@ -37,6 +38,7 @@ public class Navi : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		player = GameObject.Find("Player");
+        lightScript = gameObject.GetComponent<DynamicLight>();
         sprite = gameObject.transform.Find("LightSprite").GetComponent<SpriteRenderer>();
 		InvokeRepeating("orbit", 0, lerpTime + 0.1f);
 		end = player.transform.position;
@@ -60,8 +62,15 @@ public class Navi : MonoBehaviour {
 		transform.position = Vector3.Lerp(transform.position, end, fracCovered);
 	}
 
-    public void ChangeColor(Color color)
+    public void ChangeColor(LightColor color)
     {
-        sprite.color = color;
+        sprite.color = Colors.GetColor(color);
+        lightScript.lightMaterial = Colors.GetColorMaterial(color);
+    }
+
+    // WHAT IS THE POINT OF THIS?
+    void OnApplicationQuit()
+    {
+        lightScript.lightMaterial = Colors.GetColorMaterial(LightColor.White);
     }
 }
