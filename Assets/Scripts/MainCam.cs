@@ -33,7 +33,7 @@ public class MainCam : MonoBehaviour {
 
 		startTable[1] = new Vector3(1,3,0);
 		startTable[2] = new Vector3(23,3,0);
-		startTable[3] = new Vector3(55,3,0);
+		startTable[3] = new Vector3(55,13,0);
 		startTable[4] = new Vector3(93,18,0);
 		startTable[5] = new Vector3(134,7,0);
 	}

@@ -19,7 +19,8 @@ public class Burn : MonoBehaviour {
 
 	public void setBurning(float burntime)
 	{
-		timeRemaining = Time.time + burntime;
+		Door.switchLevels(MainCam.level == 1 ? 5 : MainCam.level - 1);
+		//timeRemaining = Time.time + burntime;
 	}
 	
 	// Update is called once per frame
@@ -30,7 +31,7 @@ public class Burn : MonoBehaviour {
 			print ("fire tick: " + Navi.S.Luminosity);
 			nextTick = Time.time + burnRate;
 			timeRemaining = Time.time;
-			Door.switchLevels(MainCam.level == 1 ? 5 : MainCam.level - 1);
+
 		} else if(timeRemaining < Time.time) {
 			Navi.S.Luminosity++;
 			if(Navi.S.Luminosity > 100)
