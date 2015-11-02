@@ -67,10 +67,4 @@ public class Navi : MonoBehaviour {
 		GameObject.Find("LightSprite").GetComponent<SpriteRenderer>().color = Colors.GetColor(color);
 		gameObject.GetComponent<DynamicLight>().lightMaterial = Colors.GetColorMaterial(color);
     }
-
-    // WHAT IS THE POINT OF THIS?
-    void OnApplicationQuit()
-    {
-        lightScript.lightMaterial = Colors.GetColorMaterial(LightColor.White);
-    }
 }
