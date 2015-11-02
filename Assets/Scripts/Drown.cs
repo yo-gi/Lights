@@ -8,8 +8,7 @@ public class Drown : MonoBehaviour {
 
 	private GameObject CurrentWaterTile {
 		get {
-			// TODO: Get current water tile.
-			return null;
+			return Player.S.water;
 		}
 	}
 
@@ -18,6 +17,11 @@ public class Drown : MonoBehaviour {
 	}
 
 	public void Update() {
+		if (this.CurrentWaterTile == null) {
+			this.drowningStartTime = 0;
+			return;
+		}
+
 		if (this.drowningStartTime == 0) {
 			// TODO: Raise light intensity if it isn't at max.
 			if (this.IsSubmergedInWater()) {
@@ -26,6 +30,8 @@ public class Drown : MonoBehaviour {
 		}
 		else {
 			if (this.IsSubmergedInWater() == false) {
+				Debug.Log("Not drowning no more.");
+
 				// TODO: Start increasing light intensity.
 				this.drowningStartTime = 0;
 			}
@@ -37,7 +43,8 @@ public class Drown : MonoBehaviour {
 
 			if (drownTime >= this.timeToDrown) {
 				// TODO: Die.
-				Debug.Log("Drowned coach");
+				Debug.Log("Drowned");
+				Door.switchLevels(MainCam.level - 1);
 			}
 		}
 	}

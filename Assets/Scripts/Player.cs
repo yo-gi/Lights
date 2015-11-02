@@ -7,9 +7,10 @@ public class Player : MonoBehaviour {
 	public float lifeTime;
 
 	public LightColor color;
-
-
+	public GameObject water;
+	
 	public static Player S;
+
 	Material lightMaterial;
 	Walk walk;
 	Swim swim;
@@ -41,6 +42,8 @@ public class Player : MonoBehaviour {
 		if (collider.tag == "water") {
 			this.walk.enabled = false;
 			this.swim.enabled = true;
+
+			this.water = collider.gameObject;
 		}
 	}
 
@@ -48,6 +51,8 @@ public class Player : MonoBehaviour {
 		if (collider.tag == "water") {
 			this.walk.enabled = true;
 			this.swim.enabled = false;
+
+			if (this.water == collider.gameObject) this.water = null;
 		}
 	}
 
