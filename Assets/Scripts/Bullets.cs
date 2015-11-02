@@ -20,7 +20,7 @@ public class Bullets : MonoBehaviour {
 		foreach(LightColor col in colors) {
 			numBullets[col] = 0;
 		}
-		updateCanvas();
+		//updateCanvas();
 	}
 
 	
@@ -43,15 +43,16 @@ public class Bullets : MonoBehaviour {
 
 	public static void incrementColor(LightColor col) {
 		numBullets[col] += 1;
-		updateCanvas();
+		//updateCanvas();
 	}
 
 	public static void decrementColor(LightColor col) {
 		numBullets[col] -= 1;
-		updateCanvas();
+		//updateCanvas();
 	}
 
 	public static bool hasColor(LightColor col) {
+		print (MainCam.S.colortoString (col));
 		return numBullets[col] > 0;
 	}
 }
