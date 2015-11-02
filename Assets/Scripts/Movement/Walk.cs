@@ -26,7 +26,7 @@ public class Walk : MonoBehaviour {
 			r.velocity = new Vector2(0, r.velocity.y);
 		}
 		if (Input.GetKeyDown(KeyCode.W)) {
-			if (doubleJump) {
+			if (Player.S.color == LightColor.Yellow && doubleJump) {
 				r.velocity = new Vector2(r.velocity.x, jumpHeight);
 				doubleJump = false;
 				print ("false");

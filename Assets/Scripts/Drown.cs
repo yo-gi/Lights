@@ -42,6 +42,8 @@ public class Drown : MonoBehaviour {
 			var drownTime = (Time.time - this.drowningStartTime);
 
 			if (drownTime >= this.timeToDrown) {
+				this.drowningStartTime = 0;
+
 				// TODO: Die.
 				Debug.Log("Drowned");
 				Door.switchLevels(MainCam.level == 1 ? 5 : MainCam.level - 1);
