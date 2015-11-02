@@ -10,7 +10,7 @@ public class MainCam : MonoBehaviour {
 	public GameObject playerObj;
 	public int numLevels;
 
-	public static int level = 5;
+	public static int level = 1;
 
 	public static Dictionary<int, Vector3> startTable = new Dictionary<int, Vector3>();
 	public static Dictionary<int, GameObject> levelTable = new Dictionary<int, GameObject>();

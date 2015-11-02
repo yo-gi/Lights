@@ -2,7 +2,7 @@
 
 public class Drown : MonoBehaviour {
 
-	public float timeToDrown = 2;
+	public float timeToDrown = 5;
 
 	private float drowningStartTime;
 
@@ -17,7 +17,7 @@ public class Drown : MonoBehaviour {
 	}
 
 	public void Update() {
-		if (this.CurrentWaterTile == null) {
+		if (Player.S.color == LightColor.Blue || this.CurrentWaterTile == null) {
 			this.drowningStartTime = 0;
 			return;
 		}
@@ -44,7 +44,7 @@ public class Drown : MonoBehaviour {
 			if (drownTime >= this.timeToDrown) {
 				// TODO: Die.
 				Debug.Log("Drowned");
-				Door.switchLevels(MainCam.level - 1);
+				Door.switchLevels(MainCam.level == 1 ? 5 : MainCam.level - 1);
 			}
 		}
 	}
