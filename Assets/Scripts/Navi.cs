@@ -64,8 +64,8 @@ public class Navi : MonoBehaviour {
 
     public void ChangeColor(LightColor color)
     {
-        sprite.color = Colors.GetColor(color);
-        lightScript.lightMaterial = Colors.GetColorMaterial(color);
+		GameObject.Find("LightSprite").GetComponent<SpriteRenderer>().color = Colors.GetColor(color);
+		gameObject.GetComponent<DynamicLight>().lightMaterial = Colors.GetColorMaterial(color);
     }
 
     // WHAT IS THE POINT OF THIS?
