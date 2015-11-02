@@ -20,7 +20,7 @@ public class Burn : MonoBehaviour {
 	public void setBurning(float burntime)
 	{
 //		Door.switchLevels(MainCam.level == 1 ? 5 : MainCam.level - 1);
-		//timeRemaining = Time.time + burntime;
+		timeRemaining = Time.time + burntime;
 	}
 	
 	// Update is called once per frame
@@ -40,10 +40,10 @@ public class Burn : MonoBehaviour {
 //			}
 //		}
 
-		if (timeRemaining > Time.time) {
+		if (timeRemaining > Time.time && Player.S.color != LightColor.Red) {
 			Door.switchLevels(MainCam.level == 1 ? 5 : MainCam.level - 1);
 
-			timeRemaining = Time.time;
+			timeRemaining = 0;
 		}
 	}
 }

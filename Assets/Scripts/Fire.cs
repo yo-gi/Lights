@@ -5,27 +5,26 @@ public class Fire : MonoBehaviour {
 
 	public float burntime;
 
-	public bool collided;
+//	Collider2D target;
 
-	Collider2D target;
+	GameObject player;
 
 	void OnTriggerEnter2D(Collider2D c) {
-		print ("entered collision!");
-		collided = true;
-		target = c;
-		if (collided && target.gameObject.name == "Player") {
-			Burn.S.setBurning(burntime);
+		if (c.gameObject.name == "Player") {
+			this.player = c.gameObject;
 		}
+
+		Burn.S.setBurning(burntime);
 	}
 
 	void OnTriggerExit2D(Collider2D c) {
-		print ("exited collision!");
-		collided = false;
+		if (c.gameObject.name == "Player") {
+			this.player = null;
+		}
 	}
 
-	void Update()
-	{
-		if (collided && target.gameObject.name == "Player") {
+	void Update() {
+		if (this.player) {
 			Burn.S.setBurning(burntime);
 		}
 	}
