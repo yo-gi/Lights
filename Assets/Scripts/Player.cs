@@ -138,7 +138,7 @@ public class Player : MonoBehaviour {
 		//default:
 		//	break;
 		//}
-		Bullets.updateCanvas();
+		//Bullets.updateCanvas();
 	}
 
 	void OnApplicationQuit() {
