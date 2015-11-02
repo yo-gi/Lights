@@ -3,13 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public enum LightColor {
-	White,
-	Blue,
-	Yellow,
-	Red
-}
-
 public class MainCam : MonoBehaviour {
 
 	public static MainCam S;

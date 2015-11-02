@@ -27,6 +27,8 @@ public class Player : MonoBehaviour {
 		// TODO: This will not work if player starts in water.
 		walk.enabled = true;
 		swim.enabled = false;
+
+        color = LightColor.White;
 	}
 
 	void OnCollisionEnter2D(Collision2D c) {
@@ -104,31 +106,33 @@ public class Player : MonoBehaviour {
 		}
 	}*/
 	
-	public void switchColors(LightColor newColor) {
+    public void switchColors(LightColor newColor) {
 		LightColor oldColor = color;
 		color = newColor;
 
-		/*if (oldColor != "white")
+        /*if (oldColor != "white")
 			toggleObjectsWithTag(oldColor, false);
 		if (color != "white")
 			toggleObjectsWithTag(color, true);
 		*/
-		switch(color) {
-		case LightColor.Red:
-			lightMaterial.color = new Color(229/255f, 149/255f, 0f, 1f);
-			break;
-		case LightColor.White:
-			lightMaterial.color = Color.white;
-			break;
-		case LightColor.Blue:
-			lightMaterial.color = new Color(83/255f, 161/255f, 200/255f, 1f);
-			break;
-		case LightColor.Yellow:
-			lightMaterial.color = new Color(93f/255f, 238f/255f, 142f/255f, 1f);
-			break;
-		default:
-			break;
-		}
+
+        lightMaterial.color = Colors.GetColor(color);
+        //switch(color) {
+		//case LightColor.Red:
+		//	lightMaterial.color = new Color(229/255f, 149/255f, 0f, 1f);
+		//	break;
+		//case LightColor.White:
+		//	lightMaterial.color = Color.white;
+		//	break;
+		//case LightColor.Blue:
+		//	lightMaterial.color = new Color(83/255f, 161/255f, 200/255f, 1f);
+		//	break;
+		//case LightColor.Yellow:
+		//	lightMaterial.color = new Color(93f/255f, 238f/255f, 142f/255f, 1f);
+		//	break;
+		//default:
+		//	break;
+		//}
 		Bullets.updateCanvas();
 	}
 
