@@ -11,6 +11,7 @@ public class Navi : MonoBehaviour {
 	public float yOffset;
 
 	GameObject player;
+    SpriteRenderer sprite;
 
 	float startTime;
 	Vector3 end;
@@ -36,6 +37,7 @@ public class Navi : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		player = GameObject.Find("Player");
+        sprite = gameObject.transform.Find("LightSprite").GetComponent<SpriteRenderer>();
 		InvokeRepeating("orbit", 0, lerpTime + 0.1f);
 		end = player.transform.position;
 	}
@@ -57,4 +59,9 @@ public class Navi : MonoBehaviour {
 		float fracCovered = distanceCovered/length;
 		transform.position = Vector3.Lerp(transform.position, end, fracCovered);
 	}
+
+    public void ChangeColor(Color color)
+    {
+        sprite.color = color;
+    }
 }

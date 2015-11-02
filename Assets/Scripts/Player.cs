@@ -121,24 +121,9 @@ public class Player : MonoBehaviour {
 			toggleObjectsWithTag(color, true);
 		*/
 
-        lightMaterial.color = Colors.GetColor(color);
-        //switch(color) {
-		//case LightColor.Red:
-		//	lightMaterial.color = new Color(229/255f, 149/255f, 0f, 1f);
-		//	break;
-		//case LightColor.White:
-		//	lightMaterial.color = Color.white;
-		//	break;
-		//case LightColor.Blue:
-		//	lightMaterial.color = new Color(83/255f, 161/255f, 200/255f, 1f);
-		//	break;
-		//case LightColor.Yellow:
-		//	lightMaterial.color = new Color(93f/255f, 238f/255f, 142f/255f, 1f);
-		//	break;
-		//default:
-		//	break;
-		//}
-		//Bullets.updateCanvas();
+        Color colorObject = Colors.GetColor(color);
+        lightMaterial.color = colorObject;
+        Navi.S.ChangeColor(colorObject);
 	}
 
 	void OnApplicationQuit() {
