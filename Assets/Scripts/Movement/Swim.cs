@@ -21,6 +21,8 @@ public class Swim : MonoBehaviour {
 	}
 	
 	public void Update() {
+		this.rigidBody.angularVelocity *= 0.95f;
+
 		if (Player.S.color != LightColor.Blue) {
 			this.StopPlayer();
 		}
