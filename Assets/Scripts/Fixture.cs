@@ -9,11 +9,13 @@ public class Fixture : MonoBehaviour {
     public bool ____________________;
 
     private SpriteRenderer lightObject;
+    private Material lightMaterial;
     private float triggerDistance;
 
     // Use this for initialization
 	void Start () {
-        lightObject = GameObject.Find("Inner").GetComponent<SpriteRenderer>();
+        lightObject = this.transform.Find("Inner").GetComponent<SpriteRenderer>();
+        lightMaterial = this.GetComponent<DynamicLight>().lightMaterial;
         UpdateFixtureColor();
         triggerDistance = 1f;
 	}
@@ -33,10 +35,13 @@ public class Fixture : MonoBehaviour {
     {
         Player.S.switchColors(currentColor);
         currentColor = newColor;
+        UpdateFixtureColor();
     }
 
     private void UpdateFixtureColor()
     {
-        lightObject.color = Colors.GetColor(currentColor);
+        Color color = Colors.GetColor(currentColor);
+        lightObject.color = color;
+        lightMaterial.color = color;
     }
 }
