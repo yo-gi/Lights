@@ -19,6 +19,8 @@ public class Burn : MonoBehaviour {
 
 	public void setBurning(float burntime)
 	{
+		if (Player.S.color == LightColor.Red) return;
+
 //		Door.switchLevels(MainCam.level == 1 ? 5 : MainCam.level - 1);
 		timeRemaining = Time.time + burntime;
 	}
