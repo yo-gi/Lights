@@ -24,7 +24,7 @@ public class Burn : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (timeRemaining > Time.time && Time.time > nextTick) {
+		if (timeRemaining > Time.time && Time.time > nextTick && Player.S.color != LightColor.Red) {
 			//change limin
 			print("fire tick!");
 			nextTick = Time.time + burnRate;
