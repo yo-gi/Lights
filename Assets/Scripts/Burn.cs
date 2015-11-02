@@ -19,25 +19,31 @@ public class Burn : MonoBehaviour {
 
 	public void setBurning(float burntime)
 	{
-		Door.switchLevels(MainCam.level == 1 ? 5 : MainCam.level - 1);
+//		Door.switchLevels(MainCam.level == 1 ? 5 : MainCam.level - 1);
 		//timeRemaining = Time.time + burntime;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (timeRemaining > Time.time && Time.time > nextTick && Player.S.color != LightColor.Red) {
-			//change limin
-			Navi.S.Luminosity -= 1;
-			print ("fire tick: " + Navi.S.Luminosity);
-			nextTick = Time.time + burnRate;
-			timeRemaining = Time.time;
+//		if (timeRemaining > Time.time && Time.time > nextTick && Player.S.color != LightColor.Red) {
+//			//change limin
+//			Navi.S.Luminosity -= 1;
+//			print ("fire tick: " + Navi.S.Luminosity);
+//			nextTick = Time.time + burnRate;
+//			timeRemaining = Time.time;
+//
+//		} else if(timeRemaining < Time.time) {
+//			Navi.S.Luminosity++;
+//			if(Navi.S.Luminosity > 100)
+//			{
+//				Navi.S.Luminosity = 100;
+//			}
+//		}
 
-		} else if(timeRemaining < Time.time) {
-			Navi.S.Luminosity++;
-			if(Navi.S.Luminosity > 100)
-			{
-				Navi.S.Luminosity = 100;
-			}
+		if (timeRemaining > Time.time) {
+			Door.switchLevels(MainCam.level == 1 ? 5 : MainCam.level - 1);
+
+			timeRemaining = Time.time;
 		}
 	}
 }
