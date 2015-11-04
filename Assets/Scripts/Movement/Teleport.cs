@@ -18,6 +18,7 @@ public class Teleport : MonoBehaviour {
 	void Update() {
 		if (this.TeleportIsAvailable() && Input.GetKeyDown(KeyCode.Z)) {			
 			this.gameObject.transform.position = this.GetTeleportVector();
+			this.lastTeleport = Time.time;
 
 			this.locationHistory.Clear();
 		}
