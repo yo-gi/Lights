@@ -55,10 +55,6 @@ public class Player : MonoBehaviour
 		} else if (Input.GetKey(KeyCode.Alpha4)) {
 			switchColors(LightColor.Yellow);
 		}
-
-		if (Input.GetKey(KeyCode.R) && MainCam.level != 1) {
-			Door.switchLevels(MainCam.level - 1);
-		}
 	}
 	
     public void switchColors(LightColor newColor)

@@ -14,15 +14,24 @@ public class Teleport : MonoBehaviour {
 		public float time;
 	}
 
+	void Awake() {
+		Events.Register(Event.OnReset, this.ResetLocationHistory);
+	}
+
 	void Update() {
 		if (this.TeleportIsAvailable() && Input.GetKeyDown(KeyCode.Z)) {			
 			this.gameObject.transform.position = this.GetTeleportVector();
-			this.lastTeleport = Time.time;
 
-			this.locationHistory.Clear();
+			this.ResetLocationHistory();
 		}
 
 		this.UpdateLocationHistory(this.gameObject.transform.position);
+	}
+
+	private void ResetLocationHistory() {
+		this.lastTeleport = Time.time;
+		
+		this.locationHistory.Clear();
 	}
 
 	private bool TeleportIsAvailable() {
