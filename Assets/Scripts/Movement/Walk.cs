@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Walk : MonoBehaviour {
 	
@@ -15,7 +14,7 @@ public class Walk : MonoBehaviour {
 	}
 
 	void Update () {
-		/* Movement */
+		// Horizontal Movement
 		if (Input.GetKey(KeyCode.A)) {
 			r.velocity = new Vector2(-1f * runSpeed, r.velocity.y);
 		}
@@ -25,6 +24,8 @@ public class Walk : MonoBehaviour {
 		if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D)) {
 			r.velocity = new Vector2(0, r.velocity.y);
 		}
+
+        // Jumping
 		if (Input.GetKeyDown(KeyCode.W)) {
 			if (Player.S.color == LightColor.Yellow && doubleJump) {
 				r.velocity = new Vector2(r.velocity.x, jumpHeight);
@@ -34,14 +35,11 @@ public class Walk : MonoBehaviour {
 			RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, -Vector2.up, 0.45f, ~(1 << 10));
 			foreach(RaycastHit2D hit in hits) {
 				if (hit.collider != null) {
-					Platform p = hit.collider.GetComponent<Platform>();
-					if (p == null || p.started) {
-						r.velocity = new Vector2(r.velocity.x, jumpHeight);
-						doubleJump = true;
-						print ("true");
-						break;
-					}
-				}
+                    r.velocity = new Vector2(r.velocity.x, jumpHeight);
+                    doubleJump = true;
+                    print("true");
+                    break;
+                }
 			}
 			
 		}

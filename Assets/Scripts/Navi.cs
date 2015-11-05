@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Navi : MonoBehaviour {
 
@@ -10,7 +9,6 @@ public class Navi : MonoBehaviour {
 	public float xOffset;
 	public float yOffset;
 
-	GameObject player;
     DynamicLight lightScript;
     SpriteRenderer sprite;
 
@@ -32,21 +30,20 @@ public class Navi : MonoBehaviour {
 	}*/
 
 	void Awake() {
-		Navi.S = this;
+		S = this;
 	}
 
 	// Use this for initialization
 	void Start () {
-		player = GameObject.Find("Player");
         lightScript = gameObject.GetComponent<DynamicLight>();
         sprite = gameObject.transform.Find("LightSprite").GetComponent<SpriteRenderer>();
 		InvokeRepeating("orbit", 0, lerpTime + 0.1f);
-		end = player.transform.position;
+		end = Player.S.gameObject.transform.position;
 	}
 
 	void orbit() {
 		startTime = Time.time;
-		Vector3 p = player.transform.position;
+		Vector3 p = Player.S.gameObject.transform.position;
 		end = new Vector3(p.x + Random.Range(-1 * xOffset, xOffset), p.y + Random.Range(1, yOffset));
 		length = Vector3.Distance(transform.position, end);
 	}
@@ -64,7 +61,7 @@ public class Navi : MonoBehaviour {
 
     public void ChangeColor(LightColor color)
     {
-		GameObject.Find("LightSprite").GetComponent<SpriteRenderer>().color = Colors.GetColor(color);
-		gameObject.GetComponent<DynamicLight>().lightMaterial = Colors.GetColorMaterial(color);
+		sprite.color = Colors.GetColor(color);
+		lightScript.lightMaterial = Colors.GetColorMaterial(color);
     }
 }

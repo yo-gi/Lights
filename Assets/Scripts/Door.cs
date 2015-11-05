@@ -1,16 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Door : MonoBehaviour {
 
 	public Vector3 teleportTo;
 	public int level;
 	public float triggerDistance;
-
-	// Use this for initialization
-	void Start () {
-	
-	}
 	
 	// Update is called once per frame
 	void Update () {

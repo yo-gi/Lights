@@ -6,12 +6,6 @@ public class Drown : MonoBehaviour {
 
 	private float drowningStartTime;
 
-	private GameObject CurrentWaterTile {
-		get {
-			return Player.S.water;
-		}
-	}
-
 	public void Start() {
 		this.drowningStartTime = 0;
 	}
@@ -49,9 +43,17 @@ public class Drown : MonoBehaviour {
 				Door.switchLevels(MainCam.level == 1 ? 5 : MainCam.level - 1);
 			}
 		}
-	}
+    }
 
-	private bool IsSubmergedInWater() {
+    private GameObject CurrentWaterTile
+    {
+        get
+        {
+            return Player.S.water;
+        }
+    }
+
+    private bool IsSubmergedInWater() {
 		var objectHeight = this.GetHeightFromTransform(this.transform);
 		var waterHeight = this.GetHeightFromTransform(this.CurrentWaterTile.transform);
 

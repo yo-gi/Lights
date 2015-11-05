@@ -1,30 +1,27 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Fire : MonoBehaviour {
 
 	public float burntime;
 
-//	Collider2D target;
-
-	GameObject player;
+    bool playerBurning = false;
 
 	void OnTriggerEnter2D(Collider2D c) {
-		if (c.gameObject.name == "Player") {
-			this.player = c.gameObject;
+		if (c.gameObject == Player.S.gameObject) {
+			playerBurning = true;
 		}
 
 		Burn.S.setBurning(burntime);
 	}
 
 	void OnTriggerExit2D(Collider2D c) {
-		if (c.gameObject.name == "Player") {
-			this.player = null;
+		if (c.gameObject.gameObject == Player.S.gameObject) {
+			playerBurning = false;
 		}
 	}
 
 	void Update() {
-		if (this.player) {
+		if (playerBurning) {
 			Burn.S.setBurning(burntime);
 		}
 	}
