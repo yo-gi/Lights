@@ -10,7 +10,7 @@ public class Navi : MonoBehaviour
 	public float lerpSpeed;
 	public float xOffset;
 	public float yOffset;
-    
+
 	SpriteRenderer sprite;
     LOSRadialLight naviLight;
 
