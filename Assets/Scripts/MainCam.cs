@@ -17,23 +17,20 @@ public class MainCam : MonoBehaviour
 	void Awake()
 	{
 		S = this;
-	}
 
-	// Use this for initialization
-	void Start ()
-    {
-		for (int i = 1; i <= numLevels; i++) {
-			levelTable[i] = GameObject.Find("Level_" + i);
-		}
+        for (int i = 1; i <= numLevels; i++)
+        {
+            levelTable[i] = GameObject.Find("Level_" + i);
+        }
 
-		for (int i = 2; i <= numLevels; i++)
-			levelTable[i].SetActive(false);
+        for (int i = 2; i <= numLevels; i++)
+            levelTable[i].SetActive(false);
 
-		startTable[1] = new Vector3(1,3,0);
-		startTable[2] = new Vector3(23,3,0);
-		startTable[3] = new Vector3(55,13,0);
-		startTable[4] = new Vector3(93,18,0);
-	}
+        startTable[1] = new Vector3(1, 3, 0);
+        startTable[2] = new Vector3(23, 3, 0);
+        startTable[3] = new Vector3(55, 13, 0);
+        startTable[4] = new Vector3(93, 18, 0);
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -48,4 +45,21 @@ public class MainCam : MonoBehaviour
 			Events.Broadcast(Event.OnReset);
 		}
 	}
+
+    // Given an object in the Hierarchy, returns list of children filtered by tag. If T is GameObject,
+    // will return the children GameObjects, but if T is something else, will return component T from
+    // the children GameObjects.
+    public static List<T> FilterByTag<T>(GameObject parent, string tag)
+    {
+        List<T> objects = new List<T>();
+        foreach(Transform transform in parent.GetComponentsInChildren<Transform>())
+        {
+            if (transform.tag == tag)
+            {
+                if (typeof(T) == typeof(GameObject)) objects.Add((T)(object)transform.gameObject);
+                else objects.Add(transform.gameObject.GetComponent<T>());
+            }
+        }
+        return objects;
+    }
 }
