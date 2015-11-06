@@ -11,7 +11,6 @@ public class Navi : MonoBehaviour
 	public float xOffset;
 	public float yOffset;
 
-	DynamicLight lightScript;
 	SpriteRenderer sprite;
 
 	float startTime;
@@ -41,7 +40,6 @@ public class Navi : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		lightScript = gameObject.GetComponent<DynamicLight> ();
 		sprite = gameObject.transform.Find ("LightSprite").GetComponent<SpriteRenderer> ();
 		naviLight = GameObject.Find("Navi Light").GetComponent<LOSRadialLight>();
 		InvokeRepeating ("orbit", 0, lerpTime + 0.1f);
