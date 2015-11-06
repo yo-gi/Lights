@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Burn : MonoBehaviour {
 
@@ -21,7 +20,7 @@ public class Burn : MonoBehaviour {
 	{
 		if (Player.S.color == LightColor.Red) return;
 
-//		Door.switchLevels(MainCam.level == 1 ? 5 : MainCam.level - 1);
+		// Door.switchLevels(MainCam.level == 1 ? 5 : MainCam.level - 1);
 		timeRemaining = Time.time + burntime;
 	}
 	

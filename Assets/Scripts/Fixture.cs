@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Fixture : MonoBehaviour {
     
@@ -13,7 +12,8 @@ public class Fixture : MonoBehaviour {
     private float triggerDistance;
 
     // Use this for initialization
-	void Start () {
+	void Start ()
+    {
         lightObject = this.transform.Find("Inner").GetComponent<SpriteRenderer>();
         lightScript = this.GetComponent<DynamicLight>();
         UpdateFixtureColor();
@@ -21,7 +21,8 @@ public class Fixture : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (Vector3.Distance(transform.position, Player.S.transform.position) < triggerDistance)

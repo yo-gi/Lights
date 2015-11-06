@@ -1,15 +1,11 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class Player : MonoBehaviour {
-	
-	public GameObject bombPrefab;
-	public float lifeTime;
+public class Player : MonoBehaviour
+{
+    public static Player S;
 
 	public LightColor color;
 	public GameObject water;
-	
-	public static Player S;
     
 	Walk walk;
 	Swim swim;
@@ -22,35 +18,28 @@ public class Player : MonoBehaviour {
 	void Start () {
 		walk = GetComponent<Walk>();
 		swim = GetComponent<Swim>();
-
-		// TODO: This will not work if player starts in water.
+        
 		walk.enabled = true;
 		swim.enabled = false;
 
         color = LightColor.White;
 	}
 
-	void OnCollisionEnter2D(Collision2D c) {
-	}
-
-	void OnCollisionExit2D(Collision2D c) {
-	}
-
 	void OnTriggerEnter2D(Collider2D collider) {
 		if (collider.tag == "water") {
-			this.walk.enabled = false;
-			this.swim.enabled = true;
+			walk.enabled = false;
+			swim.enabled = true;
 
-			this.water = collider.gameObject;
+			water = collider.gameObject;
 		}
 	}
 
 	void OnTriggerExit2D(Collider2D collider) {
 		if (collider.tag == "water") {
-			this.walk.enabled = true;
-			this.swim.enabled = false;
+			walk.enabled = true;
+			swim.enabled = false;
 
-			if (this.water == collider.gameObject) this.water = null;
+			if (water == collider.gameObject) water = null;
 		}
 	}
 
@@ -66,58 +55,10 @@ public class Player : MonoBehaviour {
 		} else if (Input.GetKey(KeyCode.Alpha4)) {
 			switchColors(LightColor.Yellow);
 		}
-
-		if (Input.GetKey(KeyCode.R) && MainCam.level != 1) {
-			Door.switchLevels(MainCam.level - 1);
-			foreach (LightColor col in Bullets.colors) {
-				if (col == LightColor.White) continue;
-				GameObject[] switches = GameObject.FindGameObjectsWithTag(MainCam.S.colortoString(col));
-				foreach (GameObject o in switches) {
-					if (o.GetComponent<Rotate>() != null) {
-						o.GetComponent<Switch>().activate();
-					}
-				}
-			}
-			Bullets.resetBullets();
-		}
-
-		/* Light Bomb */
-		if (Input.GetMouseButtonDown(0)) {
-			if (Bullets.hasColor(color)) {
-				Bullets.decrementColor(color);
-				Vector3 spawn = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-				GameObject newBomb = (GameObject)Instantiate(bombPrefab, spawn, transform.rotation);
-				newBomb.GetComponent<Bomb>().destination = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			}
-		}
 	}
-
-	/*void toggleObjectsWithTag(string tag, bool toggle) {
-		GameObject[] oldColorObjects = GameObject.FindGameObjectsWithTag(tag);
-		foreach (GameObject obj in oldColorObjects) {
-			obj.GetComponent<PolygonCollider2D>().enabled = toggle;
-			SpriteRenderer s = obj.GetComponent<SpriteRenderer>();
-			if (toggle) {
-				Color old = s.color;
-				Color newC = new Color(old.r, old.g, old.b, 255f/255f);
-				s.color = newC;
-			} else {
-				Color old = s.color;
-				Color newC = new Color(old.r, old.g, old.b, 10f/255f);
-				s.color = newC;
-			}
-		}
-	}*/
 	
     public void switchColors(LightColor newColor)
     {
-        /*
-        LightColor oldColor = color;
-        if (oldColor != "white")
-			toggleObjectsWithTag(oldColor, false);
-		if (color != "white")
-			toggleObjectsWithTag(color, true);
-		*/
         color = newColor;
         Navi.S.ChangeColor(color);
     }
