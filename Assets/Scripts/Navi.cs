@@ -12,12 +12,11 @@ public class Navi : MonoBehaviour
 	public float yOffset;
 
 	SpriteRenderer sprite;
+    LOSRadialLight naviLight;
 
-	float startTime;
+    float startTime;
 	Vector3 end;
 	float length;
-
-	LOSRadialLight naviLight;
 
 	// Set the luminosity. Accepts values from 0, 100.
 	public int Luminosity = 1;
@@ -42,6 +41,7 @@ public class Navi : MonoBehaviour
 	{
 		sprite = gameObject.transform.Find ("LightSprite").GetComponent<SpriteRenderer> ();
 		naviLight = GameObject.Find("Navi Light").GetComponent<LOSRadialLight>();
+        sprite.color = naviLight.color;
 		InvokeRepeating ("orbit", 0, lerpTime + 0.1f);
 		end = Player.S.gameObject.transform.position;
 	}
@@ -68,7 +68,8 @@ public class Navi : MonoBehaviour
 
 	public void ChangeColor (LightColor color)
 	{
-		sprite.color = Colors.GetColor (color);
-		naviLight.color = Colors.GetColor (color);
+        Color colorObject = Colors.GetColor(color);
+		sprite.color = colorObject;
+		naviLight.color = colorObject;
 	}
 }

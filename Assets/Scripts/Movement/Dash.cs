@@ -14,9 +14,6 @@ public class Dash : MonoBehaviour {
 
 			this.gameObject.transform.position += this.GetDashVector();
 		}
-		else if (!CanDash()) {
-			Debug.Log ("Can't Dash yet");
-		}
 	}
 
 	private bool CanDash() {

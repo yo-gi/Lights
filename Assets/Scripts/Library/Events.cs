@@ -1,9 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 
 public enum Event {
 	OnReset,
+    TorchesLit,
+    AltarsActivated,
+    LevelComplete
 }
 
 public class Events {
