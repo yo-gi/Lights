@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
+using LOS;
 
-public class Navi : MonoBehaviour {
+public class Navi : MonoBehaviour
+{
 
 	public static Navi S;
 	
@@ -9,12 +11,14 @@ public class Navi : MonoBehaviour {
 	public float xOffset;
 	public float yOffset;
 
-    DynamicLight lightScript;
-    SpriteRenderer sprite;
+	DynamicLight lightScript;
+	SpriteRenderer sprite;
 
 	float startTime;
 	Vector3 end;
 	float length;
+
+	LOSRadialLight naviLight;
 
 	// Set the luminosity. Accepts values from 0, 100.
 	public int Luminosity = 1;
@@ -29,39 +33,44 @@ public class Navi : MonoBehaviour {
 		}
 	}*/
 
-	void Awake() {
+	void Awake ()
+	{
 		S = this;
 	}
 
 	// Use this for initialization
-	void Start () {
-        lightScript = gameObject.GetComponent<DynamicLight>();
-        sprite = gameObject.transform.Find("LightSprite").GetComponent<SpriteRenderer>();
-		InvokeRepeating("orbit", 0, lerpTime + 0.1f);
+	void Start ()
+	{
+		lightScript = gameObject.GetComponent<DynamicLight> ();
+		sprite = gameObject.transform.Find ("LightSprite").GetComponent<SpriteRenderer> ();
+		naviLight = GameObject.Find("Navi Light").GetComponent<LOSRadialLight>();
+		InvokeRepeating ("orbit", 0, lerpTime + 0.1f);
 		end = Player.S.gameObject.transform.position;
 	}
 
-	void orbit() {
+	void orbit ()
+	{
 		startTime = Time.time;
 		Vector3 p = Player.S.gameObject.transform.position;
-		end = new Vector3(p.x + Random.Range(-1 * xOffset, xOffset), p.y + Random.Range(1, yOffset));
-		length = Vector3.Distance(transform.position, end);
+		end = new Vector3 (p.x + Random.Range (-1 * xOffset, xOffset), p.y + Random.Range (1, yOffset));
+		length = Vector3.Distance (transform.position, end);
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 		/*if (Luminosity <= 0) {
 			Luminosity = 100;
 			Door.switchLevels(MainCam.level == 1 ? 5 : MainCam.level - 1);
 		}*/
 		float distanceCovered = (Time.time - startTime) * lerpSpeed;
-		float fracCovered = distanceCovered/length;
-		transform.position = Vector3.Lerp(transform.position, end, fracCovered);
+		float fracCovered = distanceCovered / length;
+		transform.position = Vector3.Lerp (transform.position, end, fracCovered);
 	}
 
-    public void ChangeColor(LightColor color)
-    {
-		sprite.color = Colors.GetColor(color);
-		lightScript.lightMaterial = Colors.GetColorMaterial(color);
-    }
+	public void ChangeColor (LightColor color)
+	{
+		sprite.color = Colors.GetColor (color);
+		naviLight.color = Colors.GetColor (color);
+	}
 }
