@@ -16,6 +16,7 @@ public class Teleport : MonoBehaviour {
 
 	void Awake() {
 		Events.Register<OnResetEvent>(this.ResetLocationHistory);
+		Events.Register<OnLevelCompleteEvent>(this.ResetLocationHistory);
 	}
 
 	void Update() {

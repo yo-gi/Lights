@@ -16,6 +16,8 @@ public class Door : MonoBehaviour {
 	}
 
 	public static void switchLevels(int curLevel) {
+		Events.Broadcast(new OnLevelCompleteEvent());
+
 		if (curLevel == 5) {
 			MainCam.levelTable[curLevel].SetActive(false);
 			MainCam.levelTable[1].SetActive(true);
