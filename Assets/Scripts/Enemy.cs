@@ -1,21 +1,32 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using LOS;
 
 public class Enemy : MonoBehaviour {
 
-	float attackSpeed;
-	int attackDamage;
+	public float attackSpeed;
+	public float attackDamage;
 
-	float range;
-	float sightRange;
+	public float range;
+	public float sightRange;
+
+	public float runSpeed;
 
 	bool __________________;
 
 	public RaycastHit hitInfo;
+	public LOSRadialLight enemyLight;
 	
-	bool attacking;
+	bool attacking = false;
 	float nextAttackTime;
+	
+	Rigidbody2D r;
+	
+	public void Awake ()
+	{
+		r = GetComponent<Rigidbody2D> ();
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -27,27 +38,44 @@ public class Enemy : MonoBehaviour {
 			if(Time.time > nextAttackTime)
 			{
 				//player is in range
-				if(Vector3.Distance (Player.S.transform.position, transform.position) < range)
+				if(Vector2.Distance (Player.S.transform.position, transform.position) < range)
 				{
-					Navi.S.Luminosity -= attackDamage;
+					Navi.S.naviLight.radius -= attackDamage;
+					nextAttackTime = Time.time + attackSpeed;
 				}
 				else
 				{
-					//attack missed
-					nextAttackTime = Time.time + attackSpeed;
+					attacking = false;
+					if(Player.S.transform.position.x > transform.position.x)
+					{
+						r.velocity = new Vector2 (runSpeed, 0);
+					}
+					else
+					{
+						r.velocity = new Vector2 (-runSpeed, 0);
+					}
 				}
 			}
 		} else {
 			//if player is in range
-			if(Vector3.Distance (Player.S.transform.position, transform.position) < range)
+			if(Vector2.Distance (Player.S.transform.position, transform.position) < range)
 			{
 				attacking = true;
 				nextAttackTime = Time.time + attackSpeed;
+				r.velocity = new Vector2(0,0);
 			}
 			//move at the player
-			else if(Vector3.Distance (Player.S.transform.position, transform.position) < sightRange)
+			else if(Vector2.Distance (Player.S.transform.position, transform.position) < sightRange)
 			{
-				
+				print ("saw player!");
+				if(Player.S.transform.position.x > transform.position.x)
+				{
+					r.velocity = new Vector2 (runSpeed, 0);
+				}
+				else
+				{
+					r.velocity = new Vector2 (-runSpeed, 0);
+				}
 			}
 		}
 	}

@@ -11,25 +11,17 @@ public class Navi : MonoBehaviour
 	public float xOffset;
 	public float yOffset;
 
+	public float maxLightRadius;
+	public float recoveryRate;
+	public float recoveryAmount;
+	float nextRecoveryTime = 0;
+
 	SpriteRenderer sprite;
-    LOSRadialLight naviLight;
+    public LOSRadialLight naviLight;
 
     float startTime;
 	Vector3 end;
 	float length;
-
-	// Set the luminosity. Accepts values from 0, 100.
-	public int Luminosity = 1;
-	/*{
-		get {
-			return 0;
-		}
-		set {
-			if (value < 0 || value > 100) return;
-
-			// TODO
-		}
-	}*/
 
 	void Awake ()
 	{
@@ -64,6 +56,14 @@ public class Navi : MonoBehaviour
 		float distanceCovered = (Time.time - startTime) * lerpSpeed;
 		float fracCovered = distanceCovered / length;
 		transform.position = Vector3.Lerp (transform.position, end, fracCovered);
+		if (naviLight.radius < maxLightRadius)
+		{
+			if(nextRecoveryTime < Time.time)
+			{
+				naviLight.radius += recoveryAmount;
+				nextRecoveryTime = Time.time + recoveryRate;
+			}
+		}
 	}
 
 	public void ChangeColor (LightColor color)
