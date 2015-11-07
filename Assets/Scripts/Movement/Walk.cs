@@ -30,20 +30,21 @@ public class Walk : MonoBehaviour
 
 		// Jumping
 		if (Input.GetKeyDown (KeyCode.W)) {
-			if (Player.S.color == LightColor.Yellow && doubleJump) {
+			if (doubleJump) {
 				r.velocity = new Vector2 (r.velocity.x, jumpHeight);
 				doubleJump = false;
 				print ("false");
 			}
-			RaycastHit2D[] hits = Physics2D.RaycastAll (transform.position, -Vector2.up, 0.45f, ~(1 << 10));
-			foreach (RaycastHit2D hit in hits) {
-				if (hit.collider != null) {
-					r.velocity = new Vector2 (r.velocity.x, jumpHeight);
-					doubleJump = true;
-					break;
+			else {
+				RaycastHit2D[] hits = Physics2D.RaycastAll (transform.position, Vector2.down, 0.45f, ~(1 << 10));
+				foreach (RaycastHit2D hit in hits) {
+					if (hit.collider != null) {
+						r.velocity = new Vector2 (r.velocity.x, jumpHeight);
+						doubleJump = true;
+						break;
+					}
 				}
 			}
-			
 		}
 	}
 }
