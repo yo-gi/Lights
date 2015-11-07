@@ -9,7 +9,7 @@ public class Dash : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (this.CanDash() && Input.GetKeyDown(KeyCode.Space)) {
+		if (this.CanDash() && Input.GetKeyDown(KeyCode.J)) {
 			this.lastDash = Time.time;
 
 			this.gameObject.transform.position += this.GetDashVector();
