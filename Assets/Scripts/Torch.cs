@@ -59,7 +59,7 @@ public class Torch : MonoBehaviour {
         activeTorchCounts[currentLevel] += 1;
         if (activeTorchCounts[currentLevel] == torches[currentLevel].Count)
         {
-            Events.Broadcast(Event.TorchesLit);
+            Events.Broadcast(new OnTorchLitEvent());
         }
     }
 }

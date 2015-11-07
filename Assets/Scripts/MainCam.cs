@@ -42,7 +42,7 @@ public class MainCam : MonoBehaviour
 		if (Input.GetKey(KeyCode.R) && MainCam.level != 1) {
 			Door.switchLevels(MainCam.level - 1);
 
-			Events.Broadcast(Event.OnReset);
+			Events.Broadcast(new OnResetEvent());
 		}
 	}
 

@@ -1,30 +1,84 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public enum Event {
-	OnReset,
-	TorchesLit,
-	AltarsActivated,
-	LevelComplete
-}
+public class OnResetEvent {}
+public class OnTorchLitEvent {}
+public class OnAltarActivatedEvent {}
+public class OnLevelCompleteEvent {}
 
 public class Events {
-	
-	private static Dictionary<Event, List<Action>> handlers = new Dictionary<Event, List<Action>>();
-	
-	public static void Register(Event e, Action callback) {
-		if (Events.handlers.ContainsKey(e) == false) {
-			Events.handlers[e] = new List<Action>();
+	private static EventStore handler = new EventStore();
+
+	// Use this method to listen for an event. For example:
+	//
+	//	Events.Register<EventTypeHere>(() => {
+	//    Debug.Log("EventTypeHere happened!");
+	//  });
+	//
+	public static void Register<T>(Action handler) {
+		Events.handler.Register<T>(handler);
+	}
+
+	// Use this method to listen for an event. For example:
+	//
+	//	Events.Register<EventTypeHere>((e) => {
+	//    Debug.Log("Event " + e.someField + " happened!");
+	//  });
+	//
+	public static void Register<T>(Action<T> handler) {
+		Events.handler.Register<T>(handler);
+	}
+
+	// Use this kick off an event. For example:
+	//
+	//	Events.Broadcast(new EventTypeHere() {
+	//    someField = "someValue"
+	//  });
+	//
+	public static void Broadcast<T>(T e) {
+		Events.handler.Broadcast<T>(e);
+	}
+}
+
+public class EventStore {
+	private Dictionary<Type, List<object>> handlers = new Dictionary<Type, List<object>>();
+
+	public void Register<T>(Action handler) {
+		var type = typeof(T);
+
+		if (this.handlers.ContainsKey(type) == false) {
+			this.handlers[type] = new List<object>();
+		}
+
+		this.handlers[type].Add(handler);
+	}
+
+	public void Register<T>(Action<T> handler) {
+		var type = typeof(T);
+
+		if (this.handlers.ContainsKey(type) == false) {
+			this.handlers[type] = new List<object>();
 		}
 		
-		Events.handlers[e].Add(callback);
+		this.handlers[type].Add(handler);
 	}
 	
-	public static void Broadcast(Event e) {
-		if (Events.handlers.ContainsKey(e) == false) return;
+	public void Broadcast<T>(T e) {
+		var type = typeof(T);
+
+		if (this.handlers.ContainsKey(type) == false) return;
 		
-		foreach (var events in Events.handlers[e]) {
-			events();
+		foreach (var callback in this.handlers[type]) {
+			var parameterlessHandler = callback as Action;
+
+			if (parameterlessHandler == null) {
+				var handler = (Action<T>)callback;
+
+				handler(e);
+			}
+			else {
+				parameterlessHandler();
+			}
 		}
 	}
 }
