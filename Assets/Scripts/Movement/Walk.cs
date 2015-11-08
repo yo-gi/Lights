@@ -33,7 +33,6 @@ public class Walk : MonoBehaviour
 			if (doubleJump) {
 				r.velocity = new Vector2 (r.velocity.x, jumpHeight);
 				doubleJump = false;
-				print ("false");
 			}
 			else {
 				RaycastHit2D[] hits = Physics2D.RaycastAll (transform.position, Vector2.down, 0.45f, ~(1 << 10));

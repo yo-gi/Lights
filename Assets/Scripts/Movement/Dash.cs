@@ -38,20 +38,30 @@ public class Dash : MonoBehaviour {
 		return direction;
 	}
 
-	// TODO: Test & refactor this!
 	private float GetDashDistance(Vector3 direction) {
-		// We don't want the dash to take the player into a wall. Trim the distance down until we
-		// reach a point that isn't in a wall.
-		var distance = this.maxDashDistance;
+		// Find all the walls in the dash's path.
+		var start = this.gameObject.transform.position;
+		var mask = (1 << LayerMask.NameToLayer("Terrain"));
 
-		var origin = this.gameObject.transform.position;
-		var mask = 1 << 13; // TODO: Find a better way for this
-		RaycastHit hitInfo;
+		var hits = Physics2D.RaycastAll(start, direction, this.maxDashDistance, mask);
 
-		while (Physics.Raycast(origin, direction, out hitInfo, distance, mask)) {
-			distance = hitInfo.distance;
+		// Return the max dash distance if there are no walls.
+		if (hits.Length == 0) return this.maxDashDistance;
+
+		// Raycast backwards to find the end point of the wall.
+		var lastHit = hits[hits.Length - 1];
+		var end = start + direction * this.maxDashDistance;
+
+		var reverseHit = Physics2D.Raycast(end, -1 * direction, this.maxDashDistance, mask);
+		var reverseHitPoint = reverseHit.point;
+
+		if (Vector3.Distance(start, reverseHitPoint) < this.maxDashDistance) {
+			// The reverse hitpoint is within the dash's range. Use the max dash distance for the dash.
+			return this.maxDashDistance;
 		}
-
-		return distance;
+		else {
+			// The reverse hitpoint is within the dash's range. Teleport to the last wall's hit point.
+			return lastHit.distance;
+		}
 	}
 }
