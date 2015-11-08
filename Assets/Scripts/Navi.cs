@@ -34,12 +34,13 @@ public class Navi : MonoBehaviour
 		sprite = gameObject.transform.Find ("LightSprite").GetComponent<SpriteRenderer> ();
 		naviLight = GameObject.Find("Navi Light").GetComponent<LOSRadialLight>();
         sprite.color = naviLight.color;
-		InvokeRepeating ("orbit", 0, lerpTime + 0.1f);
 		end = Player.S.gameObject.transform.position;
+		InvokeRepeating ("orbit", 0, lerpTime + 0.1f);
 	}
 
 	void orbit ()
 	{
+
 		startTime = Time.time;
 		Vector3 p = Player.S.gameObject.transform.position;
 		end = new Vector3 (p.x + Random.Range (-1 * xOffset, xOffset), p.y + Random.Range (1, yOffset));
