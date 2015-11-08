@@ -11,7 +11,7 @@ public class Events {
 
 	// Use this method to listen for an event. For example:
 	//
-	//	Events.Register<EventTypeHere>(() => {
+	//  Events.Register<EventTypeHere>(() => {
 	//    Debug.Log("EventTypeHere happened!");
 	//  });
 	//
@@ -21,7 +21,7 @@ public class Events {
 
 	// Use this method to listen for an event. For example:
 	//
-	//	Events.Register<EventTypeHere>((e) => {
+	//  Events.Register<EventTypeHere>((e) => {
 	//    Debug.Log("Event " + e.someField + " happened!");
 	//  });
 	//
@@ -31,7 +31,7 @@ public class Events {
 
 	// Use this kick off an event. For example:
 	//
-	//	Events.Broadcast(new EventTypeHere() {
+	//  Events.Broadcast(new EventTypeHere() {
 	//    someField = "someValue"
 	//  });
 	//
