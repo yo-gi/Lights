@@ -39,6 +39,13 @@ public class Torch : MonoBehaviour {
             activeTorchCounts.Add(entry.Key, 0);
             if (!levelActive) entry.Value.SetActive(false);
         }
+        Events.Register<OnResetEvent>(()=> {
+            foreach(Torch torch in torches[MainCam.level])
+            {
+                torch.Reset();
+            }
+            activeTorchCounts[MainCam.level] = 0;
+        });
         initialized = true;
     }
 	
@@ -61,5 +68,11 @@ public class Torch : MonoBehaviour {
         {
             Events.Broadcast(new OnTorchLitEvent());
         }
+    }
+
+    private void Reset()
+    {
+        active = false;
+        flame.SetActive(false);
     }
 }

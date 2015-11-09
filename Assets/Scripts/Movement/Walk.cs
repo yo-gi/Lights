@@ -2,16 +2,18 @@
 
 public class Walk : MonoBehaviour
 {
+    public static Walk S;
 	
 	public float runSpeed;
 	public float jumpHeight;
 
-	bool doubleJump = false;
+    public bool grounded = false;
 
 	Rigidbody2D r;
 	
 	public void Awake ()
 	{
+        S = this;
 		r = GetComponent<Rigidbody2D> ();
 	}
 
@@ -27,23 +29,32 @@ public class Walk : MonoBehaviour
 		if (!Input.GetKey (KeyCode.A) && !Input.GetKey (KeyCode.D)) {
 			r.velocity = new Vector2 (0, r.velocity.y);
 		}
-
-		// Jumping
-		if (Input.GetKeyDown (KeyCode.W)) {
-			if (doubleJump) {
-				r.velocity = new Vector2 (r.velocity.x, jumpHeight);
-				doubleJump = false;
-			}
-			else {
-				RaycastHit2D[] hits = Physics2D.RaycastAll (transform.position, Vector2.down, 0.45f, ~(1 << 10));
-				foreach (RaycastHit2D hit in hits) {
-					if (hit.collider != null) {
-						r.velocity = new Vector2 (r.velocity.x, jumpHeight);
-						doubleJump = true;
-						break;
-					}
-				}
-			}
+        // Check to see if the character is on the ground
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, Vector2.down, 0.45f, ~(1 << 10));
+        bool change = false;
+        if (grounded == true) grounded = false;
+        else change = true;
+        foreach (RaycastHit2D hit in hits)
+        {
+            if (hit.collider != null)
+            {
+                grounded = true;
+                break;
+            }
+        }
+        if (grounded && change)
+        {
+            r.velocity = Vector2.zero;
+            Events.Broadcast(new OnLanding());
+        }
+        // Jumping
+        if (grounded && Input.GetKeyDown (KeyCode.W)) {
+            Jump();
 		}
 	}
+
+    public void Jump()
+    {
+        r.velocity = new Vector2(r.velocity.x, jumpHeight);
+    }
 }

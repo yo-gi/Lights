@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+public class OnLanding {}
 public class OnResetEvent {}
 public class OnTorchLitEvent {}
 public class OnAltarActivatedEvent {}
