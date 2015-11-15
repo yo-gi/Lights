@@ -14,7 +14,7 @@ public class DoubleJump : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-	    if (canDoubleJump && !Walk.S.grounded && Input.GetKeyDown(KeyCode.W))
+	    if ((canDoubleJump || MainCam.S.invincible) && !Walk.S.grounded && Input.GetKeyDown(KeyCode.W))
         {
             canDoubleJump = false;
             Walk.S.Jump();

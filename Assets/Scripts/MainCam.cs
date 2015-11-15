@@ -8,6 +8,8 @@ public class MainCam : MonoBehaviour
 	public GameObject playerObj;
     public int numLevels;
 
+	public bool invincible = false;
+
     public bool __________________;
 
 	public static int level = 1;
@@ -38,7 +40,12 @@ public class MainCam : MonoBehaviour
 		Transform t = playerObj.transform;
 		Vector3 pos = new Vector3(t.position.x + 3 , t.position.y, -10f);
 		transform.position = pos;
-
+		
+		if (Input.GetKey(KeyCode.I)) {
+			//toggle invincubility
+			invincible = !invincible;
+			print ("invincibility: " + invincible);
+		}
 		if (Input.GetKey(KeyCode.R) && MainCam.level != 1) {
 			Door.switchLevels(MainCam.level - 1);
 

@@ -22,7 +22,7 @@ public class Swim : MonoBehaviour {
 	public void Update() {
 		this.rigidBody.angularVelocity *= 0.95f;
 
-		if (Player.S.color != LightColor.Blue) {
+		if (Player.S.color != LightColor.Blue && !MainCam.S.invincible) {
 			this.StopPlayer();
 		}
 		else {
