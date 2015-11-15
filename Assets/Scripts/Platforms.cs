@@ -6,6 +6,7 @@ public class Platforms : MonoBehaviour {
 	public Vector3 start;
 	public Vector3 end;
 	public float lerpSpeed;
+	public bool active = true;
 
 	float startTime;
 
@@ -19,6 +20,9 @@ public class Platforms : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (!active)
+			return;
+
 		if (transform.position == end) {
 			startTime = Time.time;
 			Vector3 temp = new Vector3(end.x, end.y, end.z);
