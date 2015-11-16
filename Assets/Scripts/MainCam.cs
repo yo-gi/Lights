@@ -20,14 +20,14 @@ public class MainCam : MonoBehaviour
 	{
 		S = this;
 
-        for (int i = 1; i <= numLevels; i++)
+        /*for (int i = 1; i <= numLevels; i++)
         {
             levelTable[i] = GameObject.Find("Level_" + i);
         }
 
         for (int i = 2; i <= numLevels; i++)
             levelTable[i].SetActive(false);
-
+		*/
         startTable[1] = new Vector3(1, 3, 0);
         startTable[2] = new Vector3(23, 3, 0);
         startTable[3] = new Vector3(55, 13, 0);
