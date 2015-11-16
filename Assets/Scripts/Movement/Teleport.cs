@@ -22,8 +22,6 @@ public class Teleport : MonoBehaviour {
 
 		Events.Register<OnResetEvent>(this.ResetLocationHistory);
 		Events.Register<OnLevelCompleteEvent>(this.ResetLocationHistory);
-
-		this.CreateTrailObject();
 	}
 
 	void Update() {
@@ -34,6 +32,16 @@ public class Teleport : MonoBehaviour {
 		}
 
 		this.UpdateLocationHistory(this.gameObject.transform.position);
+	}
+
+	void OnEnable() {
+		this.CreateTrailObject();
+	}
+
+	void OnDisable() {
+		if (this.trail) {
+			Destroy(this.trail);
+		}
 	}
 	
 	private void ResetLocationHistory() {

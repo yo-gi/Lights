@@ -2,24 +2,34 @@
 
 public class Walk : MonoBehaviour
 {
-    public static Walk S;
 	
 	public float runSpeed;
 	public float jumpHeight;
 
-    public bool grounded = false;
+	public bool grounded = false;
+	public bool doubleJump = false;
 
 	Rigidbody2D r;
-	
-	public void Awake ()
+
+	public void Awake()
 	{
-        S = this;
-		r = GetComponent<Rigidbody2D> ();
+		r = GetComponent<Rigidbody2D>();
 	}
 
-	void Update ()
-	{
-		// Horizontal Movement
+	void Update() {
+		this.HandleHorizontalMovement();
+		this.HandleJumping();
+	}
+
+	void FixedUpdate() {
+		this.grounded = this.IsGrounded();
+
+		if (this.grounded) {
+			this.doubleJump = true;
+		}
+	}
+
+	private void HandleHorizontalMovement() {
 		if (Input.GetKey (KeyCode.A)) {
 			r.velocity = new Vector2 (-1f * runSpeed, r.velocity.y);
 		}
@@ -29,32 +39,29 @@ public class Walk : MonoBehaviour
 		if (!Input.GetKey (KeyCode.A) && !Input.GetKey (KeyCode.D)) {
 			r.velocity = new Vector2 (0, r.velocity.y);
 		}
-        // Check to see if the character is on the ground
-        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, Vector2.down, 0.45f, ~(1 << 10));
-        bool change = false;
-        if (grounded == true) grounded = false;
-        else change = true;
-        foreach (RaycastHit2D hit in hits)
-        {
-            if (hit.collider != null)
-            {
-                grounded = true;
-                break;
-            }
-        }
-        if (grounded && change)
-        {
-            r.velocity = Vector2.zero;
-            Events.Broadcast(new OnLanding());
-        }
-        // Jumping
-        if (grounded && Input.GetKeyDown (KeyCode.W)) {
-            Jump();
+	}
+
+	private void HandleJumping() {
+		if (Input.GetKeyDown (KeyCode.W)) {
+			if (grounded == false && doubleJump) {
+				r.velocity = new Vector2 (r.velocity.x, jumpHeight);
+				doubleJump = false;
+			}
+			else if (grounded == true) {
+				r.velocity = new Vector2 (r.velocity.x, jumpHeight);
+			}
 		}
 	}
 
-    public void Jump()
-    {
-        r.velocity = new Vector2(r.velocity.x, jumpHeight);
-    }
+	private bool IsGrounded() {
+		var wallMask = ~(1 << 10);
+
+		foreach (var hit in Physics2D.RaycastAll(transform.position, Vector2.down, 0.45f, wallMask)) {
+			if (hit.collider != null) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 }

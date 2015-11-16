@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 public enum Ability
 {
-    DoubleJump,
     Dash,
     Teleport,
 }
@@ -21,7 +20,6 @@ public class Altar : MonoBehaviour {
 
     private static bool initialized = false;
 
-    private static DoubleJump doubleJump;
     private static Dash dash;
     private static Teleport teleport;
 
@@ -35,8 +33,6 @@ public class Altar : MonoBehaviour {
 
         // Get references to the different ability scripts
         if (initialized) return;
-        doubleJump = Player.S.gameObject.GetComponent<DoubleJump>();
-        doubleJump.enabled = false;
         dash = Player.S.gameObject.GetComponent<Dash>();
         dash.enabled = false;
         teleport = Player.S.gameObject.GetComponent<Teleport>();
@@ -72,9 +68,6 @@ public class Altar : MonoBehaviour {
     private void ToggleAbility(Ability ability, bool enabled)
     {
         switch(ability){
-            case Ability.DoubleJump:
-                doubleJump.enabled = enabled;
-                break;
             case Ability.Dash:
                 dash.enabled = enabled;
                 break;

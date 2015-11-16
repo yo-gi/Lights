@@ -67,7 +67,7 @@ public class Enemy : MonoBehaviour {
 			//move at the player
 			else if(Vector2.Distance (Player.S.transform.position, transform.position) < sightRange)
 			{
-				print ("saw player!");
+				//print ("saw player!");
 				if(Player.S.transform.position.x > transform.position.x)
 				{
 					r.velocity = new Vector2 (runSpeed, 0);
