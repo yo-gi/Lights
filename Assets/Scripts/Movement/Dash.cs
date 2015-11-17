@@ -2,22 +2,41 @@
 
 public class Dash : MonoBehaviour {
 
-	private float maxDashDistance = 10f;
+	private int maxCharges = 2;
+	private float maxDashDistance = 3f;
 	private int rechargeInSeconds = 2;
 
-	private float lastDash = -9999f;
+	public int currentCharge;
+	private float lastCharge = -9999f;
+
+	void Awake() {
+		this.currentCharge = this.maxCharges;
+	}
 
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate() {
+		this.UpdateCharges();
+
 		if (this.CanDash() && Input.GetKeyDown(KeyCode.J)) {
-			this.lastDash = Time.time;
+			this.lastCharge = Time.time;
+			this.currentCharge -= 1;
 
 			this.gameObject.transform.position += this.GetDashVector();
 		}
 	}
 
+	private void UpdateCharges() {
+		if (this.currentCharge < this.maxCharges) {
+			if (Time.time > this.lastCharge + this.rechargeInSeconds) {
+				++this.currentCharge;
+
+				this.lastCharge = Time.time;
+			}
+		}
+	}
+
 	private bool CanDash() {
-		return Time.time > this.lastDash + this.rechargeInSeconds;
+		return this.currentCharge > 0;
 	}
 
 	private Vector3 GetDashVector() {
