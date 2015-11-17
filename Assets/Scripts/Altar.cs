@@ -14,10 +14,7 @@ public class Altar : MonoBehaviour {
     public bool ________________________;
 
     GameObject flame;
-    bool active;
-
-    float activationRadius = 2f;
-
+  	
     private static bool initialized = false;
 
     private static Dash dash;
@@ -28,7 +25,6 @@ public class Altar : MonoBehaviour {
     {
         flame = this.transform.Find("Flame").gameObject;
         flame.SetActive(false);
-        active = false;
         Events.Register<OnResetEvent>(()=> { Reset(); });
 
         // Get references to the different ability scripts
@@ -39,28 +35,21 @@ public class Altar : MonoBehaviour {
         teleport.enabled = false;
         initialized = true;
 	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-        if (active) return;
-        if (Input.GetKeyDown(KeyCode.Space) &&
-            Vector3.Distance(transform.position, Player.S.transform.position) < activationRadius)
-        {
-            Activate();
-        }
-    }
+
+	void OnTriggerEnter2D(Collider2D collider) {
+		if (collider.tag == "Player") {
+			this.Activate();
+		}
+	}
 
     private void Activate()
     {
-        active = true;
         flame.SetActive(true);
         ToggleAbility(ability, true);
     }
 
     private void Reset()
     {
-        active = false;
         flame.SetActive(false);
         ToggleAbility(ability, false);
     }
