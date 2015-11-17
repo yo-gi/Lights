@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
 			swim.enabled = true;
 
 			water = collider.gameObject;
+			//Navi.S.naviLight.color = Navi.S.waterColor;
 		}
 	}
 
@@ -38,6 +39,7 @@ public class Player : MonoBehaviour
 		if (collider.tag == "water") {
 			walk.enabled = true;
 			swim.enabled = false;
+			//Navi.S.naviLight.color = Navi.S.defaultColor;
 
 			if (water == collider.gameObject) water = null;
 		}
@@ -60,7 +62,7 @@ public class Player : MonoBehaviour
     public void switchColors(LightColor newColor)
     {
         color = newColor;
-        Navi.S.ChangeColor(color);
+        //Navi.S.ChangeColor(color);
     }
 }
 

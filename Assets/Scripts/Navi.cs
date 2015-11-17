@@ -21,6 +21,9 @@ public class Navi : MonoBehaviour
 	SpriteRenderer sprite;
     public LOSRadialLight naviLight;
 
+	public Color defaultColor;
+	public Color waterColor;
+
     float startTime;
 	Vector3 end;
 	float length;
@@ -28,6 +31,8 @@ public class Navi : MonoBehaviour
 	void Awake ()
 	{
 		S = this;
+		naviLight.color = defaultColor;
+		//Physics2D.IgnoreCollision(GetComponent<CircleCollider2D>(), Player.S.GetComponent<PolygonCollider2D>());
 	}
 
 	// Use this for initialization
@@ -38,6 +43,20 @@ public class Navi : MonoBehaviour
         sprite.color = naviLight.color;
 		end = Player.S.gameObject.transform.position;
 		InvokeRepeating ("orbit", 0, lerpTime);
+	}
+	
+	void OnTriggerEnter2D(Collider2D collider) {
+		if (collider.tag == "water") {
+			print ("in water: " + collider.gameObject.name);
+			ChangeColor(waterColor);
+		}
+	}
+	
+	void OnTriggerExit2D(Collider2D collider) {
+		if (collider.tag == "water") {
+			print ("out of water!");
+			ChangeColor(defaultColor);
+		}
 	}
 
 	void orbit ()
@@ -66,10 +85,9 @@ public class Navi : MonoBehaviour
 		}
 	}
 
-	public void ChangeColor (LightColor color)
+	public void ChangeColor (Color color)
 	{
-        Color colorObject = Colors.GetColor(color);
-		sprite.color = colorObject;
-		naviLight.color = colorObject;
+		sprite.color = color;
+		naviLight.color = color;
 	}
 }

@@ -4,6 +4,14 @@ public class Swim : MonoBehaviour {
 
 	public float swimSpeed;
 	public float swimGravity;
+	
+	public float hurtRate;
+	public float hurtamount;
+
+	
+	public bool ________________;
+
+	public float nextTick;
 
 	private Rigidbody2D rigidBody;
 	
@@ -13,6 +21,7 @@ public class Swim : MonoBehaviour {
 	
 	public void Start() {
 		this.rigidBody.gravityScale = this.swimGravity;
+		nextTick = Time.time + hurtRate;
 	}
 
 	public void OnDisable() {
@@ -20,9 +29,7 @@ public class Swim : MonoBehaviour {
 	}
 	
 	public void Update() {
-		this.rigidBody.angularVelocity *= 0.95f;
-
-		if (Player.S.color != LightColor.Blue && !MainCam.S.invincible) {
+		if (Navi.S.naviLight.radius <= 0 && !MainCam.S.invincible) {
 			this.StopPlayer();
 		}
 		else {
@@ -30,11 +37,22 @@ public class Swim : MonoBehaviour {
 		}
 	}
 
+	public void FixedUpdate()
+	{
+		this.rigidBody.angularVelocity *= 0.95f;
+	}
+
 	public void StopPlayer() {
 		this.rigidBody.velocity = Vector2.Lerp(this.rigidBody.velocity, new Vector2(0, this.rigidBody.velocity.y), 0.05f);
 	}
 
 	private void UpdatePosition() {
+		//handle navi getting hurt
+		if (Time.time > nextTick) {
+			nextTick = Time.time + hurtRate;
+			Navi.S.naviLight.radius -= hurtamount;
+		}
+
 		var velocity = this.rigidBody.velocity;
 		
 		// Lateral swimming.
