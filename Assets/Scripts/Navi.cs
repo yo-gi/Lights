@@ -46,6 +46,7 @@ public class Navi : MonoBehaviour
 	}
 	
 	void OnTriggerEnter2D(Collider2D collider) {
+		print (collider.gameObject.name);
 		if (collider.tag == "water") {
 			print ("in water: " + collider.gameObject.name);
 			ChangeColor(waterColor);
