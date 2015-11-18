@@ -8,12 +8,15 @@ public class Walk : MonoBehaviour
 
 	public bool doubleJump = false;
 
+    public int wallMask;
+
 	Rigidbody2D r;
 
 	public void Awake()
 	{
 		r = GetComponent<Rigidbody2D>();
-	}
+        wallMask = ~(1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("Navi"));
+    }
 
 	void Update() {
 		var grounded = this.IsGrounded();
@@ -53,7 +56,6 @@ public class Walk : MonoBehaviour
 	private bool IsGrounded() {
 		// Note the distance is *slightly* longer than the triangle's height.
 		var distance = 0.47f;
-		var wallMask = ~(1 << 10);
 
 		foreach (var hit in Physics2D.RaycastAll(transform.position, Vector2.down, distance, wallMask)) {
 			if (hit.collider != null) {
