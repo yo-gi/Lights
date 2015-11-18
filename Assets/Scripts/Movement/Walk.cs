@@ -6,7 +6,6 @@ public class Walk : MonoBehaviour
 	public float runSpeed;
 	public float jumpHeight;
 
-	public bool grounded = false;
 	public bool doubleJump = false;
 
 	Rigidbody2D r;
@@ -17,16 +16,14 @@ public class Walk : MonoBehaviour
 	}
 
 	void Update() {
-		this.HandleHorizontalMovement();
-		this.HandleJumping();
-	}
+		var grounded = this.IsGrounded();
 
-	void FixedUpdate() {
-		this.grounded = this.IsGrounded();
-
-		if (this.grounded) {
+		if (grounded) {
 			this.doubleJump = true;
 		}
+
+		this.HandleHorizontalMovement();
+		this.HandleJumping(grounded);
 	}
 
 	private void HandleHorizontalMovement() {
@@ -41,11 +38,11 @@ public class Walk : MonoBehaviour
 		}
 	}
 
-	private void HandleJumping() {
+	private void HandleJumping(bool grounded) {
 		if (Input.GetKeyDown (KeyCode.W)) {
-			if (grounded == false && doubleJump) {
+			if (grounded == false && this.doubleJump) {
 				r.velocity = new Vector2 (r.velocity.x, jumpHeight);
-				doubleJump = false;
+				this.doubleJump = false;
 			}
 			else if (grounded == true) {
 				r.velocity = new Vector2 (r.velocity.x, jumpHeight);
@@ -54,9 +51,11 @@ public class Walk : MonoBehaviour
 	}
 
 	private bool IsGrounded() {
+		// Note the distance is *slightly* longer than the triangle's height.
+		var distance = 0.47f;
 		var wallMask = ~(1 << 10);
 
-		foreach (var hit in Physics2D.RaycastAll(transform.position, Vector2.down, 0.45f, wallMask)) {
+		foreach (var hit in Physics2D.RaycastAll(transform.position, Vector2.down, distance, wallMask)) {
 			if (hit.collider != null) {
 				return true;
 			}
