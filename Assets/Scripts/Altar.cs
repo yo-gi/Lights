@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public enum Ability
 {
+    None,
     Dash,
     Teleport,
 }
@@ -37,7 +38,7 @@ public class Altar : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D collider) {
-		if (collider.tag == "Player") {
+		if (collider.gameObject == Player.S.gameObject) {
 			this.Activate();
 		}
 	}
@@ -64,7 +65,6 @@ public class Altar : MonoBehaviour {
                 teleport.enabled = enabled;
                 break;
             default:
-                print("Unrecognized Ability.");
                 break;
         }
     }

@@ -6,13 +6,12 @@ public class MainCam : MonoBehaviour
     public static MainCam S;
 
 	public GameObject playerObj;
-    public int numLevels;
-
-	public bool invincible = false;
 
     public bool __________________;
 
-	public static int level = 1;
+    public bool invincible = false;
+
+    public static int level = 1;
 	public static Dictionary<int, Vector3> startTable = new Dictionary<int, Vector3>();
 	public static Dictionary<int, GameObject> levelTable = new Dictionary<int, GameObject>();
 
@@ -20,14 +19,16 @@ public class MainCam : MonoBehaviour
 	{
 		S = this;
 
-        /*for (int i = 1; i <= numLevels; i++)
+        GameObject levelObject = GameObject.Find("Level_" + level);
+        while (levelObject != null)
         {
-            levelTable[i] = GameObject.Find("Level_" + i);
+            levelTable[level] = levelObject;
+            levelObject.SetActive(false);
+            levelObject = GameObject.Find("Level_" + (++level));
         }
+        level = 1;
+        levelTable[1].SetActive(true);
 
-        for (int i = 2; i <= numLevels; i++)
-            levelTable[i].SetActive(false);
-		*/
         startTable[1] = new Vector3(1, 3, 0);
         startTable[2] = new Vector3(23, 3, 0);
         startTable[3] = new Vector3(55, 13, 0);
