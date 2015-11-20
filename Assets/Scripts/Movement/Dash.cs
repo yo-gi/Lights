@@ -7,21 +7,39 @@ public class Dash : MonoBehaviour {
 	private int rechargeInSeconds = 2;
 
 	public int currentCharge;
+
 	private float lastCharge = -9999f;
+	private bool teleportKeyDown = false;
+
+	private Rigidbody2D r;
 
 	void Awake() {
 		this.currentCharge = this.maxCharges;
+		this.r = this.GetComponent<Rigidbody2D>();
+	}
+
+	void Update() {
+		this.teleportKeyDown = Input.GetKeyDown(KeyCode.J);
 	}
 
 	// Update is called once per frame
 	void FixedUpdate() {
 		this.UpdateCharges();
 
-		if (this.CanDash() && Input.GetKeyDown(KeyCode.J)) {
+		if (this.CanDash() && this.teleportKeyDown) {
 			this.lastCharge = Time.time;
 			this.currentCharge -= 1;
+			this.teleportKeyDown = false;
 
-			this.gameObject.transform.position += this.GetDashVector();
+			var dashVector = this.GetDashVector();
+			var velocity = this.r.velocity;
+
+			velocity.x = dashVector.x;
+			velocity.y = dashVector.y;
+
+			this.r.velocity = velocity;
+
+			this.gameObject.transform.position += dashVector;
 		}
 	}
 
