@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class Teleport : MonoBehaviour {
-	private int teleportBackInSeconds = 2;
-	private int rechargeInSeconds = 2;
-	
+public class Teleport : MonoBehaviour, Rechargeable {
+
+    private float teleportBackInSeconds = 2f;
+	private float cooldown = 2f;
+
 	private int maxHistorySize = 500;
 	private float lastTeleport = 0;
+    private float rechargeTime = 0;
 	private Queue<Location> locationHistory = new Queue<Location>();
 
 	private Object trailPrefab;
@@ -17,6 +19,21 @@ public class Teleport : MonoBehaviour {
 		public float time;
 	}
 
+    public int MaxCharges
+    {
+        get { return 1; }
+    }
+
+    public int Charges
+    {
+        get { return TeleportIsAvailable() ? 1 : 0; }
+    }
+
+    public float ChargePercentage
+    {
+        get { return Mathf.Min(rechargeTime/cooldown, 1f); }
+    }
+
 	void Awake() {
 		this.trailPrefab = Resources.Load("Teleport Trail");
 
@@ -25,6 +42,7 @@ public class Teleport : MonoBehaviour {
 	}
 
 	void Update() {
+        rechargeTime = Time.time - lastTeleport;
 		if (this.TeleportIsAvailable() && Input.GetKeyDown(KeyCode.K)) {
 			this.gameObject.transform.position = this.GetTeleportVector();
 
@@ -61,7 +79,7 @@ public class Teleport : MonoBehaviour {
 	}
 
 	private bool TeleportIsAvailable() {
-		return (Time.time > this.lastTeleport + this.rechargeInSeconds);
+		return (rechargeTime >= cooldown);
 	}
 
 	private Vector3 GetTeleportVector() {

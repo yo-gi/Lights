@@ -15,12 +15,18 @@ public class RechargeableUI : MonoBehaviour {
     // Use this for initialization
     virtual protected void Start () {
         image = Icon.GetComponent<Image>();
-        text = Text.GetComponent<Text>();
+        if (Text != null)
+        {
+            text = Text.GetComponent<Text>();
+        }
 	}
 	
 	// Update is called once per frame
-	void Update () {
-        text.text = ability.Charges.ToString();
+	virtual protected void Update () {
+        if (text != null)
+        {
+            text.text = ability.Charges.ToString();
+        }
         image.fillAmount = ability.ChargePercentage;
 	}
 }
