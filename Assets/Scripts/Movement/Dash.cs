@@ -1,65 +1,85 @@
 ﻿using UnityEngine;
 
-public class Dash : MonoBehaviour {
+public class Dash : MonoBehaviour, Rechargeable {
 
-	private int maxCharges = 2;
 	private float maxDashDistance = 3f;
-	private int rechargeInSeconds = 2;
-
-	public int currentCharge;
-
-	private float lastCharge = -9999f;
 	private bool teleportKeyDown = false;
+
+    private int maxCharges = 2;
+	private int currentCharges;
+	private float cooldown = 2f;
+    private float rechargeTime = 0f;
+    private float lastCharge;
 
 	private Rigidbody2D r;
 
+    public int MaxCharges
+    {
+        get { return maxCharges; }
+    }
+
+    public int Charges
+    {
+        get { return currentCharges; }
+    }
+
+    public float ChargePercentage
+    {
+        get { return currentCharges < maxCharges ? rechargeTime / cooldown : 1f; }
+    }
+
 	void Awake() {
-		this.currentCharge = this.maxCharges;
-		this.r = this.GetComponent<Rigidbody2D>();
+		currentCharges = maxCharges;
+        lastCharge = -cooldown;
+		r = GetComponent<Rigidbody2D>();
 	}
 
 	void Update() {
-		this.teleportKeyDown = Input.GetKeyDown(KeyCode.J);
+		teleportKeyDown = Input.GetKeyDown(KeyCode.J);
 	}
 
 	// Update is called once per frame
 	void FixedUpdate() {
-		this.UpdateCharges();
+		UpdateCharges();
 
-		if (this.CanDash() && this.teleportKeyDown) {
-			this.lastCharge = Time.time;
-			this.currentCharge -= 1;
-			this.teleportKeyDown = false;
+		if (CanDash() && teleportKeyDown) {
+            // lastCharge needs to be updated if not currently charging
+            if (currentCharges == maxCharges)
+            {
+                lastCharge = Time.time;
+            }
+			currentCharges -= 1;
+			teleportKeyDown = false;
 
-			var dashVector = this.GetDashVector();
-			var velocity = this.r.velocity;
+			var dashVector = GetDashVector();
+			var velocity = r.velocity;
 
 			velocity.x = dashVector.x;
 			velocity.y = dashVector.y;
 
-			this.r.velocity = velocity;
+			r.velocity = velocity;
 
-			this.gameObject.transform.position += dashVector;
+			gameObject.transform.position += dashVector;
 		}
 	}
 
 	private void UpdateCharges() {
-		if (this.currentCharge < this.maxCharges) {
-			if (Time.time > this.lastCharge + this.rechargeInSeconds) {
-				++this.currentCharge;
-
-				this.lastCharge = Time.time;
+		if (currentCharges < maxCharges) {
+            rechargeTime = Mathf.Min(Time.time - lastCharge, cooldown);
+			if (rechargeTime >= cooldown) {
+				++currentCharges;
+				lastCharge = Time.time;
 			}
 		}
 	}
 
 	private bool CanDash() {
-		return this.currentCharge > 0;
+		return currentCharges > 0;
 	}
 
 	private Vector3 GetDashVector() {
-		var dashDirection = this.GetDashDirection();
-		var dashDistance = this.GetDashDistance(dashDirection);
+		var dashDirection = GetDashDirection();
+		var dashDistance = GetDashDistance(dashDirection);
 
 		return dashDirection * dashDistance;
 	}
@@ -77,24 +97,24 @@ public class Dash : MonoBehaviour {
 
 	private float GetDashDistance(Vector3 direction) {
 		// Find all the walls in the dash's path.
-		var start = this.gameObject.transform.position;
+		var start = gameObject.transform.position;
 		var mask = (1 << LayerMask.NameToLayer("Terrain"));
 
-		var hits = Physics2D.RaycastAll(start, direction, this.maxDashDistance, mask);
+		var hits = Physics2D.RaycastAll(start, direction, maxDashDistance, mask);
 
 		// Return the max dash distance if there are no walls.
-		if (hits.Length == 0) return this.maxDashDistance;
+		if (hits.Length == 0) return maxDashDistance;
 
 		// Raycast backwards to find the end point of the wall.
 		var lastHit = hits[hits.Length - 1];
-		var end = start + direction * this.maxDashDistance;
+		var end = start + direction * maxDashDistance;
 
-		var reverseHit = Physics2D.Raycast(end, -1 * direction, this.maxDashDistance, mask);
+		var reverseHit = Physics2D.Raycast(end, -1 * direction, maxDashDistance, mask);
 		var reverseHitPoint = reverseHit.point;
 
-		if (Vector3.Distance(start, reverseHitPoint) < this.maxDashDistance) {
+		if (Vector3.Distance(start, reverseHitPoint) < maxDashDistance) {
 			// The reverse hitpoint is within the dash's range. Use the max dash distance for the dash.
-			return this.maxDashDistance;
+			return maxDashDistance;
 		}
 		else {
 			// The reverse hitpoint is within the dash's range. Teleport to the last wall's hit point.
