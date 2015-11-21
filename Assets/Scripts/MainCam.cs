@@ -89,9 +89,10 @@ public class MainCam : MonoBehaviour
 
     public static void RestartLevel()
     {
-        Events.Broadcast(new OnResetEvent());
-        SwapToLevel(currentLevel);
-        Player.S.transform.position = startTable[currentLevel];
+        //Events.Broadcast(new OnResetEvent());
+		Player.S.transform.position = Checkpoint.latestCheckpoint;
+        //SwapToLevel(currentLevel);
+        //Player.S.transform.position = startTable[currentLevel];
     }
 
     private static void SwapToLevel(int level)

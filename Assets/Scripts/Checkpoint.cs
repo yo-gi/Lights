@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Checkpoint : MonoBehaviour {
 	
-	public static Vector3 latestCheckpoint = new Vector3(0f, 2f);
+	public static Vector3 latestCheckpoint = new Vector3(1f, 2f);
 	public static int collideMask = 1 << LayerMask.NameToLayer("Player");
 
 	public float length;
