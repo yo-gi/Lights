@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class Torch : MonoBehaviour {
-
+public class Torch : MonoBehaviour
+{
     GameObject flame;
+
     bool active;
 
     float activationRadius = 1f;
@@ -16,16 +17,17 @@ public class Torch : MonoBehaviour {
     {
         get
         {
-            return torches[MainCam.level].Count;
+            return torches[MainCam.currentLevel].Count;
         }
     }
 
     // Use this for initialization
-    void Start () {
-        flame = this.transform.Find("Flame").gameObject;
+    void Start()
+    {
+        flame = transform.Find("Flame").gameObject;
         flame.SetActive(false);
         active = false;
-        
+
         // Initialize torches dictionary
         if (initialized) return;
         torches = new Dictionary<int, List<Torch>>();
@@ -39,18 +41,26 @@ public class Torch : MonoBehaviour {
             activeTorchCounts.Add(entry.Key, 0);
             if (!levelActive) entry.Value.SetActive(false);
         }
-        Events.Register<OnResetEvent>(()=> {
-            foreach(Torch torch in torches[MainCam.level])
+        Events.Register<OnResetEvent>(() =>
+        {
+            foreach (Torch torch in torches[MainCam.currentLevel])
             {
                 torch.Reset();
             }
-            activeTorchCounts[MainCam.level] = 0;
+            activeTorchCounts[MainCam.currentLevel] = 0;
+        });
+        Events.Register<OnLevelLoadEvent>((e) => {
+            if (torches[e.level].Count == 0)
+            {
+                Events.Broadcast(new OnTorchesLitEvent());
+            }
         });
         initialized = true;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
         if (active) return;
         if (Vector3.Distance(transform.position, Player.S.transform.position) < activationRadius)
         {
@@ -62,11 +72,11 @@ public class Torch : MonoBehaviour {
     {
         active = true;
         flame.SetActive(true);
-        int currentLevel = MainCam.level;
+        int currentLevel = MainCam.currentLevel;
         activeTorchCounts[currentLevel] += 1;
         if (activeTorchCounts[currentLevel] == torches[currentLevel].Count)
         {
-            Events.Broadcast(new OnTorchLitEvent());
+            Events.Broadcast(new OnTorchesLitEvent());
         }
     }
 

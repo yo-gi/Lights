@@ -4,51 +4,55 @@ public class Walk : MonoBehaviour
 {
 	
 	public float runSpeed;
-	public float jumpHeight;
+	public float jumpVelocity;
 
 	public bool doubleJump = false;
 
-    public int wallMask;
+    public int surfaceMask;
 
-	Rigidbody2D r;
+    public static readonly KeyCode Left = KeyCode.A;
+    public static readonly KeyCode Right = KeyCode.D;
+    public static readonly KeyCode Jump = KeyCode.W;
+    public static readonly KeyCode Down = KeyCode.S;
+
+    Rigidbody2D r;
 
 	public void Awake()
 	{
 		r = GetComponent<Rigidbody2D>();
-        wallMask = ~(1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("Navi"));
+        surfaceMask = 1 << LayerMask.NameToLayer("Terrain") | 1 << LayerMask.NameToLayer("Water");
     }
 
 	void Update() {
-		var grounded = this.IsGrounded();
+		var grounded = IsGrounded();
 
 		if (grounded) {
-			this.doubleJump = true;
+			doubleJump = true;
 		}
 
-		this.HandleHorizontalMovement();
-		this.HandleJumping(grounded);
+		HandleHorizontalMovement();
+		HandleJumping(grounded);
 	}
 
 	private void HandleHorizontalMovement() {
-		if (Input.GetKey (KeyCode.A)) {
-			r.velocity = new Vector2 (-1f * runSpeed, r.velocity.y);
+        Vector2 vel = new Vector2 (0, r.velocity.y);
+		if (Input.GetKey (Left)) {
+			vel.x += -1f * runSpeed;
 		}
-		if (Input.GetKey (KeyCode.D)) {
-			r.velocity = new Vector2 (runSpeed, r.velocity.y);
+		if (Input.GetKey (Right)) {
+            vel.x += runSpeed;
 		}
-		if (!Input.GetKey (KeyCode.A) && !Input.GetKey (KeyCode.D)) {
-			r.velocity = new Vector2 (0, r.velocity.y);
-		}
+        r.velocity = vel;
 	}
 
 	private void HandleJumping(bool grounded) {
-		if (Input.GetKeyDown (KeyCode.W)) {
-			if (grounded == false && this.doubleJump) {
-				r.velocity = new Vector2 (r.velocity.x, jumpHeight);
-				this.doubleJump = false;
+		if (Input.GetKeyDown (Jump)) {
+			if (grounded == false && doubleJump) {
+				r.velocity = new Vector2 (r.velocity.x, jumpVelocity);
+				doubleJump = false;
 			}
 			else if (grounded == true) {
-				r.velocity = new Vector2 (r.velocity.x, jumpHeight);
+				r.velocity = new Vector2 (r.velocity.x, jumpVelocity);
 			}
 		}
 	}
@@ -57,7 +61,7 @@ public class Walk : MonoBehaviour
 		// Note the distance is *slightly* longer than the triangle's height.
 		var distance = 0.47f;
 
-		foreach (var hit in Physics2D.RaycastAll(transform.position, Vector2.down, distance, wallMask)) {
+		foreach (var hit in Physics2D.RaycastAll(transform.position, Vector2.down, distance, surfaceMask)) {
 			if (hit.collider != null) {
 				return true;
 			}

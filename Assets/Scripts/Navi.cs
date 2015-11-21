@@ -3,7 +3,6 @@ using LOS;
 
 public class Navi : MonoBehaviour
 {
-
 	public static Navi S;
 	
 	public float lerpTime;
@@ -31,11 +30,9 @@ public class Navi : MonoBehaviour
 	void Awake ()
 	{
 		S = this;
-		naviLight.color = defaultColor;
-		//Physics2D.IgnoreCollision(GetComponent<CircleCollider2D>(), Player.S.GetComponent<PolygonCollider2D>());
+        naviLight.color = defaultColor;
 	}
-
-	// Use this for initialization
+    
 	void Start ()
 	{
 		sprite = gameObject.transform.Find ("LightSprite").GetComponent<SpriteRenderer> ();
@@ -47,21 +44,18 @@ public class Navi : MonoBehaviour
 	
 	void OnTriggerEnter2D(Collider2D collider) {
 		if (collider.tag == "water") {
-			print ("in water: " + collider.gameObject.name);
 			ChangeColor(waterColor);
 		}
 	}
 	
 	void OnTriggerExit2D(Collider2D collider) {
 		if (collider.tag == "water") {
-			print ("out of water!");
 			ChangeColor(defaultColor);
 		}
 	}
 
 	void orbit ()
 	{
-
 		startTime = Time.time;
 		Vector3 p = Player.S.gameObject.transform.position;
 		end = new Vector3 (p.x + followX + Random.Range (-randXOffset, randXOffset), p.y + followY + Random.Range (-randYOffset, randYOffset));
@@ -71,7 +65,6 @@ public class Navi : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-
 		float distanceCovered = (Time.time - startTime) * lerpSpeed;
 		float fracCovered = distanceCovered / length;
 		transform.position = Vector3.Lerp (transform.position, end, fracCovered);

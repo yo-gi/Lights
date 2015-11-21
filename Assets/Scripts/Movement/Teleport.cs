@@ -1,105 +1,160 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class Teleport : MonoBehaviour, Rechargeable {
+public class Teleport : MonoBehaviour, Rechargeable
+{
+    public static Teleport S;
+
+    public GameObject teleportUI;
+
+    public static readonly KeyCode TeleportKey = KeyCode.K;
 
     private float teleportBackInSeconds = 2f;
-	private float cooldown = 2f;
+    private float cooldown = 2f;
 
-	private int maxHistorySize = 500;
-	private float lastTeleport = 0;
-    private float rechargeTime = 0;
-	private Queue<Location> locationHistory = new Queue<Location>();
+    private float lastTeleport;
+    private float rechargeTime;
+    private Queue<Location> locationHistory = new Queue<Location>();
 
-	private Object trailPrefab;
-	private Object trail;
+    private Object trailPrefab;
+    private Object trail;
 
-	public class Location {
-		public Vector3 vector;
-		public float time;
-	}
+    private bool active;
+
+    public class Location
+    {
+        public Vector3 vector;
+        public float time;
+    }
 
     public int MaxCharges
     {
-        get { return 1; }
+        get
+        {
+            return 1;
+        }
     }
 
     public int Charges
     {
-        get { return TeleportIsAvailable() ? 1 : 0; }
+        get
+        {
+            return TeleportIsAvailable() ? 1 : 0;
+        }
+    }
+
+    public bool Charging
+    {
+        get
+        {
+            return !TeleportIsAvailable();
+        }
     }
 
     public float ChargePercentage
     {
-        get { return Mathf.Min(rechargeTime/cooldown, 1f); }
+        get
+        {
+            return Mathf.Min(rechargeTime / cooldown, 1f);
+        }
     }
 
-	void Awake() {
-		this.trailPrefab = Resources.Load("Teleport Trail");
+    void Awake()
+    {
+        S = this;
 
-		Events.Register<OnResetEvent>(this.ResetLocationHistory);
-		Events.Register<OnLevelCompleteEvent>(this.ResetLocationHistory);
-	}
+        trailPrefab = Resources.Load("Teleport Trail");
+        ((GameObject)trailPrefab).GetComponent<TrailRenderer>().time = cooldown;
 
-	void Update() {
+        Reset();
+        Toggle(false);
+
+        Events.Register<OnResetEvent>(Reset);
+        Events.Register<OnLevelCompleteEvent>(ResetLocationHistory);
+    }
+
+    void Update()
+    {
+        if (!active) return;
         rechargeTime = Time.time - lastTeleport;
-		if (this.TeleportIsAvailable() && Input.GetKeyDown(KeyCode.K)) {
-			this.gameObject.transform.position = this.GetTeleportVector();
+        if (TeleportIsAvailable() && Input.GetKeyDown(TeleportKey))
+        {
+            gameObject.transform.position = GetTeleportVector();
 
-			this.ResetLocationHistory();
-		}
+            ResetLocationHistory();
+        }
 
-		this.UpdateLocationHistory(this.gameObject.transform.position);
-	}
+        UpdateLocationHistory(gameObject.transform.position);
+    }
 
-	void OnEnable() {
-		this.CreateTrailObject();
-	}
+    private void ResetLocationHistory()
+    {
+        lastTeleport = Time.time;
 
-	void OnDisable() {
-		if (this.trail) {
-			Destroy(this.trail);
-		}
-	}
-	
-	private void ResetLocationHistory() {
-		this.lastTeleport = Time.time;
+        locationHistory.Clear();
+        CreateTrailObject();
+    }
 
-		Destroy(this.trail);
+    private void CreateTrailObject()
+    {
+        Destroy(trail);
+        GameObject newTrail = (GameObject)Instantiate(trailPrefab, transform.position, transform.rotation);
 
-		this.locationHistory.Clear();
-		this.CreateTrailObject();
-	}
+        newTrail.transform.parent = transform;
+        trail = newTrail;
+    }
 
-	private void CreateTrailObject() {
-		GameObject trail = (GameObject) Instantiate(this.trailPrefab, this.transform.position, this.transform.rotation);
+    private bool TeleportIsAvailable()
+    {
+        return (rechargeTime >= cooldown);
+    }
 
-		trail.transform.parent = this.transform;
-		this.trail = trail;
-	}
+    private Vector3 GetTeleportVector()
+    {
+        float goal = Time.time - teleportBackInSeconds;
 
-	private bool TeleportIsAvailable() {
-		return (rechargeTime >= cooldown);
-	}
+        while (true)
+        {
+            Location location = locationHistory.Dequeue();
+            if (location.time >= goal)
+            {
+                return location.vector;
+            }
+        }
+    }
 
-	private Vector3 GetTeleportVector() {
-		var goal = Time.time - this.teleportBackInSeconds;
+    private void UpdateLocationHistory(Vector3 location)
+    {
+        float currentTime = Time.time;
+        locationHistory.Enqueue(new Location()
+        {
+            vector = gameObject.transform.position,
+            time = currentTime,
+        });
 
-		while (true) {
-			var location = this.locationHistory.Dequeue();
+        float rewindTime = currentTime - teleportBackInSeconds;
+        while (locationHistory.Peek().time < rewindTime) locationHistory.Dequeue();
+    }
 
-			if (location.time >= goal) {
-				return location.vector;
-			}
-		}
-	}
+    private void Reset()
+    {
+        ResetLocationHistory();
+        lastTeleport = -cooldown;
+        rechargeTime = cooldown;
+    }
 
-	private void UpdateLocationHistory(Vector3 location) {
-		this.locationHistory.Enqueue(new Location() {
-			vector = this.gameObject.transform.position,
-			time = Time.time,
-		});
-
-		while (this.locationHistory.Count > this.maxHistorySize) this.locationHistory.Dequeue();
-	}
+    public void Toggle(bool enable)
+    {
+        active = enable;
+        teleportUI.SetActive(enable);
+        if (enable)
+        {
+            ResetLocationHistory();
+            lastTeleport = -cooldown;
+        }
+        else
+        {
+            Destroy(trail);
+        }
+    }
 }

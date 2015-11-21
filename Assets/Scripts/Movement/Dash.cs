@@ -1,124 +1,186 @@
 ﻿using UnityEngine;
 
-public class Dash : MonoBehaviour, Rechargeable {
+public class Dash : MonoBehaviour, Rechargeable
+{
+    public static Dash S;
 
-	private float maxDashDistance = 3f;
-	private bool teleportKeyDown = false;
+    public GameObject dashUI;
+
+    public static readonly KeyCode DashKey = KeyCode.J;
+
+    private float maxDashDistance = 3f;
 
     private int maxCharges = 2;
-	private int currentCharges;
-	private float cooldown = 2f;
+    private int currentCharges;
+    private float cooldown = 2f;
     private float rechargeTime = 0f;
     private float lastCharge;
 
-	private Rigidbody2D r;
+    private bool active;
+
+    private Rigidbody2D r;
 
     public int MaxCharges
     {
-        get { return maxCharges; }
+        get
+        {
+            return maxCharges;
+        }
     }
 
     public int Charges
     {
-        get { return currentCharges; }
+        get
+        {
+            return currentCharges;
+        }
+    }
+
+    public bool Charging
+    {
+        get
+        {
+            return currentCharges < maxCharges;
+        }
+        private set
+        {
+            if (value)
+            {
+                lastCharge = Time.time;
+            }
+            else
+            {
+                lastCharge = -cooldown;
+            }
+        }
     }
 
     public float ChargePercentage
     {
-        get { return currentCharges < maxCharges ? rechargeTime / cooldown : 1f; }
+        get
+        {
+            return Charging ? rechargeTime / cooldown : 1f;
+        }
     }
 
-	void Awake() {
-		currentCharges = maxCharges;
-        lastCharge = -cooldown;
-		r = GetComponent<Rigidbody2D>();
-	}
+    void Awake()
+    {
+        S = this;
 
-	void Update() {
-		teleportKeyDown = Input.GetKeyDown(KeyCode.J);
-	}
+        Reset();
+        Toggle(false);
+        r = GetComponent<Rigidbody2D>();
 
-	// Update is called once per frame
-	void FixedUpdate() {
-		UpdateCharges();
+        Events.Register<OnResetEvent>(Reset);
+    }
 
-		if (CanDash() && teleportKeyDown) {
-            // lastCharge needs to be updated if not currently charging
-            if (currentCharges == maxCharges)
+    void Update()
+    {
+        if (!active) return;
+
+        UpdateCharges();
+
+        if (CanDash() && Input.GetKeyDown(DashKey))
+        {
+            if (!Charging)
             {
-                lastCharge = Time.time;
+                Charging = true;
             }
-			currentCharges -= 1;
-			teleportKeyDown = false;
+            currentCharges -= 1;
 
-			var dashVector = GetDashVector();
-			var velocity = r.velocity;
+            var dashVector = GetDashVector();
+            var velocity = r.velocity;
 
-			velocity.x = dashVector.x;
-			velocity.y = dashVector.y;
+            velocity.x = dashVector.x;
+            velocity.y = dashVector.y;
 
-			r.velocity = velocity;
+            r.velocity = velocity;
 
-			gameObject.transform.position += dashVector;
-		}
-	}
+            gameObject.transform.position += dashVector;
+        }
+    }
 
-	private void UpdateCharges() {
-		if (currentCharges < maxCharges) {
-            rechargeTime = Mathf.Min(Time.time - lastCharge, cooldown);
-			if (rechargeTime >= cooldown) {
-				++currentCharges;
-				lastCharge = Time.time;
-			}
-		}
-	}
+    private void UpdateCharges()
+    {
+        rechargeTime = Time.time - lastCharge;
+        if (Charging && ChargePercentage >= 1)
+        {
+            ++currentCharges;
+            if (currentCharges < maxCharges)
+            {
+                Charging = true;
+            }
+            else
+            {
+                Charging = false;
+            }
+        }
+    }
 
-	private bool CanDash() {
-		return currentCharges > 0;
-	}
+    private bool CanDash()
+    {
+        return currentCharges > 0;
+    }
 
-	private Vector3 GetDashVector() {
-		var dashDirection = GetDashDirection();
-		var dashDistance = GetDashDistance(dashDirection);
+    private Vector3 GetDashVector()
+    {
+        var dashDirection = GetDashDirection();
+        var dashDistance = GetDashDistance(dashDirection);
 
-		return dashDirection * dashDistance;
-	}
+        return dashDirection * dashDistance;
+    }
 
-	private Vector3 GetDashDirection() {
-		var direction = Vector3.zero;
+    private Vector3 GetDashDirection()
+    {
+        var direction = Vector3.zero;
 
-		if (Input.GetKey(KeyCode.W)) direction.y += 1;
-		if (Input.GetKey(KeyCode.S)) direction.y -= 1;
-		if (Input.GetKey(KeyCode.A)) direction.x -= 1;
-		if (Input.GetKey(KeyCode.D)) direction.x += 1;
+        if (Input.GetKey(Walk.Jump)) direction.y += 1;
+        if (Input.GetKey(Walk.Down)) direction.y -= 1;
+        if (Input.GetKey(Walk.Left)) direction.x -= 1;
+        if (Input.GetKey(Walk.Right)) direction.x += 1;
 
-		return direction;
-	}
+        return direction;
+    }
 
-	private float GetDashDistance(Vector3 direction) {
-		// Find all the walls in the dash's path.
-		var start = gameObject.transform.position;
-		var mask = (1 << LayerMask.NameToLayer("Terrain"));
+    private float GetDashDistance(Vector3 direction)
+    {
+        // Find all the walls in the dash's path.
+        var start = gameObject.transform.position;
+        var mask = (1 << LayerMask.NameToLayer("Terrain"));
 
-		var hits = Physics2D.RaycastAll(start, direction, maxDashDistance, mask);
+        var hits = Physics2D.RaycastAll(start, direction, maxDashDistance, mask);
 
-		// Return the max dash distance if there are no walls.
-		if (hits.Length == 0) return maxDashDistance;
+        // Return the max dash distance if there are no walls.
+        if (hits.Length == 0) return maxDashDistance;
 
-		// Raycast backwards to find the end point of the wall.
-		var lastHit = hits[hits.Length - 1];
-		var end = start + direction * maxDashDistance;
+        // Raycast backwards to find the end point of the wall.
+        var lastHit = hits[hits.Length - 1];
+        var end = start + direction * maxDashDistance;
 
-		var reverseHit = Physics2D.Raycast(end, -1 * direction, maxDashDistance, mask);
-		var reverseHitPoint = reverseHit.point;
+        var reverseHit = Physics2D.Raycast(end, -1 * direction, maxDashDistance, mask);
+        var reverseHitPoint = reverseHit.point;
 
-		if (Vector3.Distance(start, reverseHitPoint) < maxDashDistance) {
-			// The reverse hitpoint is within the dash's range. Use the max dash distance for the dash.
-			return maxDashDistance;
-		}
-		else {
-			// The reverse hitpoint is within the dash's range. Teleport to the last wall's hit point.
-			return lastHit.distance;
-		}
-	}
+        if (Vector3.Distance(start, reverseHitPoint) < maxDashDistance)
+        {
+            // The reverse hitpoint is within the dash's range. Use the max dash distance for the dash.
+            return maxDashDistance;
+        }
+        else
+        {
+            // The reverse hitpoint is within the dash's range. Teleport to the last wall's hit point.
+            return lastHit.distance;
+        }
+    }
+
+    private void Reset()
+    {
+        currentCharges = maxCharges;
+        Charging = false;
+    }
+
+    public void Toggle(bool enable)
+    {
+        active = enable;
+        dashUI.SetActive(enable);
+    }
 }

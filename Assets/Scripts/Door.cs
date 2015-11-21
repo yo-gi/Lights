@@ -1,35 +1,61 @@
 ﻿using UnityEngine;
 
-public class Door : MonoBehaviour {
+public class Door : MonoBehaviour
+{
+    public static readonly KeyCode DoorKey = KeyCode.Space;
 
-	public Vector3 teleportTo;
-	public int level;
-	public float triggerDistance;
-	
-	// Update is called once per frame
-	void Update () {
-		if (Input.GetKeyDown(KeyCode.Space)) {
-			if (Vector3.Distance(transform.position, Player.S.transform.position) < triggerDistance) {
-				switchLevels (level);
-			}
-		}
-	}
+    public float triggerDistance;
 
-	public static void switchLevels(int curLevel) {
-		Events.Broadcast(new OnLevelCompleteEvent());
+    private int level;
 
-		if (curLevel == 5) {
-			MainCam.levelTable[curLevel].SetActive(false);
-			MainCam.levelTable[1].SetActive(true);
-			MainCam.level = 1;
-			Player.S.transform.position = MainCam.startTable[1];
-			Player.S.switchColors(Player.S.color);
-			return;
-		}
-		MainCam.levelTable[curLevel].SetActive(false);
-		MainCam.levelTable[curLevel+1].SetActive(true);
-		MainCam.level = curLevel + 1;
-		Player.S.transform.position = MainCam.startTable[curLevel+1];
-		Player.S.switchColors(Player.S.color);
-	}
+    private bool locked;
+    private bool altarsCleared;
+    private bool torchesCleared;
+
+    void Awake()
+    {
+        level = int.Parse(transform.parent.name.Substring(6));
+        Reset();
+        Events.Register<OnAltarsActivatedEvent>(() =>
+        {
+            if (MainCam.currentLevel != level) return;
+            altarsCleared = true;
+            if (torchesCleared) Unlock();
+        });
+        Events.Register<OnTorchesLitEvent>(() =>
+        {
+            if (MainCam.currentLevel != level) return;
+            torchesCleared = true;
+            if (altarsCleared) Unlock();
+        });
+        Events.Register<OnResetEvent>(() =>
+        {
+            Reset();
+        });
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (!locked && Input.GetKeyDown(DoorKey))
+        {
+            if (Vector3.Distance(transform.position, Player.S.transform.position) < triggerDistance)
+            {
+                MainCam.NextLevel();
+            }
+        }
+    }
+
+    void Unlock()
+    {
+        locked = false;
+        Events.Broadcast(new OnLevelCompleteEvent());
+    }
+
+    void Reset()
+    {
+        locked = true;
+        altarsCleared = false;
+        torchesCleared = false;
+    }
 }

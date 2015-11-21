@@ -13,7 +13,7 @@ public class RechargeableUI : MonoBehaviour {
     public Rechargeable ability;
 
     // Use this for initialization
-    virtual protected void Start () {
+    virtual protected void Awake () {
         image = Icon.GetComponent<Image>();
         if (Text != null)
         {
