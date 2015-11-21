@@ -40,6 +40,11 @@ public class Navi : MonoBehaviour
         sprite.color = naviLight.color;
 		end = Player.S.gameObject.transform.position;
 		InvokeRepeating ("orbit", 0, lerpTime);
+
+		Events.Register<OnDeathEvent>(() => {
+			Player.S.transform.position = Checkpoint.latestCheckpoint;
+			naviLight.radius = maxLightRadius;
+		});
 	}
 	
 	void OnTriggerEnter2D(Collider2D collider) {
@@ -75,6 +80,10 @@ public class Navi : MonoBehaviour
 				naviLight.radius += recoveryAmount;
 				nextRecoveryTime = Time.time + recoveryRate;
 			}
+		}
+
+		if (naviLight.radius <= 0) {
+			Events.Broadcast(new OnDeathEvent { });
 		}
 	}
 

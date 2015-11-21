@@ -6,6 +6,7 @@ public class OnTorchesLitEvent { }
 public class OnAltarsActivatedEvent { }
 public class OnLevelCompleteEvent { }
 public class OnLevelLoadEvent { public int level; }
+public class OnDeathEvent { }
 
 public class Events
 {
