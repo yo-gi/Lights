@@ -16,8 +16,6 @@ public class Dash : MonoBehaviour, Rechargeable
     private float rechargeTime = 0f;
     private float lastCharge;
 
-    private bool active;
-
     private Rigidbody2D r;
 
     public int MaxCharges
@@ -76,8 +74,6 @@ public class Dash : MonoBehaviour, Rechargeable
 
     void Update()
     {
-        if (!active) return;
-
         UpdateCharges();
 
         if (CanDash() && Input.GetKeyDown(DashKey))
@@ -180,7 +176,7 @@ public class Dash : MonoBehaviour, Rechargeable
 
     public void Toggle(bool enable)
     {
-        active = enable;
+		this.enabled = enable;
         dashUI.SetActive(enable);
     }
 }

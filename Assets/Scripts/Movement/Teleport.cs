@@ -19,8 +19,6 @@ public class Teleport : MonoBehaviour, Rechargeable
     private Object trailPrefab;
     private Object trail;
 
-    private bool active;
-
     public class Location
     {
         public Vector3 vector;
@@ -75,7 +73,6 @@ public class Teleport : MonoBehaviour, Rechargeable
 
     void Update()
     {
-        if (!active) return;
         rechargeTime = Time.time - lastTeleport;
         if (TeleportIsAvailable() && Input.GetKeyDown(TeleportKey))
         {
@@ -145,7 +142,7 @@ public class Teleport : MonoBehaviour, Rechargeable
 
     public void Toggle(bool enable)
     {
-        active = enable;
+        this.enabled = enable;
         teleportUI.SetActive(enable);
         if (enable)
         {
