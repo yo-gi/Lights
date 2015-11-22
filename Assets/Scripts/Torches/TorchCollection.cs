@@ -4,6 +4,7 @@
 public enum TorchGroup {
     None,
     AlphaLevel,
+	BossFight
 }
 
 public class OnTorchGroupLitEvent {

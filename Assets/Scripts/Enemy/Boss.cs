@@ -31,6 +31,12 @@ public class Boss : MonoBehaviour
     public void Awake()
     {
 		S = this;
+		Events.Register<OnTorchGroupLitEvent>((e) => {
+			if(e.group == TorchGroup.BossFight)
+			{
+				state = BossState.Dying;
+			}
+		});
     }
 
 	public void Start()
@@ -59,6 +65,7 @@ public class Boss : MonoBehaviour
 		}
 		else if (state == BossState.Attacking) {
 			//check if dead
+
 			if(nextAttackTime < Time.time)
 			{
 				print ("Boss attacking!");
@@ -69,6 +76,12 @@ public class Boss : MonoBehaviour
 				script.targetPos = Player.S.transform.position + 4*(Player.S.transform.position - transform.position);
 				nextAttackTime = Time.time + attackSpeed;
 			}
+		}
+		if (state == BossState.Dying) {
+			print("dead");
+			Navi.S.stolen = false;
+			Destroy(gameObject);
+			Destroy(GameObject.Find("BossDoor"));
 		}
     }
 }
