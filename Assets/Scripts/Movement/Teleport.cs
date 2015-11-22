@@ -77,6 +77,7 @@ public class Teleport : MonoBehaviour, Rechargeable
         if (TeleportIsAvailable() && Input.GetKeyDown(TeleportKey))
         {
             gameObject.transform.position = GetTeleportVector();
+			Navi.S.updatePosition();
 
             ResetLocationHistory();
         }
@@ -119,6 +120,11 @@ public class Teleport : MonoBehaviour, Rechargeable
             }
         }
     }
+
+	public Vector3 GetTeleportLocation()
+	{
+		return locationHistory.Peek().vector;
+	}
 
     private void UpdateLocationHistory(Vector3 location)
     {

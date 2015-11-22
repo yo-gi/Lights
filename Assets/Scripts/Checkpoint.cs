@@ -6,11 +6,11 @@ public class Checkpoint : MonoBehaviour {
 	public static Vector3 latestCheckpoint = new Vector3(1f, 2f);
 	public static int collideMask = 1 << LayerMask.NameToLayer("Player");
 
-	public float length;
+	float length;
 
 	// Use this for initialization
 	void Start () {
-	
+		length = GetComponent<ParticleSystem>().startSpeed;
 	}
 	
 	// Update is called once per frame

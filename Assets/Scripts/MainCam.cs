@@ -6,6 +6,12 @@ public class MainCam : MonoBehaviour
     public static MainCam S;
 
     public GameObject playerObj;
+	public Vector3 speed;
+	public float dampTime;
+
+	public float minSize;
+	public float maxSize;
+	public float maxDist;
 
     public bool __________________;
 
@@ -18,9 +24,12 @@ public class MainCam : MonoBehaviour
     public static readonly KeyCode resetKey = KeyCode.R;
     public static readonly KeyCode invincibilityKey = KeyCode.I;
 
+	Camera cam;
+
     void Awake()
     {
         S = this;
+		cam = GetComponent<Camera>();
 
         GameObject levelObject = GameObject.Find("Level_" + currentLevel);
         while (levelObject != null)
@@ -39,13 +48,17 @@ public class MainCam : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        // TODO: lerp the camera instead of suddenly changing position
-        Transform t = playerObj.transform;
-        Vector3 pos = new Vector3(t.position.x + 3, t.position.y, -10f);
-        transform.position = pos;
-
+		Transform t = playerObj.transform;
+		transform.position = Vector3.SmoothDamp(transform.position, new Vector3(t.position.x, t.position.y, transform.position.z), ref speed, dampTime);
+		if (Teleport.S.enabled) {
+			float dist = Vector3.Distance(Teleport.S.GetTeleportLocation(), Player.S.transform.position);
+			cam.orthographicSize = minSize * (1 + (dist/maxDist));
+			if (cam.orthographicSize > maxSize)
+				cam.orthographicSize = maxSize;
+		}
+		
         // TODO: Add visual indication in game for Invincibility mode
         if (Input.GetKey(invincibilityKey))
         {
@@ -91,6 +104,7 @@ public class MainCam : MonoBehaviour
     {
         //Events.Broadcast(new OnResetEvent());
 		Player.S.transform.position = Checkpoint.latestCheckpoint;
+		Navi.S.resetNavi();
         //SwapToLevel(currentLevel);
         //Player.S.transform.position = startTable[currentLevel];
     }

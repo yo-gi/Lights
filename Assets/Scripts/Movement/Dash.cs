@@ -93,6 +93,7 @@ public class Dash : MonoBehaviour, Rechargeable
             r.velocity = velocity;
 
             gameObject.transform.position += dashVector;
+			Navi.S.updatePosition();
         }
     }
 

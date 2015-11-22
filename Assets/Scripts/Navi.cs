@@ -5,8 +5,8 @@ public class Navi : MonoBehaviour
 {
 	public static Navi S;
 	
-	public float lerpTime;
-	public float lerpSpeed;
+	public float dampTime;
+	public Vector3 speed;
 	public float randXOffset;
 	public float randYOffset;
 	public float followX;
@@ -27,6 +27,8 @@ public class Navi : MonoBehaviour
 	Vector3 end;
 	float length;
 
+	Rigidbody2D rb;
+
 	void Awake ()
 	{
 		S = this;
@@ -39,12 +41,14 @@ public class Navi : MonoBehaviour
 		naviLight = GameObject.Find("Navi Light").GetComponent<LOSRadialLight>();
         sprite.color = naviLight.color;
 		end = Player.S.gameObject.transform.position;
-		InvokeRepeating ("orbit", 0, lerpTime);
 
 		Events.Register<OnDeathEvent>(() => {
 			Player.S.transform.position = Checkpoint.latestCheckpoint;
-			naviLight.radius = maxLightRadius;
+			resetNavi ();
 		});
+
+		rb = GetComponent<Rigidbody2D>();
+		Physics2D.IgnoreCollision(GetComponent<CircleCollider2D>(), Player.S.GetComponent<PolygonCollider2D>());
 	}
 	
 	void OnTriggerEnter2D(Collider2D collider) {
@@ -58,21 +62,13 @@ public class Navi : MonoBehaviour
 			ChangeColor(defaultColor);
 		}
 	}
-
-	void orbit ()
-	{
-		startTime = Time.time;
-		Vector3 p = Player.S.gameObject.transform.position;
-		end = new Vector3 (p.x + followX + Random.Range (-randXOffset, randXOffset), p.y + followY + Random.Range (-randYOffset, randYOffset));
-		length = Vector3.Distance (transform.position, end);
-	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-		float distanceCovered = (Time.time - startTime) * lerpSpeed;
-		float fracCovered = distanceCovered / length;
-		transform.position = Vector3.Lerp (transform.position, end, fracCovered);
+		Vector3.SmoothDamp(transform.position, playerRelativePosition(), ref speed, dampTime);
+		rb.velocity = speed;
+		
 		if (naviLight.radius < maxLightRadius)
 		{
 			if(nextRecoveryTime < Time.time)
@@ -91,5 +87,22 @@ public class Navi : MonoBehaviour
 	{
 		sprite.color = color;
 		naviLight.color = color;
+	}
+
+	public void resetNavi()
+	{
+		naviLight.radius = maxLightRadius;
+		updatePosition();
+	}
+
+	Vector3 playerRelativePosition()
+	{
+		Vector3 player = Player.S.gameObject.transform.position;
+		return new Vector3 (player.x + followX + Random.Range (-randXOffset, randXOffset), player.y + followY + Random.Range (-randYOffset, randYOffset));
+	}
+
+	public void updatePosition()
+	{
+		transform.position = Player.S.transform.position;
 	}
 }

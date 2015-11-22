@@ -30,11 +30,11 @@ public class Enemy : MonoBehaviour
 	public EnemyState state = EnemyState.Patrolling;
     float nextAttackTime;
 
-
     public void Awake()
     {
 
     }
+
 	public void Start()
 	{
 		Events.Register<OnDeathEvent>(() => {
@@ -51,7 +51,7 @@ public class Enemy : MonoBehaviour
 				patrolEnd = patrolStart;
 				patrolStart = temp;
 			}
-			print ("patrolling");
+
 			transform.position = Vector2.MoveTowards(transform.position, patrolEnd, runSpeed * Time.deltaTime);
 
 			if (canFollow) {
