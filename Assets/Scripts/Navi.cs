@@ -23,6 +23,8 @@ public class Navi : MonoBehaviour
 	public Color defaultColor;
 	public Color waterColor;
 
+	public bool stolen = false;
+
     float startTime;
 	Vector3 end;
 	float length;
@@ -66,6 +68,11 @@ public class Navi : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
+		if (stolen) {
+			Vector3.SmoothDamp(transform.position, Boss.S.naviStolenPos, ref speed, dampTime);
+			rb.velocity = speed;
+			return;
+		}
 		Vector3.SmoothDamp(transform.position, playerRelativePosition(), ref speed, dampTime);
 		rb.velocity = speed;
 		
