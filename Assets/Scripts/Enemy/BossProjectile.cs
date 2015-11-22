@@ -25,7 +25,7 @@ public class BossProjectile : MonoBehaviour {
 		}
 		gameObject.transform.position =  Vector3.SmoothDamp(transform.position, targetPos, ref speed, dampTime);
 		if (Vector2.Distance (Player.S.transform.position, transform.position) < radius) {
-			Navi.S.naviLight.radius -= attackDamage;
+			Navi.S.takeDamage(attackDamage);
 		}
 	}
 }

@@ -32,9 +32,9 @@ public class Swim : MonoBehaviour
 
     public void Update()
     {
-        if (Navi.S.naviLight.radius <= 0 && !MainCam.S.invincible)
+        if (Navi.S.naviLight.radius <= 1 && !MainCam.S.invincible)
         {
-            StopPlayer();
+            //StopPlayer();
         }
         else
         {
@@ -58,7 +58,7 @@ public class Swim : MonoBehaviour
         if (Time.time > nextTick)
         {
             nextTick = Time.time + hurtRate;
-            Navi.S.naviLight.radius -= hurtamount;
+			Navi.S.takeDamage(hurtamount);
         }
 
         var velocity = rigidBody.velocity;

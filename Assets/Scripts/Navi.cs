@@ -4,7 +4,7 @@ using LOS;
 public class Navi : MonoBehaviour
 {
 	public static Navi S;
-	
+	public float deathThreshold = 1f;
 	public float dampTime;
 	public Vector3 speed;
 	public float randXOffset;
@@ -84,10 +84,6 @@ public class Navi : MonoBehaviour
 				nextRecoveryTime = Time.time + recoveryRate;
 			}
 		}
-
-		if (naviLight.radius <= 0) {
-			Events.Broadcast(new OnDeathEvent { });
-		}
 	}
 
 	public void ChangeColor (Color color)
@@ -100,6 +96,17 @@ public class Navi : MonoBehaviour
 	{
 		naviLight.radius = maxLightRadius;
 		updatePosition();
+	}
+
+	public void takeDamage(float damage)
+	{
+		naviLight.radius -= damage;
+		if (naviLight.radius < deathThreshold) {
+			naviLight.radius = deathThreshold;
+			if (!MainCam.S.invincible)
+				Events.Broadcast(new OnDeathEvent ());
+		}
+		// TODO : also lower intensity
 	}
 
 	Vector3 playerRelativePosition()
