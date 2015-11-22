@@ -1,8 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+public class OnTorchLitEvent {
+    public Torch torch;
+
+    public OnTorchLitEvent(Torch torch) { this.torch = torch; }
+}
+
 public class Torch : MonoBehaviour
 {
+    public List<TorchGroup> groups;
+
     GameObject flame;
 
     bool active;
@@ -13,7 +21,7 @@ public class Torch : MonoBehaviour
     private static Dictionary<int, List<Torch>> torches;
     private static Dictionary<int, int> activeTorchCounts;
 
-    public int TorchCount
+    public static int TorchCount
     {
         get
         {
@@ -24,6 +32,11 @@ public class Torch : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        // Register the groups this torch belongs to.
+        if (this.groups != null && this.groups.Count > 0) {
+            Torches.Register(this);
+        }
+
         flame = transform.Find("Flame").gameObject;
         flame.SetActive(false);
         active = false;
@@ -72,6 +85,10 @@ public class Torch : MonoBehaviour
     {
         active = true;
         flame.SetActive(true);
+
+        Events.Broadcast(new OnTorchLitEvent(this));
+
+        // TODO: Replace this with new TorchCollection code.
         int currentLevel = MainCam.currentLevel;
         activeTorchCounts[currentLevel] += 1;
         if (activeTorchCounts[currentLevel] == torches[currentLevel].Count)
