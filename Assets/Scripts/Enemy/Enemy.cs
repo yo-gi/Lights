@@ -55,16 +55,16 @@ public class Enemy : MonoBehaviour
 			transform.position = Vector2.MoveTowards(transform.position, patrolEnd, runSpeed * Time.deltaTime);
 
 			if (canFollow) {
-				if (Vector2.Distance(Navi.S.transform.position, transform.position) < sightRange)
+				if (Vector2.Distance(Player.S.transform.position, transform.position) < sightRange)
 					state = EnemyState.Following;
 			}
 		} else if (state == EnemyState.Following) {
-			transform.position = Vector2.MoveTowards(transform.position, Navi.S.transform.position, followSpeed * Time.deltaTime);
-			if (Vector2.Distance(Navi.S.transform.position, transform.position) > sightRange)
+			transform.position = Vector2.MoveTowards(transform.position, Player.S.transform.position, followSpeed * Time.deltaTime);
+			if (Vector2.Distance(Player.S.transform.position, transform.position) > sightRange)
 				state = EnemyState.Patrolling;
 		}
 
-		if (Vector2.Distance(Navi.S.transform.position, transform.position) < attackRange) {
+		if (Vector2.Distance(Player.S.transform.position, transform.position) < attackRange) {
 			if (Time.time > nextAttackTime) {
 				Navi.S.naviLight.radius -= attackDamage;
 				nextAttackTime = Time.time + attackSpeed;
