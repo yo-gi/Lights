@@ -6,6 +6,7 @@ public enum Ability
     None,
     Dash,
     Teleport,
+    DoubleJump,
 }
 
 public class Altar : MonoBehaviour {
@@ -22,6 +23,7 @@ public class Altar : MonoBehaviour {
 
     private bool active;
 
+    private static Walk walk;
     private static Dash dash;
     private static Teleport teleport;
     
@@ -34,6 +36,7 @@ public class Altar : MonoBehaviour {
 
         // Get references to the different ability scripts
         if (initialized) return;
+        walk = Walk.S;
         dash = Dash.S;
         teleport = Teleport.S;
         altars = new Dictionary<int, List<Altar>>();
@@ -99,6 +102,9 @@ public class Altar : MonoBehaviour {
                 break;
             case Ability.Teleport:
                 teleport.Toggle(enabled);
+                break;
+            case Ability.DoubleJump:
+                walk.ToggleDoubleJump(enabled);
                 break;
             default:
                 break;

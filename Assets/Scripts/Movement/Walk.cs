@@ -2,10 +2,12 @@
 
 public class Walk : MonoBehaviour
 {
-	
+	public static Walk S;
+
 	public float runSpeed;
 	public float jumpVelocity;
 
+	public bool doubleJumpEnabled = false;
 	public bool doubleJump = false;
 
     public int surfaceMask;
@@ -19,6 +21,8 @@ public class Walk : MonoBehaviour
 
 	public void Awake()
 	{
+		S = this;
+
 		r = GetComponent<Rigidbody2D>();
         surfaceMask = 1 << LayerMask.NameToLayer("Terrain") | 1 << LayerMask.NameToLayer("Water");
     }
@@ -26,12 +30,16 @@ public class Walk : MonoBehaviour
 	void Update() {
 		var grounded = IsGrounded();
 
-		if (grounded) {
+		if (doubleJumpEnabled && grounded) {
 			doubleJump = true;
 		}
 
 		HandleHorizontalMovement();
 		HandleJumping(grounded);
+	}
+
+	public void ToggleDoubleJump(bool enabled) {
+		doubleJumpEnabled = enabled;
 	}
 
 	private void HandleHorizontalMovement() {
