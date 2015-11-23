@@ -127,6 +127,8 @@ public class Navi : MonoBehaviour
 
 	public void updatePosition()
 	{
-		transform.position = Player.S.transform.position;
+		if (stolen == false) {
+			transform.position = Player.S.transform.position;
+		}
 	}
 }
