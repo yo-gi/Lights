@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class BossEntryDoor : MonoBehaviour {
-	
 	
 	public void Awake()
 	{

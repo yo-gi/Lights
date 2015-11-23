@@ -38,8 +38,10 @@ public class Torch : MonoBehaviour
     void OnTriggerStay2D(Collider2D other) {
         bool isEnemy = (other.GetComponent<Enemy>() != null);
 
-        if (active && isEnemy) {
-            Destroy(other.gameObject);
+        if (active) {
+            if (isEnemy) {
+                Destroy(other.gameObject);
+            }
         }
         else if (other.gameObject == Player.S.gameObject) {
             if (Vector3.Distance(transform.position, Player.S.transform.position) < activationRadius)
