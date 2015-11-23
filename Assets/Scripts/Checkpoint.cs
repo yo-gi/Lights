@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Checkpoint : MonoBehaviour {
 	
@@ -18,6 +17,11 @@ public class Checkpoint : MonoBehaviour {
 		foreach (var hit in Physics2D.RaycastAll(transform.position, Vector2.up, length, collideMask)) {
 			if (hit.collider != null) {
 				latestCheckpoint = gameObject.transform.position;
+				enabled = false;
+
+				GetComponent<ParticleSystem>().startColor = Color.red;
+
+				break;
 			}
 		}
 	}
