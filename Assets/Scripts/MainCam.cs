@@ -54,9 +54,11 @@ public class MainCam : MonoBehaviour
 		transform.position = Vector3.SmoothDamp(transform.position, new Vector3(t.position.x, t.position.y, transform.position.z), ref speed, dampTime);
 		if (Teleport.S.enabled) {
 			float dist = Vector3.Distance(Teleport.S.GetTeleportLocation(), Player.S.transform.position);
-			cam.orthographicSize = minSize * (1 + (dist/maxDist));
-			if (cam.orthographicSize > maxSize)
-				cam.orthographicSize = maxSize;
+			float desiredCamSize = minSize * (1 + (dist/maxDist));
+			if (desiredCamSize > maxSize)
+				desiredCamSize = maxSize;
+
+			cam.orthographicSize = Mathf.Lerp(desiredCamSize, cam.orthographicSize, 0.99f);
 		}
 		
         // TODO: Add visual indication in game for Invincibility mode
