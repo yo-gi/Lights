@@ -3,23 +3,54 @@ using System.Collections;
 
 public class DialogZone : MonoBehaviour {
 
+	public static DialogZone currentZone = null;
+
 	public string dialog;
 	public bool showOnce;
+	public float minTime;
 
-	private bool hasShown = false;
+	private float startTime;
+	private bool shouldRemove = false;
+
+	void Awake() {
+		this.enabled = false;
+		this.dialog = this.dialog.Replace("\\n", "\n");
+	}
 
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.gameObject == Player.S.gameObject) {
-			if (showOnce && hasShown) return;
-
 			Navi.S.Speech = this.dialog;
+			this.startTime = Time.time;
+			this.enabled = true;
+
+			DialogZone.currentZone = this;
 		}
 	}
 
 	void OnTriggerExit2D(Collider2D other) {
 		if (other.gameObject == Player.S.gameObject) {
+			this.shouldRemove = true;
+		}
+	}
+
+	void Update() {
+		if (DialogZone.currentZone != this) {
+			this.Stop();
+		}
+		else if (this.shouldRemove && Time.time >= this.startTime + this.minTime) {
 			Navi.S.Speech = "";
-			this.hasShown = true;
+
+			this.Stop();
+		}
+	}
+
+	private void Stop() {
+		if (this.showOnce) {
+			Destroy(this.gameObject);
+		}
+		else {
+			this.shouldRemove = false;
+			this.enabled = false;
 		}
 	}
 }
