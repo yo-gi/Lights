@@ -124,7 +124,7 @@ public class Dash : MonoBehaviour, Rechargeable
         var dashDirection = GetDashDirection();
         var dashDistance = GetDashDistance(dashDirection);
 
-        return dashDirection * dashDistance;
+        return dashDirection.normalized * dashDistance;
     }
 
     private Vector3 GetDashDirection()

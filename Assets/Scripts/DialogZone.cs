@@ -7,7 +7,7 @@ public class DialogZone : MonoBehaviour {
 
 	public string dialog;
 	public bool showOnce;
-	public float minTime;
+	public float minSeconds;
 
 	private float startTime;
 	private bool shouldRemove = false;
@@ -28,7 +28,7 @@ public class DialogZone : MonoBehaviour {
 	}
 
 	void OnTriggerExit2D(Collider2D other) {
-		if (other.gameObject == Player.S.gameObject) {
+		if (this.enabled && other.gameObject == Player.S.gameObject) {
 			this.shouldRemove = true;
 		}
 	}
@@ -37,8 +37,9 @@ public class DialogZone : MonoBehaviour {
 		if (DialogZone.currentZone != this) {
 			this.Stop();
 		}
-		else if (this.shouldRemove && Time.time >= this.startTime + this.minTime) {
+		else if (this.shouldRemove && Time.time >= this.startTime + this.minSeconds) {
 			Navi.S.Speech = "";
+			DialogZone.currentZone = null;
 
 			this.Stop();
 		}
