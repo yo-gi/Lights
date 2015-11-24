@@ -35,17 +35,21 @@ public class Torch : MonoBehaviour
         Events.Register<OnResetEvent>(this.Reset);
     }
 
-    void OnTriggerStay2D(Collider2D other) {
-        bool isEnemy = (other.GetComponent<Enemy>() != null);
+    void OnTriggerEnter2D(Collider2D other) {
+        // Destroy enemies that enter torche's light.
+        if (active == false) return;
 
-        if (active) {
-            if (isEnemy) {
-                Destroy(other.gameObject);
-            }
+        if (other.GetComponent<Enemy>() != null || other.GetComponent<BossProjectile>()) {
+            Destroy(other.gameObject);
         }
-        else if (other.gameObject == Player.S.gameObject) {
-            if (Vector3.Distance(transform.position, Player.S.transform.position) < activationRadius)
-            {
+    }
+
+    void OnTriggerStay2D(Collider2D other) {
+        // Light up the torch when the player is near it.
+        if (active) return;
+
+        if (other.gameObject == Player.S.gameObject) {
+            if (Vector3.Distance(transform.position, Player.S.transform.position) < activationRadius) {
                 Activate();
             }
         }

@@ -17,6 +17,17 @@ public class BossProjectile : MonoBehaviour {
 		lifetime = Time.time + 5f;
 	}
 	
+	void OnTriggerEnter2D(Collider2D other) {
+		// Destroy the projectile if it hits the player.
+		if (other.gameObject == Player.S.gameObject) {
+			Destroy(this.gameObject);
+		}
+		else {
+			// TODO: Why aren't torches triggering this?
+			Debug.Log(other.name);
+		}
+	}
+
 	// Update is called once per frame
 	void Update () {
 		if (Time.time > lifetime) {

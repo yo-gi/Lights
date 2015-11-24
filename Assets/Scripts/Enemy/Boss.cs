@@ -56,7 +56,6 @@ public class Boss : MonoBehaviour
 			}
 		}
 		else if (state == BossState.Stealing) {
-			print ("Boss stealing!");
 			if(Vector2.Distance(Navi.S.transform.position, transform.position) < naviStolenRange)
 			{
 				state = BossState.Attacking;
@@ -68,7 +67,6 @@ public class Boss : MonoBehaviour
 
 			if(nextAttackTime < Time.time)
 			{
-				print ("Boss attacking!");
 				//spawn enemy
 				GameObject proj = Instantiate(projectile);
 				proj.transform.position = this.transform.position;
@@ -78,7 +76,6 @@ public class Boss : MonoBehaviour
 			}
 		}
 		if (state == BossState.Dying) {
-			print("dead");
 			Navi.S.stolen = false;
 			Destroy(gameObject);
 			Destroy(GameObject.Find("BossDoor"));

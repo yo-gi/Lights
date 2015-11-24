@@ -27,7 +27,6 @@ public class Navi : MonoBehaviour
 	public bool stolen = false;
 
     float startTime;
-	Vector3 end;
 	float length;
 
 	Rigidbody2D rb;
@@ -51,7 +50,6 @@ public class Navi : MonoBehaviour
 		speechBubble = GameObject.Find("Text").GetComponent<TextMesh>();
 
         sprite.color = naviLight.color;
-		end = Player.S.gameObject.transform.position;
 		Speech = "";
 
 		Events.Register<OnDeathEvent>(() => {
