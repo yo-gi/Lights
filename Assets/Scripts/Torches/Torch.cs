@@ -12,7 +12,7 @@ public class Torch : MonoBehaviour
     public List<TorchGroup> groups;
 
     GameObject flame;
-	GameObject light;
+    GameObject light;
 
     bool active;
 
@@ -27,9 +27,9 @@ public class Torch : MonoBehaviour
         }
 
         flame = transform.Find("Flame").gameObject;
-		flame.SetActive(false);
-		light = transform.Find("Torchlight").gameObject;
-		light.SetActive(false);
+        flame.SetActive(false);
+        light = transform.Find("Torchlight").gameObject;
+        light.SetActive(false);
         active = false;
 
         Events.Register<OnResetEvent>(this.Reset);
@@ -55,7 +55,7 @@ public class Torch : MonoBehaviour
     {
         active = true;
         flame.SetActive(true);
-		light.SetActive(true);
+        light.SetActive(true);
 
         Events.Broadcast(new OnTorchLitEvent(this));
     }
