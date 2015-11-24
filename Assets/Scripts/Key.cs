@@ -2,15 +2,15 @@
 
 public class Key {
 
-	public static KeyCode Up = KeyCode.UpArrow;
-	public static KeyCode Down = KeyCode.DownArrow;
-	public static KeyCode Left = KeyCode.LeftArrow;
-	public static KeyCode Right = KeyCode.RightArrow;
+	public static KeyCode Up = KeyCode.W;
+	public static KeyCode Down = KeyCode.S;
+	public static KeyCode Left = KeyCode.A;
+	public static KeyCode Right = KeyCode.D;
 
-	public static KeyCode Jump = KeyCode.UpArrow;
-	public static KeyCode Dash = KeyCode.Z;
-	public static KeyCode Teleport = KeyCode.X;
-	public static KeyCode Activate = KeyCode.C;
+	public static KeyCode Jump = KeyCode.W;
+	public static KeyCode Dash = KeyCode.J;
+	public static KeyCode Teleport = KeyCode.K;
+	public static KeyCode Activate = KeyCode.Space;
 
 	public static KeyCode Reset = KeyCode.R;
 	public static KeyCode Pause = KeyCode.Escape;
