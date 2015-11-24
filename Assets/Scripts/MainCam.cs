@@ -21,9 +21,6 @@ public class MainCam : MonoBehaviour
     public static Dictionary<int, Vector3> startTable = new Dictionary<int, Vector3>();
     public static Dictionary<int, GameObject> levelTable = new Dictionary<int, GameObject>();
 
-    public static readonly KeyCode resetKey = KeyCode.R;
-    public static readonly KeyCode invincibilityKey = KeyCode.I;
-
     private float shakeDuration = 0f;
     private float shakeAmount = 0.2f;
 
@@ -73,12 +70,12 @@ public class MainCam : MonoBehaviour
         }
 
         // TODO: Add visual indication in game for Invincibility mode
-        if (Input.GetKey(invincibilityKey))
+        if (Input.GetKey(Key.Invincibility))
         {
             invincible = !invincible;
             print("invincibility: " + invincible);
         }
-        if (Input.GetKey(resetKey))
+        if (Input.GetKey(Key.Reset))
         {
             RestartLevel();
         }

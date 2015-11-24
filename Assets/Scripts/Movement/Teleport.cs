@@ -7,8 +7,6 @@ public class Teleport : MonoBehaviour, Rechargeable
 
     public GameObject teleportUI;
 
-    public static readonly KeyCode TeleportKey = KeyCode.K;
-
     private float teleportBackInSeconds = 2f;
     private float cooldown = 2f;
 
@@ -74,7 +72,7 @@ public class Teleport : MonoBehaviour, Rechargeable
     void Update()
     {
         rechargeTime = Time.time - lastTeleport;
-        if (TeleportIsAvailable() && Input.GetKeyDown(TeleportKey))
+        if (TeleportIsAvailable() && Input.GetKeyDown(Key.Teleport))
         {
             gameObject.transform.position = GetTeleportVector();
 			Navi.S.updatePosition();

@@ -6,8 +6,6 @@ public class Dash : MonoBehaviour, Rechargeable
 
     public GameObject dashUI;
 
-    public static readonly KeyCode DashKey = KeyCode.J;
-
     private float maxDashDistance = 3f;
 
     private int maxCharges = 2;
@@ -76,7 +74,7 @@ public class Dash : MonoBehaviour, Rechargeable
     {
         UpdateCharges();
 
-        if (CanDash() && Input.GetKeyDown(DashKey))
+        if (CanDash() && Input.GetKeyDown(Key.Dash))
         {
             if (!Charging)
             {
@@ -131,10 +129,10 @@ public class Dash : MonoBehaviour, Rechargeable
     {
         var direction = Vector3.zero;
 
-        if (Input.GetKey(Walk.Jump)) direction.y += 1;
-        if (Input.GetKey(Walk.Down)) direction.y -= 1;
-        if (Input.GetKey(Walk.Left)) direction.x -= 1;
-        if (Input.GetKey(Walk.Right)) direction.x += 1;
+        if (Input.GetKey(Key.Jump)) direction.y += 1;
+        if (Input.GetKey(Key.Down)) direction.y -= 1;
+        if (Input.GetKey(Key.Left)) direction.x -= 1;
+        if (Input.GetKey(Key.Right)) direction.x += 1;
 
         return direction;
     }

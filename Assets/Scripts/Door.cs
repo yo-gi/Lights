@@ -2,8 +2,6 @@
 
 public class Door : MonoBehaviour
 {
-    public static readonly KeyCode DoorKey = KeyCode.Space;
-
     public float triggerDistance;
 
     private int level;
@@ -37,7 +35,7 @@ public class Door : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!locked && Input.GetKeyDown(DoorKey))
+        if (!locked && Input.GetKeyDown(Key.Activate))
         {
             if (Vector3.Distance(transform.position, Player.S.transform.position) < triggerDistance)
             {

@@ -12,11 +12,6 @@ public class Walk : MonoBehaviour
 
     public int surfaceMask;
 
-    public static readonly KeyCode Left = KeyCode.A;
-    public static readonly KeyCode Right = KeyCode.D;
-    public static readonly KeyCode Jump = KeyCode.W;
-    public static readonly KeyCode Down = KeyCode.S;
-
     Rigidbody2D r;
 
 	public void Awake()
@@ -44,17 +39,17 @@ public class Walk : MonoBehaviour
 
 	private void HandleHorizontalMovement() {
         Vector2 vel = new Vector2 (0, r.velocity.y);
-		if (Input.GetKey (Left)) {
+		if (Input.GetKey (Key.Left)) {
 			vel.x += -1f * runSpeed;
 		}
-		if (Input.GetKey (Right)) {
+		if (Input.GetKey (Key.Right)) {
             vel.x += runSpeed;
 		}
         r.velocity = vel;
 	}
 
 	private void HandleJumping(bool grounded) {
-		if (Input.GetKeyDown (Jump)) {
+		if (Input.GetKeyDown (Key.Jump)) {
 			if (grounded == false && doubleJump) {
 				r.velocity = new Vector2 (r.velocity.x, jumpVelocity);
 				doubleJump = false;

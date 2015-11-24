@@ -2,8 +2,6 @@
 
 public class Button : MonoBehaviour {
 
-    public static readonly KeyCode ButtonKey = KeyCode.Space;
-
     public int id;
 
     void Awake() {
@@ -23,7 +21,7 @@ public class Button : MonoBehaviour {
     }
 
     void Update() {
-        if (Input.GetKeyDown(ButtonKey)) {
+        if (Input.GetKeyDown(Key.Activate)) {
             Events.Broadcast(new ButtonEvent {
                 id = id,
                 level = MainCam.currentLevel

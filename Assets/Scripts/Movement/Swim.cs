@@ -64,21 +64,21 @@ public class Swim : MonoBehaviour
         var velocity = rigidBody.velocity;
 
         // Lateral swimming.
-        if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D) == false)
+        if (Input.GetKey(Key.Left) && Input.GetKey(Key.Right) == false)
         {
             velocity.x = -1f * swimSpeed;
         }
-        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.A) == false)
+        else if (Input.GetKey(Key.Left) && Input.GetKey(Key.Right) == false)
         {
             velocity.x = swimSpeed;
         }
 
         // Up/down swimming.
-        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.S) == false)
+        if (Input.GetKey(Key.Up) && Input.GetKey(Key.Down) == false)
         {
             velocity.y = swimSpeed;
         }
-        else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.W) == false)
+        else if (Input.GetKey(Key.Down) && Input.GetKey(Key.Up) == false)
         {
             velocity.y = -1f * swimSpeed - swimGravity;
         }
