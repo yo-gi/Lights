@@ -66,12 +66,10 @@ public class Swim : MonoBehaviour
         // Lateral swimming.
         if (Input.GetKey(Key.Left) && Input.GetKey(Key.Right) == false)
         {
-            Debug.Log("Left");
             velocity.x = -1f * swimSpeed;
         }
         else if (Input.GetKey(Key.Right) && Input.GetKey(Key.Left) == false)
         {
-            Debug.Log("Left");
             velocity.x = swimSpeed;
         }
 
