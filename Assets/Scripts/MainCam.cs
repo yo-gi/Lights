@@ -24,6 +24,9 @@ public class MainCam : MonoBehaviour
     public static readonly KeyCode resetKey = KeyCode.R;
     public static readonly KeyCode invincibilityKey = KeyCode.I;
 
+    private float shakeDuration = 0f;
+    private float shakeAmount = 0.2f;
+
 	Camera cam;
 
     void Awake()
@@ -61,6 +64,14 @@ public class MainCam : MonoBehaviour
 			cam.orthographicSize = Mathf.Lerp(desiredCamSize, cam.orthographicSize, 0.99f);
 		}
 		
+        if (shakeDuration > 0) {
+            transform.localPosition += Random.insideUnitSphere * shakeAmount;
+            shakeDuration -= Time.deltaTime;
+        }
+        else {
+            shakeDuration = 0.0f;
+        }
+
         // TODO: Add visual indication in game for Invincibility mode
         if (Input.GetKey(invincibilityKey))
         {
@@ -88,6 +99,10 @@ public class MainCam : MonoBehaviour
             }
         }
         return objects;
+    }
+
+    public static void ShakeForSeconds(float seconds) {
+        MainCam.S.shakeDuration = seconds;
     }
 
     public static void NextLevel()

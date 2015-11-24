@@ -21,6 +21,7 @@ public class BossProjectile : MonoBehaviour {
 		// Destroy the projectile if it hits the player.
 		if (other.gameObject == Player.S.gameObject) {
 			Destroy(this.gameObject);
+			MainCam.ShakeForSeconds(0.5f);
 		}
 		else {
 			// TODO: Why aren't torches triggering this?
