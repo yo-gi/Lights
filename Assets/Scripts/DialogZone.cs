@@ -19,39 +19,14 @@ public class DialogZone : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.gameObject == Player.S.gameObject) {
-			Navi.S.Speech = this.dialog;
-			this.startTime = Time.time;
-			this.enabled = true;
+			Navi.S.dialog.Queue(new Speech {
+				dialog = this.dialog,
+				duration = this.minSeconds
+			});
 
-			DialogZone.currentZone = this;
-		}
-	}
-
-	void OnTriggerExit2D(Collider2D other) {
-		if (this.enabled && other.gameObject == Player.S.gameObject) {
-			this.shouldRemove = true;
-		}
-	}
-
-	void Update() {
-		if (DialogZone.currentZone != this) {
-			this.Stop();
-		}
-		else if (this.shouldRemove && Time.time >= this.startTime + this.minSeconds) {
-			Navi.S.Speech = "";
-			DialogZone.currentZone = null;
-
-			this.Stop();
-		}
-	}
-
-	private void Stop() {
-		if (this.showOnce) {
-			Destroy(this.gameObject);
-		}
-		else {
-			this.shouldRemove = false;
-			this.enabled = false;
+			if (this.showOnce) {
+				Destroy(this.gameObject);
+			}
 		}
 	}
 }

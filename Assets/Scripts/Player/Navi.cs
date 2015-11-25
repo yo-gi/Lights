@@ -19,7 +19,7 @@ public class Navi : MonoBehaviour
 
 	SpriteRenderer sprite;
     public LOSRadialLight naviLight;
-    public TextMesh speechBubble;
+    public Dialog dialog;
 
 	public Color defaultColor;
 	public Color waterColor;
@@ -31,12 +31,6 @@ public class Navi : MonoBehaviour
 
 	Rigidbody2D rb;
 
-	public string Speech {
-		set {
-			speechBubble.text = value;
-		}
-	}
-
 	void Awake ()
 	{
 		S = this;
@@ -47,10 +41,9 @@ public class Navi : MonoBehaviour
 	{
 		sprite = gameObject.transform.Find ("LightSprite").GetComponent<SpriteRenderer> ();
 		naviLight = GameObject.Find("Navi Light").GetComponent<LOSRadialLight>();
-		speechBubble = GameObject.Find("Text").GetComponent<TextMesh>();
+		dialog = GetComponent<Dialog>();
 
         sprite.color = naviLight.color;
-		Speech = "";
 
 		Events.Register<OnDeathEvent>(() => {
 			Player.S.transform.position = Checkpoint.latestCheckpoint;
