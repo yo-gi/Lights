@@ -19,7 +19,7 @@ public class Checkpoint : MonoBehaviour {
 				latestCheckpoint = gameObject.transform.position;
 				enabled = false;
 
-				GetComponent<ParticleSystem>().startColor = Color.red;
+				GetComponent<ParticleSystem>().startColor = Color.green;
 
 				break;
 			}
