@@ -41,10 +41,13 @@ public class Walk : MonoBehaviour
         Vector2 vel = new Vector2 (0, r.velocity.y);
 		if (Input.GetKey (Key.Left)) {
 			vel.x += -1f * runSpeed;
+			Player.S.direction = -1;
 		}
 		if (Input.GetKey (Key.Right)) {
-            vel.x += runSpeed;
+			vel.x += runSpeed;
+			Player.S.direction = 1;
 		}
+
         r.velocity = vel;
 	}
 

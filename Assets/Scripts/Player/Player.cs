@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
     Walk walk;
     Swim swim;
 
+	public int direction;
+
     void Awake()
     {
         S = this;

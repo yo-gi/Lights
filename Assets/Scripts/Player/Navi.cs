@@ -74,6 +74,7 @@ public class Navi : MonoBehaviour
 			rb.velocity = speed;
 			return;
 		}
+
 		Vector3.SmoothDamp(transform.position, playerRelativePosition(), ref speed, dampTime);
 		rb.velocity = speed;
 		
@@ -113,7 +114,8 @@ public class Navi : MonoBehaviour
 	Vector3 playerRelativePosition()
 	{
 		Vector3 player = Player.S.gameObject.transform.position;
-		return new Vector3 (player.x + followX + Random.Range (-randXOffset, randXOffset), player.y + followY + Random.Range (-randYOffset, randYOffset));
+		return new Vector3 (player.x + (followX * Player.S.direction) + Random.Range (-randXOffset, randXOffset),
+		                    player.y + followY + Random.Range (-randYOffset, randYOffset));
 	}
 
 	public void updatePosition()
