@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     Walk walk;
     Swim swim;
 
-	public int direction;
+	public int direction = 1;
 
     void Awake()
     {

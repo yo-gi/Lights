@@ -63,7 +63,7 @@ public class Walk : MonoBehaviour
 		}
 	}
 
-	private bool IsGrounded() {
+	public bool IsGrounded() {
 		// Note the distance is *slightly* longer than the triangle's height.
 		var distance = 0.47f;
 

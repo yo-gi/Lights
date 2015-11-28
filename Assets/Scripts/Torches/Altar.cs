@@ -16,7 +16,7 @@ public class Altar : MonoBehaviour {
     public bool ________________________;
 
 	GameObject flame;
-	GameObject light;
+	GameObject altarLight;
   	
     private static bool initialized = false;
     private static Dictionary<int, List<Altar>> altars;
@@ -34,8 +34,8 @@ public class Altar : MonoBehaviour {
 
         flame = transform.Find("Flame").gameObject;
 		flame.SetActive(false);
-		light = transform.Find("Torchlight").gameObject;
-		light.SetActive(false);
+		altarLight = transform.Find("Torchlight").gameObject;
+		altarLight.SetActive(false);
 
         // Get references to the different ability scripts
         if (initialized) return;
@@ -80,7 +80,7 @@ public class Altar : MonoBehaviour {
     {
         if (active) return;
         flame.SetActive(true);
-		light.SetActive(true);
+		altarLight.SetActive(true);
         ToggleAbility(ability, true);
         int currentLevel = MainCam.currentLevel;
         activeAltarCounts[currentLevel] += 1;
