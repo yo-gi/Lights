@@ -8,48 +8,43 @@ public class Speech {
 
 public class Dialog : MonoBehaviour {
 
-    public string textObjectName = "Text";
-
-    private Speech currentMessage = null;
-    private float messageStartTime = 0f;
+    public const string TextObjectName = "Text";
+    public const float MinDuration = 2f;
 
     private TextMesh textObject;
+
     private Queue<Speech> queue = new Queue<Speech>();
+
+    public Speech current = null;
+    public float endTime;
 
     // Use this to queue messages to the dialog component.
     public void Queue(Speech speech) {
+        if (speech.duration < Dialog.MinDuration) {
+            speech.duration = Dialog.MinDuration;
+        }
+
         this.queue.Enqueue(speech);
     }
 
     public void Awake() {
         this.textObject = gameObject.transform
-                            .Find(this.textObjectName)
+                            .Find(Dialog.TextObjectName)
                             .GetComponent<TextMesh>();
     }
 
     public void Update() {
-        if (currentMessage == null) {
-            this.ShowNextDialog();
-        }
-        else {
-            if (Time.time > this.messageStartTime + this.currentMessage.duration) {
-                this.ShowNextDialog();
-            }
-            else {
-                this.ClearDialog();
-            }
-        }
-    }
+        if (this.current != null && Time.time > this.endTime) {
+            this.current = null;
 
-    private void ShowNextDialog() {
-        if (this.queue.Count > 0) {
-            this.currentMessage = this.queue.Dequeue();
-            this.textObject.text = this.currentMessage.dialog;
-            this.messageStartTime = Time.time;
+            this.textObject.text = "";
         }
-    }
 
-    private void ClearDialog() {
-        this.textObject.text = "";
+        if (this.current == null && this.queue.Count > 0) {
+            this.current = this.queue.Dequeue();
+            this.endTime = this.current.duration + Time.time;
+
+            this.textObject.text = this.current.dialog;
+        }
     }
 }

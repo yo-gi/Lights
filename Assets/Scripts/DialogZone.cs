@@ -9,7 +9,6 @@ public class DialogZone : MonoBehaviour {
 	public bool showOnce;
 	public float minSeconds;
 
-	private float startTime;
 	private bool shouldRemove = false;
 
 	void Awake() {
