@@ -46,7 +46,8 @@ public class Navi : MonoBehaviour
         sprite.color = naviLight.color;
 
 		Events.Register<OnDeathEvent>(() => {
-			Player.S.transform.position = Checkpoint.latestCheckpoint;
+			print ("Player death");
+			Player.S.transform.position = Checkpoint.getClosestCheckpoint();
 			resetNavi ();
 		});
 

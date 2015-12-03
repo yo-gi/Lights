@@ -53,6 +53,8 @@ public class MainCam : MonoBehaviour
     {
 		Transform t = playerObj.transform;
 		transform.position = Vector3.SmoothDamp(transform.position, new Vector3(t.position.x, t.position.y, transform.position.z), ref speed, dampTime);
+
+		/*
 		if (Teleport.S.enabled) {
 			float dist = Vector3.Distance(Teleport.S.GetTeleportLocation(), Player.S.transform.position);
 			float desiredCamSize = minSize * (1 + (dist/maxDist));
@@ -61,6 +63,7 @@ public class MainCam : MonoBehaviour
 
 			cam.orthographicSize = Mathf.Lerp(desiredCamSize, cam.orthographicSize, 0.99f);
 		}
+		*/
 		
         if (shakeDuration > 0) {
             transform.localPosition += Random.insideUnitSphere * shakeAmount;
@@ -128,7 +131,7 @@ public class MainCam : MonoBehaviour
     public static void RestartLevel()
     {
         //Events.Broadcast(new OnResetEvent());
-		Player.S.transform.position = Checkpoint.latestCheckpoint;
+		Player.S.transform.position = Checkpoint.getClosestCheckpoint();
 		Navi.S.resetNavi();
         //SwapToLevel(currentLevel);
         //Player.S.transform.position = startTable[currentLevel];
