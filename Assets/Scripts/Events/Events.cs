@@ -7,8 +7,9 @@ public class OnAltarsActivatedEvent { }
 public class OnLevelCompleteEvent { }
 public class OnLevelLoadEvent { public int level; }
 public class OnDeathEvent { }
+public class OnPauseEvent { public bool paused; }
 
-public class Events
+public static class Events
 {
     private static EventStore handler = new EventStore();
 
@@ -48,7 +49,7 @@ public class Events
 
 public class EventStore
 {
-    private Dictionary<Type, List<object>> handlers = new Dictionary<Type, List<object>>();
+    private readonly Dictionary<Type, List<object>> handlers = new Dictionary<Type, List<object>>();
 
     public void Register<T>(Action handler)
     {

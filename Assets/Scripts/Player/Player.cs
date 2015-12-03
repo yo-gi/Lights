@@ -9,11 +9,13 @@ public class Player : MonoBehaviour
     Walk walk;
     Swim swim;
 
-	public int direction;
+    public int direction;
 
     void Awake()
     {
         S = this;
+
+        Events.Register<OnPauseEvent>(this.OnPause);
     }
 
     // Use this for initialization
@@ -45,6 +47,21 @@ public class Player : MonoBehaviour
             swim.enabled = false;
 
             if (water == collider.gameObject) water = null;
+        }
+    }
+
+    void OnPause(OnPauseEvent e) {
+        if (e.paused) {
+            walk.enabled = false;
+            swim.enabled = false;
+
+            Pauser.Pause(this);
+        }
+        else {
+            walk.enabled = (water == null);
+            swim.enabled = (water != null);
+
+            Pauser.Resume(this);
         }
     }
 }

@@ -15,6 +15,7 @@ public class MainCam : MonoBehaviour
 
     public bool __________________;
 
+    public bool paused = false;
     public bool invincible = false;
 
     public static int currentLevel = 1;
@@ -68,7 +69,10 @@ public class MainCam : MonoBehaviour
         else {
             shakeDuration = 0.0f;
         }
+    }
 
+    void Update()
+    {
         // TODO: Add visual indication in game for Invincibility mode
         if (Input.GetKey(Key.Invincibility))
         {
@@ -78,6 +82,13 @@ public class MainCam : MonoBehaviour
         if (Input.GetKey(Key.Reset))
         {
             RestartLevel();
+        }
+
+        if (Input.GetKeyDown(Key.Pause))
+        {
+            this.paused = ! this.paused;
+
+            Events.Broadcast(new OnPauseEvent { paused = this.paused });
         }
     }
 
