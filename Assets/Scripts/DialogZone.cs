@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class DialogZone : MonoBehaviour {
 
@@ -8,8 +7,6 @@ public class DialogZone : MonoBehaviour {
 	public string dialog;
 	public bool showOnce;
 	public float minSeconds;
-
-	private bool shouldRemove = false;
 
 	void Awake() {
 		this.enabled = false;
