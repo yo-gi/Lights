@@ -3,48 +3,72 @@ using System.Collections.Generic;
 
 public static class Pauser {
 
-	private static Dictionary<MonoBehaviour, State> states = new Dictionary<MonoBehaviour, State>();
+    private static Dictionary<GameObject, State> states = new Dictionary<GameObject, State>();
 
-	public static void Pause(MonoBehaviour item) {
-		var state = new State();
+    public static void Pause(MonoBehaviour item) {
+        item.enabled = false;
 
-		item.enabled = false;
+        Pauser.Pause(item.gameObject);
+    }
 
-		Rigidbody2D r = item.GetComponent<Rigidbody2D>();
+    public static void Pause(GameObject item) {
+        var state = new State();
 
-		if (r) {
-			state.gravityScale = r.gravityScale;
-			state.velocity = r.velocity;
-			state.angularVelocity = r.angularVelocity;
+        // Pause animations.
+        Animator a = item.GetComponent<Animator>();
 
-			r.gravityScale = 0f;
-			r.velocity = Vector2.zero;
-			r.angularVelocity = 0f;
-		}
+        if (a) {
+            a.enabled = false;
+        }
 
-		Pauser.states[item] = state;
-	}
+        // Save the object's rigidbody state.
+        Rigidbody2D r = item.GetComponent<Rigidbody2D>();
 
-	public static void Resume(MonoBehaviour item) {
-		item.enabled = true;
+        if (r) {
+            state.gravityScale = r.gravityScale;
+            state.velocity = r.velocity;
+            state.angularVelocity = r.angularVelocity;
 
-		if (Pauser.states.ContainsKey(item)) {
-			var state = Pauser.states[item];
+            r.gravityScale = 0f;
+            r.velocity = Vector2.zero;
+            r.angularVelocity = 0f;
+        }
 
-			var r = item.GetComponent<Rigidbody2D>();
+        Pauser.states[item] = state;
+    }
 
-			if (r) {
-				r.gravityScale = state.gravityScale;
-				r.velocity = state.velocity;
-				r.angularVelocity = state.angularVelocity;
-			}
-		}
-	}
+    public static void Resume(MonoBehaviour item) {
+        item.enabled = true;
 
-	private class State {
-		// RigidBody2D
-		public float gravityScale;
-		public Vector2 velocity;
-		public float angularVelocity;
-	}
+        Pauser.Resume(item.gameObject);
+    }
+
+    public static void Resume(GameObject item) {
+        // Resume animations.
+        Animator a = item.GetComponent<Animator>();
+
+        if (a) {
+            a.enabled = true;
+        }
+
+        // Return the object to its original state.
+        if (Pauser.states.ContainsKey(item)) {
+            var state = Pauser.states[item];
+
+            var r = item.GetComponent<Rigidbody2D>();
+
+            if (r) {
+                r.gravityScale = state.gravityScale;
+                r.velocity = state.velocity;
+                r.angularVelocity = state.angularVelocity;
+            }
+        }
+    }
+
+    private class State {
+        // RigidBody2D
+        public float gravityScale;
+        public Vector2 velocity;
+        public float angularVelocity;
+    }
 }

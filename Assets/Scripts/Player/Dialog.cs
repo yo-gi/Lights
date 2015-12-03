@@ -31,6 +31,8 @@ public class Dialog : MonoBehaviour {
         this.textObject = gameObject.transform
                             .Find(Dialog.TextObjectName)
                             .GetComponent<TextMesh>();
+
+        Events.Register<OnPauseEvent>(this.OnPause);
     }
 
     public void Update() {
@@ -45,6 +47,20 @@ public class Dialog : MonoBehaviour {
             this.endTime = this.current.duration + Time.time;
 
             this.textObject.text = this.current.dialog;
+        }
+    }
+
+    void OnPause(OnPauseEvent e) {
+        // Pausing the game will push back the end time for the dialog. We'll
+        // store how much time is left in the dialog in the endTime field,
+        // and then restore the value when the game is unpaused.
+        if (e.paused) {
+            this.enabled  = false;
+            this.endTime -= Time.time;
+        }
+        else {
+            this.enabled  = true;
+            this.endTime += Time.time;
         }
     }
 }

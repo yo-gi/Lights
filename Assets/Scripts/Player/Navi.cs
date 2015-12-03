@@ -3,126 +3,140 @@ using LOS;
 
 public class Navi : MonoBehaviour
 {
-	public static Navi S;
-	public float deathThreshold = 1f;
-	public float dampTime;
-	public Vector3 speed;
-	public float randXOffset;
-	public float randYOffset;
-	public float followX;
-	public float followY;
+    public static Navi S;
+    public float deathThreshold = 1f;
+    public float dampTime;
+    public Vector3 speed;
+    public float randXOffset;
+    public float randYOffset;
+    public float followX;
+    public float followY;
 
-	public float maxLightRadius;
-	public float recoveryRate;
-	public float recoveryAmount;
-	float nextRecoveryTime = 0;
+    public float maxLightRadius;
+    public float recoveryRate;
+    public float recoveryAmount;
+    float nextRecoveryTime = 0;
 
-	SpriteRenderer sprite;
+    GameObject spriteObject;
+    SpriteRenderer sprite;
     public LOSRadialLight naviLight;
     public Dialog dialog;
 
-	public Color defaultColor;
-	public Color waterColor;
+    public Color defaultColor;
+    public Color waterColor;
 
-	public bool stolen = false;
+    public bool stolen = false;
 
     float startTime;
-	float length;
+    float length;
 
-	Rigidbody2D rb;
+    Rigidbody2D rb;
 
-	void Awake ()
-	{
-		S = this;
+    void Awake ()
+    {
+        S = this;
         naviLight.color = defaultColor;
-	}
+    }
     
-	void Start ()
-	{
-		sprite = gameObject.transform.Find ("LightSprite").GetComponent<SpriteRenderer> ();
-		naviLight = GameObject.Find("Navi Light").GetComponent<LOSRadialLight>();
-		dialog = GetComponent<Dialog>();
+    void Start ()
+    {
+        spriteObject = gameObject.transform.Find ("LightSprite").gameObject;
+        sprite = spriteObject.GetComponent<SpriteRenderer> ();
+        naviLight = GameObject.Find("Navi Light").GetComponent<LOSRadialLight>();
+        dialog = GetComponent<Dialog>();
 
         sprite.color = naviLight.color;
 
-		Events.Register<OnDeathEvent>(() => {
-			print ("Player death");
-			Player.S.transform.position = Checkpoint.getClosestCheckpoint();
-			resetNavi ();
-		});
+        Events.Register<OnPauseEvent>(this.OnPause);
+        Events.Register<OnDeathEvent>(() => {
+            print ("Player death");
+            Player.S.transform.position = Checkpoint.getClosestCheckpoint();
+            resetNavi ();
+        });
 
-		rb = GetComponent<Rigidbody2D>();
-		Physics2D.IgnoreCollision(GetComponent<CircleCollider2D>(), Player.S.GetComponent<PolygonCollider2D>());
-	}
-	
-	void OnTriggerEnter2D(Collider2D collider) {
-		if (collider.tag == "water") {
-			ChangeColor(waterColor);
-		}
-	}
-	
-	void OnTriggerExit2D(Collider2D collider) {
-		if (collider.tag == "water") {
-			ChangeColor(defaultColor);
-		}
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-		if (stolen) {
-			Vector3.SmoothDamp(transform.position, Boss.S.naviStolenPos, ref speed, dampTime);
-			rb.velocity = speed;
-			return;
-		}
+        rb = GetComponent<Rigidbody2D>();
+        Physics2D.IgnoreCollision(GetComponent<CircleCollider2D>(), Player.S.GetComponent<PolygonCollider2D>());
+    }
 
-		Vector3.SmoothDamp(transform.position, playerRelativePosition(), ref speed, dampTime);
-		rb.velocity = speed;
-		
-		if (naviLight.radius < maxLightRadius)
-		{
-			if(nextRecoveryTime < Time.time)
-			{
-				naviLight.radius += recoveryAmount;
-				nextRecoveryTime = Time.time + recoveryRate;
-			}
-		}
-	}
+    void OnTriggerEnter2D(Collider2D collider) {
+        if (collider.tag == "water") {
+            ChangeColor(waterColor);
+        }
+    }
 
-	public void ChangeColor (Color color)
-	{
-		sprite.color = color;
-		naviLight.color = color;
-	}
+    void OnTriggerExit2D(Collider2D collider) {
+        if (collider.tag == "water") {
+            ChangeColor(defaultColor);
+        }
+    }
 
-	public void resetNavi()
-	{
-		naviLight.radius = maxLightRadius;
-		updatePosition();
-	}
+    // Update is called once per frame
+    void Update ()
+    {
+        if (stolen) {
+            Vector3.SmoothDamp(transform.position, Boss.S.naviStolenPos, ref speed, dampTime);
+            rb.velocity = speed;
+            return;
+        }
 
-	public void takeDamage(float damage)
-	{
-		naviLight.radius -= damage;
-		if (naviLight.radius < deathThreshold) {
-			naviLight.radius = deathThreshold;
-			if (!MainCam.S.invincible)
-				Events.Broadcast(new OnDeathEvent ());
-		}
-		// TODO : also lower intensity
-	}
+        Vector3.SmoothDamp(transform.position, playerRelativePosition(), ref speed, dampTime);
+        rb.velocity = speed;
 
-	Vector3 playerRelativePosition()
-	{
-		Vector3 player = Player.S.gameObject.transform.position;
-		return new Vector3 (player.x + (followX * Player.S.direction) + Random.Range (-randXOffset, randXOffset),
-		                    player.y + followY + Random.Range (-randYOffset, randYOffset));
-	}
+        if (naviLight.radius < maxLightRadius)
+        {
+            if(nextRecoveryTime < Time.time)
+            {
+                naviLight.radius += recoveryAmount;
+                nextRecoveryTime = Time.time + recoveryRate;
+            }
+        }
+    }
 
-	public void updatePosition()
-	{
-		if (stolen == false) {
-			transform.position = Player.S.transform.position;
-		}
-	}
+    public void ChangeColor (Color color)
+    {
+        sprite.color = color;
+        naviLight.color = color;
+    }
+
+    public void resetNavi()
+    {
+        naviLight.radius = maxLightRadius;
+        updatePosition();
+    }
+
+    public void takeDamage(float damage)
+    {
+        naviLight.radius -= damage;
+        if (naviLight.radius < deathThreshold) {
+            naviLight.radius = deathThreshold;
+            if (!MainCam.S.invincible)
+                Events.Broadcast(new OnDeathEvent ());
+        }
+        // TODO : also lower intensity
+    }
+
+    Vector3 playerRelativePosition()
+    {
+        Vector3 player = Player.S.gameObject.transform.position;
+        return new Vector3 (player.x + (followX * Player.S.direction) + Random.Range (-randXOffset, randXOffset),
+                            player.y + followY + Random.Range (-randYOffset, randYOffset));
+    }
+
+    public void updatePosition()
+    {
+        if (stolen == false) {
+            transform.position = Player.S.transform.position;
+        }
+    }
+
+    void OnPause(OnPauseEvent e) {
+        if (e.paused) {
+            Pauser.Pause(this.spriteObject);
+            Pauser.Pause(this);
+        }
+        else {
+            Pauser.Resume(this);
+            Pauser.Resume(this.spriteObject);
+        }
+    }
 }
