@@ -2,27 +2,39 @@
 
 public class Swim : MonoBehaviour
 {
+    public static Swim S;
+
     public float swimSpeed;
     public float swimGravity;
 
-    public float hurtRate;
-    public float hurtamount;
+    public float breathInSeconds;
+    public float breathRegenTime; // Amount of time to fully recover from no breath
 
     public bool ________________;
 
-    public float nextTick;
+    private bool active = true;
+
+    private float breathLeftInSeconds;
+    private float lastDrownUpdate;
 
     private Rigidbody2D rigidBody;
 
-    public void Awake()
+    public float BreathPercentage
     {
-        rigidBody = GetComponent<Rigidbody2D>();
+        get
+        {
+            return breathLeftInSeconds / breathInSeconds;
+        }
     }
 
-    public void Start()
+    void Awake()
     {
+        S = this;
+        rigidBody = GetComponent<Rigidbody2D>();
         rigidBody.gravityScale = swimGravity;
-        nextTick = Time.time + hurtRate;
+        OnReset();
+        Events.Register<OnResetEvent>(OnReset);
+        Events.Register<OnDeathEvent>(OnReset);
     }
 
     public void OnDisable()
@@ -32,19 +44,21 @@ public class Swim : MonoBehaviour
 
     public void Update()
     {
-        if (Navi.S.naviLight.radius <= 1 && !MainCam.S.invincible)
+        if (!MainCam.S.invincible)
         {
-            //StopPlayer();
-        }
-        else
-        {
-            UpdatePosition();
+            UpdateDrowning();
+            if (BreathPercentage <= 0)
+            {
+                Events.Broadcast(new OnDeathEvent());
+            }
         }
     }
 
     public void FixedUpdate()
     {
+        if (!active) return;
         rigidBody.angularVelocity *= 0.95f;
+        UpdateVelocity();
     }
 
     public void StopPlayer()
@@ -52,16 +66,42 @@ public class Swim : MonoBehaviour
         rigidBody.velocity = Vector2.Lerp(rigidBody.velocity, new Vector2(0, rigidBody.velocity.y), 0.05f);
     }
 
-    private void UpdatePosition()
+    private void UpdateDrowning()
     {
-        //handle navi getting hurt
-        if (Time.time > nextTick)
+        float currentTime = Time.time;
+        if (IsSubmergedInWater())
         {
-            nextTick = Time.time + hurtRate;
-			Navi.S.takeDamage(hurtamount);
+            if (lastDrownUpdate <= 0)
+            {
+                lastDrownUpdate = currentTime;
+            }
+            breathLeftInSeconds -= currentTime - lastDrownUpdate;
+            breathLeftInSeconds = Mathf.Max(0, breathLeftInSeconds);
+            lastDrownUpdate = currentTime;
         }
+        else
+        {
+            if (lastDrownUpdate >= 0)
+            {
+                lastDrownUpdate = -currentTime;
+            }
+            float regeneratedBreath = (currentTime + lastDrownUpdate) * breathInSeconds / breathRegenTime;
+            breathLeftInSeconds = Mathf.Min(breathInSeconds, breathLeftInSeconds + regeneratedBreath);
+            lastDrownUpdate = -currentTime;
+        }
+    }
 
+    private void UpdateVelocity()
+    {
         var velocity = rigidBody.velocity;
+        if (IsSubmergedInWater())
+        {
+            velocity.x *= 0.95f;
+        }
+        else
+        {
+            velocity.x = 0;
+        }
 
         // Lateral swimming.
         if (Input.GetKey(Key.Left) && Input.GetKey(Key.Right) == false)
@@ -83,8 +123,45 @@ public class Swim : MonoBehaviour
             velocity.y = -1f * swimSpeed - swimGravity;
         }
 
-        // TODO: handle collisions.
-
         rigidBody.velocity = velocity;
+    }
+
+    private GameObject CurrentBodyOfWater
+    {
+        get
+        {
+            return Player.S.water;
+        }
+    }
+
+    private bool IsSubmergedInWater()
+    {
+        GameObject water = CurrentBodyOfWater;
+        if (water == null)
+        {
+            return false;
+        }
+        float waterLevel = water.transform.position.y;
+        
+        // 90% of height
+        float topOfPlayer = transform.position.y + GetHeightFromTransform(transform) * 0.4f;
+
+        return topOfPlayer < waterLevel;
+    }
+
+    private float GetHeightFromTransform(Transform transform)
+    {
+        return transform.GetComponent<Renderer>().bounds.size.y;
+    }
+
+    public void Enable(bool enable)
+    {
+        active = enable;
+    }
+
+    private void OnReset()
+    {
+        breathLeftInSeconds = breathInSeconds;
+        lastDrownUpdate = 0;
     }
 }

@@ -10,7 +10,7 @@ public enum EnemyState
 public class Enemy : MonoBehaviour
 {
     public float attackSpeed;
-    public float attackDamage;
+    public int attackDamage;
 
     public float attackRange;
     public float sightRange;
@@ -66,7 +66,7 @@ public class Enemy : MonoBehaviour
 
 		if (Vector2.Distance(Player.S.transform.position, transform.position) < attackRange) {
 			if (Time.time > nextAttackTime) {
-				Navi.S.takeDamage(attackDamage);
+				Player.S.takeDamage(attackDamage);
 				nextAttackTime = Time.time + attackSpeed;
 			}
 		}

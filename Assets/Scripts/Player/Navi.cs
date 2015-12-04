@@ -82,14 +82,7 @@ public class Navi : MonoBehaviour
         Vector3.SmoothDamp(transform.position, playerRelativePosition(), ref speed, dampTime);
         rb.velocity = speed;
 
-        if (naviLight.radius < maxLightRadius)
-        {
-            if(nextRecoveryTime < Time.time)
-            {
-                naviLight.radius += recoveryAmount;
-                nextRecoveryTime = Time.time + recoveryRate;
-            }
-        }
+        naviLight.radius = maxLightRadius * Player.S.HealthPercentage * Swim.S.BreathPercentage;
     }
 
     public void ChangeColor (Color color)
@@ -102,17 +95,6 @@ public class Navi : MonoBehaviour
     {
         naviLight.radius = maxLightRadius;
         updatePosition();
-    }
-
-    public void takeDamage(float damage)
-    {
-        naviLight.radius -= damage;
-        if (naviLight.radius < deathThreshold) {
-            naviLight.radius = deathThreshold;
-            if (!MainCam.S.invincible)
-                Events.Broadcast(new OnDeathEvent ());
-        }
-        // TODO : also lower intensity
     }
 
     Vector3 playerRelativePosition()

@@ -5,7 +5,7 @@ public class BossProjectile : MonoBehaviour {
 
 	public float lifetime;
 
-	public float attackDamage;
+	public int attackDamage;
 	public float radius;
 
 	public Vector3 targetPos;
@@ -37,7 +37,7 @@ public class BossProjectile : MonoBehaviour {
 		}
 		gameObject.transform.position =  Vector3.SmoothDamp(transform.position, targetPos, ref speed, dampTime);
 		if (Vector2.Distance (Player.S.transform.position, transform.position) < radius) {
-			Navi.S.takeDamage(attackDamage);
+			Player.S.takeDamage(attackDamage);
 		}
 	}
 }
