@@ -27,7 +27,7 @@ public class Burn : MonoBehaviour
         if (timeRemaining > Time.time)
         {
             timeRemaining = 0;
-            MainCam.RestartLevel();
+            MainCam.Reset();
         }
     }
 }

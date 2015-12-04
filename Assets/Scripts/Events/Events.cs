@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 
 public class OnResetEvent { }
-public class OnTorchesLitEvent { }
-public class OnAltarsActivatedEvent { }
-public class OnLevelCompleteEvent { }
-public class OnLevelLoadEvent { public int level; }
+public class OnTorchLitEvent { public Torch torch; }
+public class OnTorchGroupLitEvent { public TorchGroup group; }
+public class OnAltarLitEvent { }
 public class OnDeathEvent { }
 public class OnPauseEvent { public bool paused; }
 

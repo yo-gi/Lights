@@ -7,11 +7,6 @@ public enum TorchGroup {
 	BossFight
 }
 
-public class OnTorchGroupLitEvent {
-
-    public TorchGroup group;
-}
-
 public static class Torches {
 
     private static bool initialized = false;
@@ -36,7 +31,6 @@ public static class Torches {
 
     private static void Initialize() {
         Events.Register<OnTorchLitEvent>(Torches.OnTorchLit);
-        Events.Register<OnLevelLoadEvent>(Torches.groups.Clear);
 
         Torches.initialized = true;
     }

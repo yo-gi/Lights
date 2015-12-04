@@ -20,6 +20,8 @@ public class Walk : MonoBehaviour
 
 		r = GetComponent<Rigidbody2D>();
         surfaceMask = 1 << LayerMask.NameToLayer("Terrain") | 1 << LayerMask.NameToLayer("Water");
+
+        Events.Register<OnDeathEvent>(() => { r.velocity = Vector3.zero; });
     }
 
 	void Update() {

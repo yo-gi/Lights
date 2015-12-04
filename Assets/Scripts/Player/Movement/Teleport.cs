@@ -66,7 +66,6 @@ public class Teleport : MonoBehaviour, Rechargeable
         Toggle(false);
 
         Events.Register<OnResetEvent>(Reset);
-        Events.Register<OnLevelCompleteEvent>(ResetLocationHistory);
     }
 
     void Update()

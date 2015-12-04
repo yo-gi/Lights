@@ -27,8 +27,7 @@ public class Button : MonoBehaviour {
     void Update() {
         if (Input.GetKeyDown(Key.Activate)) {
             Events.Broadcast(new ButtonEvent {
-                id = id,
-                level = MainCam.currentLevel
+                id = id
             });
         }
     }

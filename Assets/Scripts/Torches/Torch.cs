@@ -1,14 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class OnTorchLitEvent {
-    public Torch torch;
-
-    public OnTorchLitEvent(Torch torch) { this.torch = torch; }
-}
-
 public class Torch : MonoBehaviour
 {
+    public static int count = 0;
+    public static int activated = 0;
+
     public List<TorchGroup> groups;
 
     GameObject flame;
@@ -17,8 +14,12 @@ public class Torch : MonoBehaviour
     bool active;
 
     float activationRadius = 1f;
+    
+    void Awake()
+    {
+        ++count;
+    }
 
-    // Use this for initialization
     void Start()
     {
         // Register the groups this torch belongs to.
@@ -58,15 +59,17 @@ public class Torch : MonoBehaviour
     private void Activate()
     {
         active = true;
+        ++activated;
         flame.SetActive(true);
         torchLight.SetActive(true);
 
-        Events.Broadcast(new OnTorchLitEvent(this));
+        Events.Broadcast(new OnTorchLitEvent { torch = this });
     }
 
     private void Reset()
     {
         active = false;
         flame.SetActive(false);
+        --activated;
     }
 }

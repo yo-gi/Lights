@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 
 public enum Ability
 {
@@ -11,16 +10,15 @@ public enum Ability
 
 public class Altar : MonoBehaviour {
 
+    public static int count = 0;
+    public static int activated = 0;
+
     public Ability ability;
 
     public bool ________________________;
 
 	GameObject flame;
 	GameObject altarLight;
-  	
-    private static bool initialized = false;
-    private static Dictionary<int, List<Altar>> altars;
-    private static Dictionary<int, int> activeAltarCounts;
 
     private bool active;
 
@@ -30,6 +28,7 @@ public class Altar : MonoBehaviour {
     
 	void Start ()
     {
+        ++count;
         active = false;
 
         flame = transform.Find("Flame").gameObject;
@@ -38,36 +37,9 @@ public class Altar : MonoBehaviour {
 		altarLight.SetActive(false);
 
         // Get references to the different ability scripts
-        if (initialized) return;
         walk = Walk.S;
         dash = Dash.S;
         teleport = Teleport.S;
-        altars = new Dictionary<int, List<Altar>>();
-        activeAltarCounts = new Dictionary<int, int>();
-        foreach (KeyValuePair<int, GameObject> entry in MainCam.levelTable)
-        {
-            // If the level is not active, we need to reactivate it in order to find Torch children
-            bool levelActive = entry.Value.activeInHierarchy;
-            if (!levelActive) entry.Value.SetActive(true);
-            altars.Add(entry.Key, MainCam.FilterByTag<Altar>(entry.Value, "Altar"));
-            activeAltarCounts.Add(entry.Key, 0);
-            if (!levelActive) entry.Value.SetActive(false);
-        }
-        Events.Register<OnResetEvent>(() =>
-        {
-            foreach (Altar altar in altars[MainCam.currentLevel])
-            {
-                altar.Reset();
-            }
-            activeAltarCounts[MainCam.currentLevel] = 0;
-        });
-        Events.Register<OnLevelLoadEvent>((e) => {
-            if (altars[e.level].Count == 0)
-            {
-                Events.Broadcast(new OnAltarsActivatedEvent());
-            }
-        });
-        initialized = true;
 	}
 
 	void OnTriggerEnter2D(Collider2D collider) {
@@ -79,20 +51,18 @@ public class Altar : MonoBehaviour {
     private void Activate()
     {
         if (active) return;
+        ++activated;
         flame.SetActive(true);
 		altarLight.SetActive(true);
         ToggleAbility(ability, true);
-        int currentLevel = MainCam.currentLevel;
-        activeAltarCounts[currentLevel] += 1;
-        if (activeAltarCounts[currentLevel] == altars[currentLevel].Count)
-        {
-            Events.Broadcast(new OnAltarsActivatedEvent());
-        }
         active = true;
+
+        Events.Broadcast(new OnAltarLitEvent { });
     }
 
     private void Reset()
     {
+        --activated;
         flame.SetActive(false);
         ToggleAbility(ability, false);
         active = false;
