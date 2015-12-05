@@ -6,6 +6,8 @@ public class Player : MonoBehaviour
 
     public GameObject water;
 
+    public Rigidbody2D r;
+
     Walk walk;
     Swim swim;
 
@@ -32,6 +34,7 @@ public class Player : MonoBehaviour
     void Awake()
     {
         S = this;
+        r = gameObject.GetComponent<Rigidbody2D>();
 
         OnReset();
     }
