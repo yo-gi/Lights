@@ -33,8 +33,8 @@ public class MainCam : MonoBehaviour
 		transform.position = Vector3.SmoothDamp(transform.position, new Vector3(t.position.x, t.position.y, transform.position.z), ref speed, dampTime);
 
 		/*
-		if (Teleport.S.enabled) {
-			float dist = Vector3.Distance(Teleport.S.GetTeleportLocation(), Player.S.transform.position);
+		if (Rewind.S.enabled) {
+			float dist = Vector3.Distance(Rewind.S.GetTeleportLocation(), Player.S.transform.position);
 			float desiredCamSize = minSize * (1 + (dist/maxDist));
 			if (desiredCamSize > maxSize)
 				desiredCamSize = maxSize;

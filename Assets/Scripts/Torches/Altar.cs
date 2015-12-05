@@ -3,8 +3,8 @@
 public enum Ability
 {
     None,
-    Dash,
     Teleport,
+    Rewind,
     DoubleJump,
 }
 
@@ -23,8 +23,8 @@ public class Altar : MonoBehaviour {
     private bool active;
 
     private static Walk walk;
-    private static Dash dash;
     private static Teleport teleport;
+    private static Rewind rewind;
     
 	void Start ()
     {
@@ -38,8 +38,8 @@ public class Altar : MonoBehaviour {
 
         // Get references to the different ability scripts
         walk = Walk.S;
-        dash = Dash.S;
         teleport = Teleport.S;
+        rewind = Rewind.S;
 	}
 
 	void OnTriggerEnter2D(Collider2D collider) {
@@ -71,11 +71,11 @@ public class Altar : MonoBehaviour {
     private void ToggleAbility(Ability ability, bool enabled)
     {
         switch(ability){
-            case Ability.Dash:
-                dash.Toggle(enabled);
-                break;
             case Ability.Teleport:
                 teleport.Toggle(enabled);
+                break;
+            case Ability.Rewind:
+                rewind.Toggle(enabled);
                 break;
             case Ability.DoubleJump:
                 walk.ToggleDoubleJump(enabled);

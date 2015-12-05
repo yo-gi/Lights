@@ -8,8 +8,8 @@ public class Key {
 	public static KeyCode Right = KeyCode.D;
 
 	public static KeyCode Jump = KeyCode.W;
-	public static KeyCode Dash = KeyCode.J;
-	public static KeyCode Teleport = KeyCode.K;
+	public static KeyCode Teleport = KeyCode.J;
+	public static KeyCode Rewind = KeyCode.K;
 	public static KeyCode Activate = KeyCode.Space;
 
 	public static KeyCode Reset = KeyCode.R;

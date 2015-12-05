@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 
 public class Teleport : MonoBehaviour, Rechargeable
 {
@@ -7,57 +6,56 @@ public class Teleport : MonoBehaviour, Rechargeable
 
     public GameObject teleportUI;
 
-    private float teleportBackInSeconds = 2f;
-    private float rewindRate = 1f;
+    private float maxTeleportDistance = 3f;
 
-    // timeGap accounts for discontinuities in the timeline caused from rewinding
-    private float timeGap;
-    private float rewindStart;
+    private int maxCharges = 2;
+    private int currentCharges;
+    private float cooldown = 2f;
+    private float rechargeTime = 0f;
+    private float lastCharge;
 
-    private float percentage;
-
-    private LinkedList<Location> locationHistory = new LinkedList<Location>();
-
-    private Object trailPrefab;
-    private Object trail;
-    LineRenderer line;
-
-    public class Location
-    {
-        public float time;
-        public Vector3 playerLocation;
-        public Vector3 naviLocation;
-        public Vector3 playerVelocity;
-        public Quaternion playerRotation;
-    }
+    private Rigidbody2D r;
 
     public int MaxCharges
     {
-        get { return 1; }
+        get
+        {
+            return maxCharges;
+        }
     }
 
     public int Charges
     {
-        get { return TeleportIsAvailable() ? 1 : 0; }
+        get
+        {
+            return currentCharges;
+        }
     }
 
     public bool Charging
     {
-        get { return !TeleportIsAvailable(); }
+        get
+        {
+            return currentCharges < maxCharges;
+        }
+        private set
+        {
+            if (value)
+            {
+                lastCharge = Time.time;
+            }
+            else
+            {
+                lastCharge = -cooldown;
+            }
+        }
     }
 
     public float ChargePercentage
     {
-        get { return percentage; }
-    }
-
-    private bool Rewinding
-    {
-        get { return rewindStart != -teleportBackInSeconds; }
-        set
+        get
         {
-            if (value == true) rewindStart = Time.time;
-            else rewindStart = -teleportBackInSeconds;
+            return Charging ? rechargeTime / cooldown : 1f;
         }
     }
 
@@ -65,194 +63,119 @@ public class Teleport : MonoBehaviour, Rechargeable
     {
         S = this;
 
-        trailPrefab = Resources.Load("Teleport Trail");
-        line = ((GameObject)trailPrefab).GetComponent<LineRenderer>();
-
         Reset();
         Toggle(false);
+        r = GetComponent<Rigidbody2D>();
 
         Events.Register<OnResetEvent>(Reset);
     }
 
     void Update()
     {
-        if (ShouldRewind()) Rewind();
-        else UpdateLocationHistory(gameObject.transform.position);
-        UpdateTrail();
-    }
+        UpdateCharges();
 
-    private void ResetLocationHistory()
-    {
-        percentage = 0;
-        locationHistory.Clear();
-        CreateTrailObject();
-    }
-
-    private void CreateTrailObject()
-    {
-        Destroy(trail);
-        GameObject newTrail = (GameObject)Instantiate(trailPrefab, transform.position, transform.rotation);
-        line = newTrail.GetComponent<LineRenderer>();
-
-        newTrail.transform.parent = transform;
-        trail = newTrail;
-    }
-
-    private bool TeleportIsAvailable()
-    {
-        return locationHistory.Count > 0;
-    }
-
-    private bool ShouldRewind()
-    {
-        if (!TeleportIsAvailable()) return false;
-        if (Rewinding) return Input.GetKey(Key.Teleport);
-        return Input.GetKeyDown(Key.Teleport);
-    }
-
-    private void UpdateLocationHistory(Vector3 location)
-    {
-        if (Rewinding)
+        if (CanDash() && Input.GetKeyDown(Key.Teleport))
         {
-            SetGap();
-            Rewinding = false;
-        }
-        float currentTime = Time.time;
-        locationHistory.AddLast(CreateLocation());
-        percentage = Mathf.Min(1f, (currentTime - locationHistory.First.Value.time) / (teleportBackInSeconds + timeGap));
-
-        float rewindTime = currentTime - teleportBackInSeconds - timeGap;
-        while (true)
-        {
-            Location first = locationHistory.First.Value;
-            if (first.time < 0) timeGap += first.time;
-            else if (first.time >= rewindTime) return;
-            locationHistory.RemoveFirst();
-        }
-    }
-
-    private void Rewind()
-    {
-        // We can only rewind when there is a location history
-        if (locationHistory.Count == 0) return;
-
-        // If this is the first frame of rewinding, this must be updated
-        if (!Rewinding)
-        {
-            // This will correct invariants
-            Rewinding = true;
-        }
-        // Calculate the time we are rewinding to. We should rewind beyond locations above this maximum time.
-        float currentTime = Time.time;
-        float rewindTime = currentTime - rewindStart; // How long we've been rewinding
-        float maxTime = rewindStart - (rewindRate * rewindTime);
-
-        // Keep track of time gaps removed from the history and combine them
-        float consumedGap = 0;
-
-        while (locationHistory.Count > 0)
-        {
-            Location last = locationHistory.Last.Value;
-
-            // If the last value is a gap, we must keep track of it
-            if (last.time < 0)
+            if (!Charging)
             {
-                consumedGap += last.time;
-                // maxTime must also be updated to account for the time gap
-                maxTime += last.time;
+                Charging = true;
             }
-            // The last value is an actual location
+            currentCharges -= 1;
+
+            var dashVector = GetDashVector();
+            var velocity = r.velocity;
+
+            velocity.x = dashVector.x;
+            velocity.y = dashVector.y;
+
+            r.velocity = velocity;
+
+            gameObject.transform.position += dashVector;
+			Navi.S.updatePosition();
+        }
+    }
+
+    private void UpdateCharges()
+    {
+        rechargeTime = Time.time - lastCharge;
+        if (Charging && ChargePercentage >= 1)
+        {
+            ++currentCharges;
+            if (currentCharges < maxCharges)
+            {
+                Charging = true;
+            }
             else
             {
-                // Move the player backwards in time
-                SetLocation(last);
-                // If last time <= maxTime, we must stop rewinding
-                if (last.time <= maxTime)
-                {
-                    // Add a new gap entry if we have consumed any pre-existing gap entries
-                    if (consumedGap < 0)
-                    {
-                        locationHistory.AddLast(CreateGapLocation(-consumedGap));
-                    }
-                    percentage = (currentTime - locationHistory.First.Value.time) / (teleportBackInSeconds + timeGap);
-                    return;
-                }
+                Charging = false;
             }
-
-            locationHistory.RemoveLast();
         }
-
-        // If there are no locations remaining, we cannot rewind;
-        // first entry will be caught up in time (no gap)
-        timeGap = 0;
-        percentage = 0;
     }
 
-    private void UpdateTrail()
+    private bool CanDash()
     {
-        line.SetVertexCount(locationHistory.Count);
-        Vector3 vector = Vector3.zero;
-        int i = 0;
-        foreach (Location location in locationHistory)
+        return currentCharges > 0;
+    }
+
+    private Vector3 GetDashVector()
+    {
+        var dashDirection = GetDashDirection();
+        var dashDistance = GetDashDistance(dashDirection);
+
+        return dashDirection.normalized * dashDistance;
+    }
+
+    private Vector3 GetDashDirection()
+    {
+        var direction = Vector3.zero;
+
+        if (Input.GetKey(Key.Jump)) direction.y += 1;
+        if (Input.GetKey(Key.Down)) direction.y -= 1;
+        if (Input.GetKey(Key.Left)) direction.x -= 1;
+        if (Input.GetKey(Key.Right)) direction.x += 1;
+
+        return direction;
+    }
+
+    private float GetDashDistance(Vector3 direction)
+    {
+        // Find all the walls in the teleport's path.
+        var start = gameObject.transform.position;
+        var mask = (1 << LayerMask.NameToLayer("Terrain"));
+
+        var hits = Physics2D.RaycastAll(start, direction, maxTeleportDistance, mask);
+
+        // Return the max teleport distance if there are no walls.
+        if (hits.Length == 0) return maxTeleportDistance;
+
+        // Raycast backwards to find the end point of the wall.
+        var lastHit = hits[hits.Length - 1];
+        var end = start + direction * maxTeleportDistance;
+
+        var reverseHit = Physics2D.Raycast(end, -1 * direction, maxTeleportDistance, mask);
+        var reverseHitPoint = reverseHit.point;
+
+        if (Vector3.Distance(start, reverseHitPoint) < maxTeleportDistance)
         {
-            if (location.time > 0) vector = location.playerLocation;
-            line.SetPosition(i++, vector);
+            // The reverse hitpoint is within the teleport's range. Use the max teleport distance for the teleport.
+            return maxTeleportDistance;
         }
-    }
-
-    private void SetGap()
-    {
-        float currentTime = Time.time;
-        float elapsedTime = currentTime - rewindStart;
-        float addedGap = (1 + rewindRate) * elapsedTime;
-        locationHistory.AddLast(CreateGapLocation(addedGap));
-        timeGap += addedGap;
+        else
+        {
+            // The reverse hitpoint is within the teleport's range. Teleport to the last wall's hit point.
+            return lastHit.distance;
+        }
     }
 
     private void Reset()
     {
-        ResetLocationHistory();
-        Rewinding = false;
-        timeGap = 0;
-    }
-
-    private Location CreateLocation()
-    {
-        return new Location
-        {
-            time = Time.time,
-            playerLocation = Player.S.transform.position,
-            naviLocation = Navi.S.transform.position,
-            playerVelocity = Player.S.r.velocity,
-            playerRotation = Player.S.transform.rotation
-        };
-    }
-
-    private Location CreateGapLocation(float gap)
-    {
-        return new Location
-        {
-            time = -gap,
-            playerLocation = Vector3.zero,
-            naviLocation = Vector3.zero,
-            playerVelocity = Vector3.zero,
-            playerRotation = new Quaternion()
-        };
-    }
-
-    private void SetLocation(Location location)
-    {
-        Player.S.transform.position = location.playerLocation;
-        Navi.S.transform.position = location.naviLocation;
-        Player.S.r.velocity = location.playerVelocity;
-        Player.S.transform.rotation = location.playerRotation;
+        currentCharges = maxCharges;
+        Charging = false;
     }
 
     public void Toggle(bool enable)
     {
-        enabled = enable;
+		this.enabled = enable;
         teleportUI.SetActive(enable);
-        if (enable) ResetLocationHistory();
-        else Destroy(trail);
     }
 }
