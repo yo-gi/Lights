@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using LOS;
+using System;
+using System.Collections;
 
 public class Navi : MonoBehaviour
 {
@@ -9,8 +11,9 @@ public class Navi : MonoBehaviour
     public float deathThreshold;
     public float dampTime;
     public Vector3 speed;
-    public float randXOffset;
-    public float randYOffset;
+    public float randThetaOffset;
+    public float distanceOffset;
+	public float followDist;
     public float followX;
     public float followY;
 
@@ -23,13 +26,18 @@ public class Navi : MonoBehaviour
     public Dialog dialog;
 
     public List<Color> colors;
-    public Color waterColor;
+	public Color waterColor;
+
+	public float moveFreq;
+	public Vector3 targetPos;
 
     public bool ____________________;
 
+	public float nextMovetime;
+
     public bool stolen = false;
 
-    private Color currentColor;
+    public Color currentColor;
     private int currentColorIndex;
 
     private float maxLightRadius;
@@ -68,6 +76,8 @@ public class Navi : MonoBehaviour
 
         Events.Register<OnTorchLitEvent>(OnTorchLit);
         Events.Register<OnAltarLitEvent>(OnAltarLit);
+		nextMovetime = Time.time + moveFreq;
+		targetPos = playerRelativePosition();
     }
 
     void OnTriggerEnter2D(Collider2D collider) {
@@ -90,8 +100,11 @@ public class Navi : MonoBehaviour
             rb.velocity = speed;
             return;
         }
-
-        Vector3.SmoothDamp(transform.position, playerRelativePosition(), ref speed, dampTime);
+		if (Time.time > nextMovetime) {
+			nextMovetime = Time.time + moveFreq;
+			targetPos = playerRelativePosition();
+		}
+		Vector3.SmoothDamp(transform.position, targetPos + Player.S.gameObject.transform.position, ref speed, dampTime);
         rb.velocity = speed;
 
         naviLight.radius = deathThreshold + (maxLightRadius - deathThreshold) * Player.S.HealthPercentage * Swim.S.BreathPercentage;
@@ -112,8 +125,9 @@ public class Navi : MonoBehaviour
     Vector3 playerRelativePosition()
     {
         Vector3 player = Player.S.gameObject.transform.position;
-        return new Vector3 (player.x + (followX * Player.S.direction) + Random.Range (-randXOffset, randXOffset),
-                            player.y + followY + Random.Range (-randYOffset, randYOffset));
+		float theta = UnityEngine.Random.Range (-randThetaOffset, randThetaOffset) + (float)Math.PI/2;
+		return new Vector3 ((float)((followDist + UnityEngine.Random.Range (-distanceOffset, distanceOffset)) * Math.Cos (theta)),
+		                    (float)((followDist + UnityEngine.Random.Range (-distanceOffset, distanceOffset)) * Math.Sin (theta)));
     }
 
     public void updatePosition()
