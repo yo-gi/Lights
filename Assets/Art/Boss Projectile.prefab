@@ -77,7 +77,7 @@ MonoBehaviour:
   radius: 1
   targetPos: {x: 0, y: 22, z: 0}
   speed: {x: 0, y: 0, z: 0}
-  dampTime: 5
+  dampTime: 4
 --- !u!198 &19836110
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -1155,7 +1155,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: dampTime
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_IsTrigger
