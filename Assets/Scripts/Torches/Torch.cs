@@ -107,6 +107,7 @@ public class Torch : MonoBehaviour
 			--activated;
 			flame.SetActive(false);
 			radius = 0.0001f;
+			Events.Broadcast(new OnTorchUnlitEvent{torch = this});
 		}
 		GetComponent<CircleCollider2D> ().radius = radius;
 		torchLight.GetComponent<LOSRadialLight> ().radius = radius;

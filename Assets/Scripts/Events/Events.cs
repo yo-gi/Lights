@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class OnResetEvent { }
 public class OnTorchLitEvent { public Torch torch; }
+public class OnTorchUnlitEvent { public Torch torch; }
 public class OnTorchGroupLitEvent { public TorchGroup group; }
 public class OnAltarLitEvent { }
 public class OnDeathEvent { }
