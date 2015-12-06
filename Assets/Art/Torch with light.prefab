@@ -138,7 +138,9 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_MinimumChartSize: 4
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
@@ -170,7 +172,7 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 3
+  m_Radius: 2
 --- !u!114 &11418652
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -196,7 +198,7 @@ MonoBehaviour:
   sortingLayer: 0
   radius: 3
   flashFrequency: 1
-  flashOffset: .25
+  flashOffset: 0
 --- !u!114 &11485326
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -208,7 +210,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6716f4d83e1b70e468bb68cc27a7fe38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  radius: 2.5
+  maxRadius: 3
+  recoveryAmount: .00999999978
+  recoveryFreq: .0500000007
+  nextRecoveryTime: 0
   groups: 01000000
+  torchLight: {fileID: 0}
+  active: 0
 --- !u!198 &19829110
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -1225,7 +1234,9 @@ ParticleSystemRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_MinimumChartSize: 4
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
@@ -1261,7 +1272,9 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_MinimumChartSize: 4
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
@@ -1306,7 +1319,27 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: flashOffset
-      value: .25
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: radius
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: maxRadius
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: recoveryAmount
+      value: .00999999978
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: recoveryFreq
+      value: .0500000007
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Radius
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

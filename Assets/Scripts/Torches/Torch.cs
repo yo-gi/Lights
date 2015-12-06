@@ -1,17 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using LOS;
 
 public class Torch : MonoBehaviour
 {
     public static int count = 0;
     public static int activated = 0;
+	public float radius;
+	public float maxRadius;
+
+	public float recoveryAmount;
+	public float recoveryFreq;
+	public float nextRecoveryTime;
 
     public List<TorchGroup> groups;
 
     GameObject flame;
-    GameObject torchLight;
+    public GameObject torchLight;
 
-    bool active;
+    public bool active;
 
     float activationRadius = 1f;
     
@@ -19,6 +26,13 @@ public class Torch : MonoBehaviour
     {
         ++count;
     }
+
+	public void takeDamage(float damage)
+	{
+		radius -= damage;
+		GetComponent<CircleCollider2D> ().radius = radius;
+		torchLight.GetComponent<LOSRadialLight> ().radius = radius;
+	}
 
     void Start()
     {
@@ -37,12 +51,14 @@ public class Torch : MonoBehaviour
     }
 
     void OnTriggerEnter2D(Collider2D other) {
+		print (other.name);
         // Destroy enemies that enter torche's light.
         if (active == false) return;
 
-        if (other.GetComponent<Enemy>() != null || other.GetComponent<BossProjectile>()) {
+        /*if (other.GetComponent<Enemy>() != null || other.GetComponent<BossProjectile>()) {
+			print ("torched in torch!");
             Destroy(other.gameObject);
-        }
+        }*/
     }
 
     void OnTriggerStay2D(Collider2D other) {
@@ -62,6 +78,7 @@ public class Torch : MonoBehaviour
         ++activated;
         flame.SetActive(true);
         torchLight.SetActive(true);
+		radius = 2.5f;
 
         Events.Broadcast(new OnTorchLitEvent { torch = this });
     }
@@ -72,4 +89,26 @@ public class Torch : MonoBehaviour
         flame.SetActive(false);
         --activated;
     }
+
+	void Update()
+	{
+		if (!active)
+			return;
+		if (Time.time > nextRecoveryTime) {
+			nextRecoveryTime = Time.time + recoveryFreq;
+			radius += recoveryAmount;
+			if(radius > maxRadius)
+			{
+				radius = maxRadius;
+			}
+		}
+		if (radius < 1f) {
+			active = false;
+			--activated;
+			flame.SetActive(false);
+			radius = 0.0001f;
+		}
+		GetComponent<CircleCollider2D> ().radius = radius;
+		torchLight.GetComponent<LOSRadialLight> ().radius = radius;
+	}
 }
