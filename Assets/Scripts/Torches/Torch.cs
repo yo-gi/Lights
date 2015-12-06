@@ -39,6 +39,10 @@ public class Torch : MonoBehaviour
         // Register the groups this torch belongs to.
         if (this.groups != null && this.groups.Count > 0) {
             Torches.Register(this);
+
+            if (this.groups.Contains(TorchGroup.BossFight)) {
+                Events.Register<OnDeathEvent>(this.Reset);
+            }
         }
 
         flame = transform.Find("Flame").gameObject;
@@ -85,9 +89,17 @@ public class Torch : MonoBehaviour
 
     private void Reset()
     {
+        Debug.Log("Resetting torch");
+
         active = false;
         flame.SetActive(false);
         --activated;
+        radius = 0.0001f;
+
+        GetComponent<CircleCollider2D> ().radius = radius;
+        torchLight.GetComponent<LOSRadialLight> ().radius = radius;
+
+        Events.Broadcast(new OnTorchUnlitEvent{torch = this});
     }
 
 	void Update()
@@ -101,15 +113,12 @@ public class Torch : MonoBehaviour
 			{
 				radius = maxRadius;
 			}
+
+            GetComponent<CircleCollider2D> ().radius = radius;
+            torchLight.GetComponent<LOSRadialLight> ().radius = radius;
 		}
 		if (radius < 1f) {
-			active = false;
-			--activated;
-			flame.SetActive(false);
-			radius = 0.0001f;
-			Events.Broadcast(new OnTorchUnlitEvent{torch = this});
+            this.Reset();
 		}
-		GetComponent<CircleCollider2D> ().radius = radius;
-		torchLight.GetComponent<LOSRadialLight> ().radius = radius;
 	}
 }
