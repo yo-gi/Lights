@@ -40,7 +40,7 @@ public class Navi : MonoBehaviour
     public Color currentColor;
     private int currentColorIndex;
 
-    private float maxLightRadius;
+    public float maxLightRadius;
 
     float startTime;
     float length;
@@ -97,7 +97,8 @@ public class Navi : MonoBehaviour
     {
         if (stolen) {
             Vector3.SmoothDamp(transform.position, Boss.S.naviStolenPos, ref speed, dampTime);
-            rb.velocity = speed;
+			rb.velocity = speed;
+			naviLight.radius = deathThreshold + (maxLightRadius - deathThreshold) * Player.S.HealthPercentage * Swim.S.BreathPercentage;
             return;
         }
 		if (Time.time > nextMovetime) {

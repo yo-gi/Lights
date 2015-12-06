@@ -30,7 +30,8 @@ public static class Torches {
     }
 
     private static void Initialize() {
-        Events.Register<OnTorchLitEvent>(Torches.OnTorchLit);
+		Events.Register<OnTorchLitEvent>(Torches.OnTorchLit);
+		Events.Register<OnTorchUnlitEvent>(Torches.OnTorchUnlit);
 
         Torches.initialized = true;
     }
@@ -49,5 +50,9 @@ public static class Torches {
                 });
             }
         }
-    }
+	}
+	
+	private static void OnTorchUnlit(OnTorchUnlitEvent e) {
+		Register (e.torch);
+	}
 }

@@ -11,6 +11,7 @@ TagManager:
   - Altar
   - Torch
   - Checkpoint
+  - Projectile
   layers:
   - Default
   - TransparentFX

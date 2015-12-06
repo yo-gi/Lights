@@ -19,13 +19,33 @@ public class BossProjectile : MonoBehaviour {
 	
 	void OnTriggerEnter2D(Collider2D other) {
 		// Destroy the projectile if it hits the player.
-		if (other.gameObject == Player.S.gameObject) {
-			Destroy(this.gameObject);
+		/*if (other.gameObject == Player.S.gameObject) {
+			Player.S.takeDamage(attackDamage);
 			MainCam.ShakeForSeconds(0.5f);
+			Destroy(this.gameObject);
 		}
-		else {
+		else if(other.name == "Torch"){
 			// TODO: Why aren't torches triggering this?
 			Debug.Log(other.name);
+		}*/
+		if (other.tag == "Torch") {
+			if(!other.GetComponent<Torch>().active) return;
+			print("torched!");
+			other.GetComponent<Torch>().takeDamage(.1f);
+			Destroy(this.gameObject);
+		}
+	}
+	
+	void OnCollisionEnter2D(Collision2D other) {
+		// Destroy the projectile if it hits the player.
+		if (other.gameObject == Player.S.gameObject) {
+			Player.S.takeDamage(attackDamage);
+			MainCam.ShakeForSeconds(0.5f);
+			Destroy(this.gameObject);
+		}
+		else if(other.gameObject.name == "Torch"){
+			// TODO: Why aren't torches triggering this?
+			Debug.Log(other.gameObject.name);
 		}
 	}
 

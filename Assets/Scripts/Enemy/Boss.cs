@@ -51,6 +51,7 @@ public class Boss : MonoBehaviour
 			//check if player is in sightrange and move to stealing if true
 			if(Vector2.Distance(Navi.S.transform.position, transform.position) < sightRange)
 			{
+				print ("Stole navi!");
 				state = BossState.Stealing;
 				Navi.S.stolen = true;
 			}

@@ -55,11 +55,20 @@ public class MainCam : MonoBehaviour
     void Update()
     {
         // TODO: Add visual indication in game for Invincibility mode
-        if (Input.GetKey(Key.Invincibility))
+        if (Input.GetKeyDown(Key.Invincibility))
         {
             invincible = !invincible;
             print("invincibility: " + invincible);
-        }
+		}
+		if (Input.GetKeyDown(Key.Unlock))
+		{
+			invincible = !invincible;
+			print("invincibility: " + invincible);
+			Teleport.S.Toggle(enabled);
+			Rewind.S.Toggle(enabled);
+			Walk.S.ToggleDoubleJump(enabled);
+			Navi.S.maxLightRadius = Navi.S.finalLightRadius;
+		}
         if (Input.GetKey(Key.Reset))
         {
             Reset();

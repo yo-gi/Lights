@@ -185,7 +185,7 @@ MonoBehaviour:
   state: 0
   sightRange: 10
   naviStolenRange: 6
-  attackSpeed: .25
+  attackSpeed: 1
   projectile: {fileID: 160292, guid: 4d1c321826ddbd54b935a81080363525, type: 2}
   naviStolenPos: {x: -9, y: 42, z: 0}
   enemyLight: {fileID: 11420598}
@@ -1251,7 +1251,11 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: attackSpeed
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 154238}

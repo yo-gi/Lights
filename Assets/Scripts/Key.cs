@@ -15,4 +15,5 @@ public class Key {
 	public static KeyCode Reset = KeyCode.R;
 	public static KeyCode Pause = KeyCode.Escape;
 	public static KeyCode Invincibility = KeyCode.I;
+	public static KeyCode Unlock = KeyCode.U;
 }
