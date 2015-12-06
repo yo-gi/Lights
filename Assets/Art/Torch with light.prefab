@@ -189,7 +189,7 @@ MonoBehaviour:
   invertMode: 0
   obstacleLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   color: {r: 1, g: .889655232, b: 0, a: 1}
   material: {fileID: 2100000, guid: 2e91f08796cbd44849f1e15382cade3d, type: 2}
   orderInLayer: 0
@@ -1298,7 +1298,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: obstacleLayer.m_Bits
-      value: 0
+      value: 256
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: flashFrequency

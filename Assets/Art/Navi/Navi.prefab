@@ -140,9 +140,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_MinimumChartSize: 4
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
@@ -155,20 +153,18 @@ MeshRenderer:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 107990}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_Materials:
   - {fileID: 2100000, guid: 2e91f08796cbd44849f1e15382cade3d, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 1
-  m_ReflectionProbeUsage: 1
+  m_UseLightProbes: 0
+  m_ReflectionProbeUsage: 0
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_MinimumChartSize: 4
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
@@ -269,7 +265,7 @@ MonoBehaviour:
   isStatic: 0
   coneAngle: 0
   faceAngle: 0
-  degreeStep: .100000001
+  degreeStep: .5
   invertMode: 0
   obstacleLayer:
     serializedVersion: 2
@@ -295,18 +291,23 @@ MonoBehaviour:
   deathThreshold: 1
   dampTime: .5
   speed: {x: 0, y: 0, z: 0}
-  randXOffset: 0
-  randYOffset: 0
+  randThetaOffset: 0
+  distanceOffset: 0
+  followDist: 0
   followX: -1
   followY: 2
-  maxLightRadius: 11
-  recoveryRate: .00999999978
-  recoveryAmount: .00999999978
+  startingLightRadius: 0
+  finalLightRadius: 0
   naviLight: {fileID: 11454534}
-  speechBubble: {fileID: 0}
-  defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  dialog: {fileID: 0}
+  colors: []
   waterColor: {r: .16911763, g: .724949121, b: 1, a: 1}
+  moveFreq: 0
+  targetPos: {x: 0, y: 0, z: 0}
+  ____________________: 0
+  nextMovetime: 0
   stolen: 0
+  currentColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!212 &21255662
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -325,9 +326,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_MinimumChartSize: 4
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
@@ -346,6 +345,26 @@ Prefab:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 37448891308aec143a3e6d1627a9d1bd, type: 2}
+    - target: {fileID: 0}
+      propertyPath: degreeStep
+      value: .5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_UseLightProbes
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 177536}
