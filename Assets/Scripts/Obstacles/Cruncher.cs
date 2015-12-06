@@ -53,7 +53,6 @@ public class Cruncher : MonoBehaviour {
 		default:
 			return;
 		}
-		print (state);
 	}
 
 	void OnCollisionEnter2D(Collision2D c)
