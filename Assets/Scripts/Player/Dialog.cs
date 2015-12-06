@@ -11,7 +11,7 @@ public class Dialog : MonoBehaviour {
     public const string TextObjectName = "Text";
     public const float MinDuration = 2f;
 
-    private TextMesh textObject;
+    public TextMesh textObject;
 
     private Queue<Speech> queue = new Queue<Speech>();
 

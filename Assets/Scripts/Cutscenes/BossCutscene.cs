@@ -4,20 +4,25 @@ using System.Collections.Generic;
 
 public class BossCutscene : Cutscene {
 
-    float start = -1f;
+    protected override float CutSceneLength {
+        get {
+            return 5f;
+        }
+    }
 
-    protected override bool PlayCustcene() {
-        if (start < 0f) {
-            start = Time.time + 5f;
-        }
+    protected override void DefineCutscene() {
+        var pos1 = new Vector3(6, 5, 0);
+        var pos2 = new Vector3(1, 5, 0);
 
-        if (Time.time > start) {
-            return false;
-        }
-        else {
-            Debug.Log("Hi");
-            
-            return true;
-        }
+        Do(0f, 1f, () => {
+            NaviGo(pos1);
+            PlayerGo(pos1);
+            NaviSay("Loic you're the best at making cutscenes");
+        });
+
+        Do(1f, 5f, () => {
+            NaviGo(pos2);
+            NaviSay("Literally the best.");
+        });
     }
 }
