@@ -37,6 +37,12 @@ public class Boss : MonoBehaviour
 				state = BossState.Dying;
 			}
 		});
+
+		Events.Register<OnDeathEvent>(() => {
+			state = BossState.Waiting;
+
+			Navi.S.stolen = false;
+		});
     }
 
 	public void Start()
