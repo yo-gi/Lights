@@ -29,18 +29,21 @@ public abstract class Cutscene : MonoBehaviour {
         // Is the current time within this groups time frame?
         if (this.currentTime < groupStartTime || this.currentTime > groupEndTime) return;
 
+        // Is this the first time the group is executing?
         if (this.currentGroupStart < groupStartTime) {
             this.currentGroupStart = groupStartTime;
             this.currentGroupDuration = duration;
 
             this.groupNaviStartPos = Navi.S.transform.position;
             this.groupPlayerStartPos = Player.S.transform.position;
+
+            Navi.S.dialog.textObject.text = "";
         }
 
         action();
     }
 
-    protected void LockCamera(Vector3 position, float scale) {
+    protected void LockCamera(Vector3 position, float scale = 8f) {
         this.locksCam = true;
 
         MainCam.S.LockCamera(position, scale);
@@ -50,16 +53,18 @@ public abstract class Cutscene : MonoBehaviour {
         Navi.S.dialog.textObject.text = dialog;
     }
 
-    protected void NaviGo(Vector3 position) {
+    protected void Move(GameObject gameObject, Vector3 initial, Vector3 end) {
         float t = (this.currentTime - this.currentGroupStart) / this.currentGroupDuration;
 
-        Navi.S.transform.position = Vector3.Lerp(this.groupNaviStartPos, position, t);
+        gameObject.transform.position = Vector3.Lerp(initial, end, t);
+    }
+
+    protected void NaviGo(Vector3 position) {
+        this.Move(Navi.S.gameObject, this.groupNaviStartPos, position);
     }
 
     protected void PlayerGo(Vector3 position) {
-        float t = (this.currentTime - this.currentGroupStart) / this.currentGroupDuration;
-
-        Player.S.transform.position = Vector3.Lerp(this.groupPlayerStartPos, position, t);
+        this.Move(Player.S.gameObject, this.groupPlayerStartPos, position);
     }
 
     // ----------------------------------------------------------------
@@ -88,6 +93,8 @@ public abstract class Cutscene : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject != Player.S.gameObject) return;
 
+        Debug.Log(this.name);
+
         this.enabled = true;
         this.startTime = Time.time;
 
@@ -108,6 +115,9 @@ public abstract class Cutscene : MonoBehaviour {
             if (this.locksCam) {
                 MainCam.S.ReleaseCameraLock();
             }
+
+            // Clear Navi's dialog.
+            Navi.S.dialog.textObject.text = "";
 
             Events.Broadcast(new OnCutsceneEndEvent { id = this.id });
             Events.Broadcast(new OnPauseEvent { paused = false });
