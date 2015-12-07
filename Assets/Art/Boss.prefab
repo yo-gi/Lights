@@ -33,6 +33,7 @@ GameObject:
   - 58: {fileID: 5883310}
   - 114: {fileID: 11427110}
   - 114: {fileID: 11445546}
+  - 114: {fileID: 11406936}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Untagged
@@ -134,6 +135,28 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: .600000024
+--- !u!114 &11406936
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 154238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 610b56342fef2fe42bfdfdf120bc8513, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackSpeed: 1
+  attackDamage: 1
+  attackRange: 1
+  sightRange: 16
+  runSpeed: 5
+  followSpeed: 7
+  canFollow: 0
+  patrolStart: {x: -9, y: 36}
+  patrolEnd: {x: -15, y: 36}
+  enemyLight: {fileID: 0}
+  state: 0
 --- !u!114 &11420598
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -183,9 +206,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  sightRange: 10
+  sightRange: 16
   naviStolenRange: 6
-  attackSpeed: 1
+  attackSpeed: .200000003
   projectile: {fileID: 160292, guid: 4d1c321826ddbd54b935a81080363525, type: 2}
   naviStolenPos: {x: -9, y: 42, z: 0}
   enemyLight: {fileID: 11420598}

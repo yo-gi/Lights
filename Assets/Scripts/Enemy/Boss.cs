@@ -84,6 +84,7 @@ public class Boss : MonoBehaviour
 		}
 		if (state == BossState.Dying) {
 			Navi.S.stolen = false;
+			MainCam.ShakeForSeconds(2f);
 			Destroy(gameObject);
 			Destroy(GameObject.Find("BossDoorExit"));
 		}
