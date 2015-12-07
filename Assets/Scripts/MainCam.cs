@@ -6,17 +6,23 @@ public class MainCam : MonoBehaviour
     public static MainCam S;
 
     public GameObject playerObj;
-	public Vector3 speed;
-	public float dampTime;
+    public Vector3 speed;
+    public float dampTime;
 
-	public float minSize;
-	public float maxSize;
-	public float maxDist;
+    public float minSize;
+    public float maxSize;
+    public float maxDist;
 
     public bool __________________;
 
     public bool paused = false;
     public bool invincible = false;
+
+    private Camera cam;
+    public bool cameraLocked = false;
+    public Vector3 cameraLockPosition;
+    public float cameraLockScale;
+    public float defaultScale;
 
     private float shakeDuration = 0f;
     private float shakeAmount = 0.2f;
@@ -24,25 +30,29 @@ public class MainCam : MonoBehaviour
     void Awake()
     {
         S = this;
+        cam = GetComponent<Camera>();
+
+        defaultScale = cam.orthographicSize;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-		Transform t = playerObj.transform;
-		transform.position = Vector3.SmoothDamp(transform.position, new Vector3(t.position.x, t.position.y, transform.position.z), ref speed, dampTime);
+        Vector3 targetPos;
+        float targetScale;
 
-		/*
-		if (Rewind.S.enabled) {
-			float dist = Vector3.Distance(Rewind.S.GetTeleportLocation(), Player.S.transform.position);
-			float desiredCamSize = minSize * (1 + (dist/maxDist));
-			if (desiredCamSize > maxSize)
-				desiredCamSize = maxSize;
+        if (cameraLocked) {
+            targetPos = cameraLockPosition;
+            targetScale = cameraLockScale;
+        }
+        else {
+            targetPos = playerObj.transform.position;
+            targetScale = defaultScale;
+        }
 
-			cam.orthographicSize = Mathf.Lerp(desiredCamSize, cam.orthographicSize, 0.99f);
-		}
-		*/
-		
+        transform.position = Vector3.SmoothDamp(transform.position, new Vector3(targetPos.x, targetPos.y, transform.position.z), ref speed, dampTime);
+        cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetScale, 0.05f);
+
         if (shakeDuration > 0) {
             transform.localPosition += Random.insideUnitSphere * shakeAmount;
             shakeDuration -= Time.deltaTime;
@@ -59,16 +69,16 @@ public class MainCam : MonoBehaviour
         {
             invincible = !invincible;
             print("invincibility: " + invincible);
-		}
-		if (Input.GetKeyDown(Key.Unlock))
-		{
-			invincible = !invincible;
-			print("invincibility: " + invincible);
-			Teleport.S.Toggle(enabled);
-			Rewind.S.Toggle(enabled);
-			Walk.S.ToggleDoubleJump(enabled);
-			Navi.S.maxLightRadius = Navi.S.finalLightRadius;
-		}
+        }
+        if (Input.GetKeyDown(Key.Unlock))
+        {
+            invincible = !invincible;
+            print("invincibility: " + invincible);
+            Teleport.S.Toggle(enabled);
+            Rewind.S.Toggle(enabled);
+            Walk.S.ToggleDoubleJump(enabled);
+            Navi.S.maxLightRadius = Navi.S.finalLightRadius;
+        }
         if (Input.GetKey(Key.Reset))
         {
             Reset();
@@ -82,6 +92,16 @@ public class MainCam : MonoBehaviour
         }
     }
 
+    public void LockCamera(Vector3 position, float scale) {
+        cameraLocked = true;
+        cameraLockPosition = position;
+        cameraLockScale = scale;
+    }
+
+    public void ReleaseCameraLock() {
+        cameraLocked = false;
+    }
+
     public static void ShakeForSeconds(float seconds) {
         MainCam.S.shakeDuration = seconds;
     }
@@ -89,6 +109,6 @@ public class MainCam : MonoBehaviour
     public static void Reset()
     {
         Player.S.transform.position = Checkpoint.getClosestCheckpoint();
-		Navi.S.resetNavi();
+        Navi.S.resetNavi();
     }
 }
