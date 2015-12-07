@@ -34,7 +34,10 @@ public class Boss : MonoBehaviour
 		Events.Register<OnTorchGroupLitEvent>((e) => {
 			if(e.group == TorchGroup.BossFight)
 			{
-				state = BossState.Dying;
+				GetComponent<Enemy>().enabled = true;
+				Navi.S.stolen = false;
+				MainCam.ShakeForSeconds(2f);
+				//state = BossState.Dying;
 			}
 		});
 
