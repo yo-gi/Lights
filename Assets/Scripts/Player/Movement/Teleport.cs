@@ -5,7 +5,6 @@ public class Teleport : MonoBehaviour, Rechargeable
     public static Teleport S;
 
     public GameObject teleportUI;
-
     public GameObject dashIndicator;
 
     private float maxTeleportDistance = 3f;
@@ -68,39 +67,41 @@ public class Teleport : MonoBehaviour, Rechargeable
         Reset();
         Toggle(false);
         r = GetComponent<Rigidbody2D>();
+        dashIndicator = GameObject.Find("Wall Indicator");
 
         Events.Register<OnResetEvent>(Reset);
-
-        GameObject.Find("Wall Indicator").transform.position = Player.S.transform.position;
     }
 
     void Update()
     {
+        var dashVector = GetDashVector();
+
         UpdateCharges();
-        GameObject.Find("Wall Indicator").transform.position = Player.S.transform.position + GetDashVector();
+        dashIndicator.transform.position = Vector3.Lerp(dashIndicator.transform.position, Player.S.transform.position + dashVector, 0.5f);
 
-        if (CanDash() && Input.GetKeyDown(Key.Teleport))
+        if (CanDash() && Input.GetKeyDown(Key.Teleport) && dashVector != Vector3.zero)
         {
-            var dashVector = GetDashVector();
+            ConsumeCharge();
+
             var velocity = r.velocity;
+            velocity.x = dashVector.x;
+            velocity.y = dashVector.y;
 
-            if (dashVector != Vector3.zero)
-            {
-                if (!Charging)
-                {
-                    Charging = true;
-                }
-                currentCharges -= 1;
+            r.velocity = velocity;
 
-                velocity.x = dashVector.x;
-                velocity.y = dashVector.y;
-
-                r.velocity = velocity;
-
-                gameObject.transform.position += dashVector;
-                Navi.S.updatePosition();
-            }
+            gameObject.transform.position += dashVector;
+            Navi.S.updatePosition();
         }
+    }
+
+    private void ConsumeCharge()
+    {
+        if (!Charging)
+        {
+            Charging = true;
+        }
+
+        currentCharges -= 1;
     }
 
     private void UpdateCharges()
@@ -185,5 +186,6 @@ public class Teleport : MonoBehaviour, Rechargeable
     {
         this.enabled = enable;
         teleportUI.SetActive(enable);
+        dashIndicator.SetActive(enable);
     }
 }
