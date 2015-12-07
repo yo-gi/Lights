@@ -71,11 +71,14 @@ public class Teleport : MonoBehaviour, Rechargeable
 
         Reset();
         Toggle(false);
-        r = GetComponent<Rigidbody2D>();
-        //dashIndicator = GameObject.Find("Wall Indicator");
 
-        poof = (GameObject)Resources.Load("Poof");
+        r = GetComponent<Rigidbody2D>();
         walk = gameObject.GetComponent<Walk>();
+
+        dashIndicator = GameObject.Find("Wall Indicator");
+        poof = (GameObject)Resources.Load("Poof");
+
+        dashIndicator.SetActive(false);
 
         Events.Register<OnResetEvent>(Reset);
     }
@@ -85,7 +88,7 @@ public class Teleport : MonoBehaviour, Rechargeable
         var teleportVector = GetTeleportVector();
 
         UpdateCharges();
-        //UpdateIndicator();
+        UpdateIndicator(teleportVector);
 
         if (CanTeleport() && Input.GetKeyDown(Key.Teleport) && teleportVector != Vector3.zero)
         {
@@ -112,19 +115,16 @@ public class Teleport : MonoBehaviour, Rechargeable
 
     private void UpdateIndicator(Vector3 teleportVector)
     {
-        bool setactive = false;
-        foreach (var hit in Physics2D.RaycastAll(transform.position, GetTeleportDirection(), maxTeleportDistance, 1 << LayerMask.NameToLayer("Terrain")))
-        {
-            if (hit.collider != null && GetTeleportDistance(GetTeleportDirection()) == maxTeleportDistance)
-            {
-                dashIndicator.SetActive(true);
-                dashIndicator.transform.position = Vector3.Lerp(dashIndicator.transform.position, Player.S.transform.position + teleportVector, 0.5f);
-                setactive = true;
-                break;
-            }
+        var hit = Physics2D.Raycast(transform.position, teleportVector, maxTeleportDistance, 1 << LayerMask.NameToLayer("Terrain"));
+        var indicatorPos = Player.S.transform.position + teleportVector;
+        var indicatorPos2 = new Vector2(indicatorPos.x, indicatorPos.y);
+
+        if (hit.collider != null && hit.point != indicatorPos2) {
+            dashIndicator.SetActive(true);
+            dashIndicator.transform.position = Vector3.Lerp(dashIndicator.transform.position, indicatorPos, 0.5f);
         }
-        if (setactive == false)
-        {
+        else {
+            dashIndicator.transform.position = indicatorPos;
             dashIndicator.SetActive(false);
         }
     }
@@ -247,6 +247,5 @@ public class Teleport : MonoBehaviour, Rechargeable
     {
         enabled = enable;
         teleportUI.SetActive(enable);
-        //dashIndicator.SetActive(enable);
     }
 }
