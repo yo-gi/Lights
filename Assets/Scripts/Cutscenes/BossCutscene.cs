@@ -1,28 +1,20 @@
-﻿using System;
-using UnityEngine;
-using System.Collections.Generic;
+﻿using UnityEngine;
 
 public class BossCutscene : Cutscene {
 
-    protected override float CutSceneLength {
-        get {
-            return 5f;
-        }
-    }
+    private Vector3 bossCamPos = new Vector3(-9, 36, 0);
+    private float bossCamScale = 20f;
 
     protected override void DefineCutscene() {
-        var pos1 = new Vector3(6, 5, 0);
-        var pos2 = new Vector3(1, 5, 0);
+        Do(duration: 2f, action: this.NaviDescribeBoss);
+        Do(duration: 5f, action: this.LookAtBoss);
+    }
 
-        Do(0f, 1f, () => {
-            NaviGo(pos1);
-            PlayerGo(pos1);
-            NaviSay("Loic you're the best at making cutscenes");
-        });
+    private void NaviDescribeBoss() {
+        NaviSay("The evil shadow lurks up above!");
+    }
 
-        Do(1f, 5f, () => {
-            NaviGo(pos2);
-            NaviSay("Literally the best.");
-        });
+    private void LookAtBoss() {
+        LockCamera(bossCamPos, bossCamScale);
     }
 }
