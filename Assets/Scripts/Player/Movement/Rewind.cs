@@ -72,6 +72,7 @@ public class Rewind : MonoBehaviour, Rechargeable
         Toggle(false);
 
         Events.Register<OnResetEvent>(Reset);
+        Events.Register<OnDeathEvent>(Reset);
     }
 
     void Update()
