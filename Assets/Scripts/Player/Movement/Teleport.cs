@@ -6,7 +6,7 @@ public class Teleport : MonoBehaviour, Rechargeable
 
     public GameObject teleportUI;
 
-	public GameObject dashIndicator;
+    public GameObject dashIndicator;
 
     private float maxTeleportDistance = 3f;
 
@@ -70,35 +70,37 @@ public class Teleport : MonoBehaviour, Rechargeable
         r = GetComponent<Rigidbody2D>();
 
         Events.Register<OnResetEvent>(Reset);
-		
-		GameObject.Find("Wall Indicator").transform.position = Player.S.transform.position;
+
+        GameObject.Find("Wall Indicator").transform.position = Player.S.transform.position;
     }
 
     void Update()
     {
-		UpdateCharges();
-		GameObject.Find("Wall Indicator").transform.position = Player.S.transform.position + GetDashVector();
+        UpdateCharges();
+        GameObject.Find("Wall Indicator").transform.position = Player.S.transform.position + GetDashVector();
 
         if (CanDash() && Input.GetKeyDown(Key.Teleport))
         {
-            if (!Charging)
-            {
-                Charging = true;
-            }
-            currentCharges -= 1;
-
             var dashVector = GetDashVector();
             var velocity = r.velocity;
 
-            velocity.x = dashVector.x;
-            velocity.y = dashVector.y;
+            if (dashVector != Vector3.zero)
+            {
+                if (!Charging)
+                {
+                    Charging = true;
+                }
+                currentCharges -= 1;
 
-            r.velocity = velocity;
+                velocity.x = dashVector.x;
+                velocity.y = dashVector.y;
 
-            gameObject.transform.position += dashVector;
-			Navi.S.updatePosition();
+                r.velocity = velocity;
+
+                gameObject.transform.position += dashVector;
+                Navi.S.updatePosition();
+            }
         }
-		//print ("here!");
     }
 
     private void UpdateCharges()
@@ -181,7 +183,7 @@ public class Teleport : MonoBehaviour, Rechargeable
 
     public void Toggle(bool enable)
     {
-		this.enabled = enable;
+        this.enabled = enable;
         teleportUI.SetActive(enable);
     }
 }
