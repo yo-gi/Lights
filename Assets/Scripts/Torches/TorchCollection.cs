@@ -4,7 +4,9 @@
 public enum TorchGroup {
     None,
     AlphaLevel,
-	BossFight
+    BossFight,
+
+    LoicLevel0,
 }
 
 public static class Torches {
@@ -30,8 +32,8 @@ public static class Torches {
     }
 
     private static void Initialize() {
-		Events.Register<OnTorchLitEvent>(Torches.OnTorchLit);
-		Events.Register<OnTorchUnlitEvent>(Torches.OnTorchUnlit);
+        Events.Register<OnTorchLitEvent>(Torches.OnTorchLit);
+        Events.Register<OnTorchUnlitEvent>(Torches.OnTorchUnlit);
 
         Torches.initialized = true;
     }
@@ -50,9 +52,9 @@ public static class Torches {
                 });
             }
         }
-	}
-	
-	private static void OnTorchUnlit(OnTorchUnlitEvent e) {
-		Register (e.torch);
-	}
+    }
+    
+    private static void OnTorchUnlit(OnTorchUnlitEvent e) {
+        Register(e.torch);
+    }
 }
