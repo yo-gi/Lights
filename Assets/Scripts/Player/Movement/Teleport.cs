@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class Teleport : MonoBehaviour, Rechargeable
 {
@@ -14,8 +15,12 @@ public class Teleport : MonoBehaviour, Rechargeable
     private float cooldown = 2f;
     private float rechargeTime = 0f;
     private float lastCharge;
+    private bool teleporting;
 
     private Rigidbody2D r;
+
+    private GameObject poof;
+    private Walk walk;
 
     public int MaxCharges
     {
@@ -67,41 +72,25 @@ public class Teleport : MonoBehaviour, Rechargeable
         Reset();
         Toggle(false);
         r = GetComponent<Rigidbody2D>();
-        dashIndicator = GameObject.Find("Wall Indicator");
+        //dashIndicator = GameObject.Find("Wall Indicator");
+
+        poof = (GameObject)Resources.Load("Poof");
+        walk = gameObject.GetComponent<Walk>();
 
         Events.Register<OnResetEvent>(Reset);
     }
 
     void Update()
     {
-        var dashVector = GetDashVector();
+        var teleportVector = GetTeleportVector();
 
         UpdateCharges();
-        dashIndicator.transform.position = Vector3.Lerp(dashIndicator.transform.position, Player.S.transform.position + dashVector, 0.5f);
+        //UpdateIndicator();
 
-        if (CanDash() && Input.GetKeyDown(Key.Teleport) && dashVector != Vector3.zero)
+        if (CanTeleport() && Input.GetKeyDown(Key.Teleport) && teleportVector != Vector3.zero)
         {
-            ConsumeCharge();
-
-            var velocity = r.velocity;
-            velocity.x = dashVector.x;
-            velocity.y = dashVector.y;
-
-            r.velocity = velocity;
-
-            gameObject.transform.position += dashVector;
-            Navi.S.updatePosition();
+            ActivateTeleport(teleportVector);
         }
-    }
-
-    private void ConsumeCharge()
-    {
-        if (!Charging)
-        {
-            Charging = true;
-        }
-
-        currentCharges -= 1;
     }
 
     private void UpdateCharges()
@@ -121,20 +110,31 @@ public class Teleport : MonoBehaviour, Rechargeable
         }
     }
 
-    private bool CanDash()
+    private void UpdateIndicator(Vector3 teleportVector)
     {
-        return currentCharges > 0;
+        bool setactive = false;
+        foreach (var hit in Physics2D.RaycastAll(transform.position, GetTeleportDirection(), maxTeleportDistance, 1 << LayerMask.NameToLayer("Terrain")))
+        {
+            if (hit.collider != null && GetTeleportDistance(GetTeleportDirection()) == maxTeleportDistance)
+            {
+                dashIndicator.SetActive(true);
+                dashIndicator.transform.position = Vector3.Lerp(dashIndicator.transform.position, Player.S.transform.position + teleportVector, 0.5f);
+                setactive = true;
+                break;
+            }
+        }
+        if (setactive == false)
+        {
+            dashIndicator.SetActive(false);
+        }
     }
 
-    private Vector3 GetDashVector()
+    private bool CanTeleport()
     {
-        var dashDirection = GetDashDirection();
-        var dashDistance = GetDashDistance(dashDirection);
-
-        return dashDirection.normalized * dashDistance;
+        return !teleporting && currentCharges > 0;
     }
 
-    private Vector3 GetDashDirection()
+    private Vector3 GetTeleportDirection()
     {
         var direction = Vector3.zero;
 
@@ -146,7 +146,15 @@ public class Teleport : MonoBehaviour, Rechargeable
         return direction;
     }
 
-    private float GetDashDistance(Vector3 direction)
+    private Vector3 GetTeleportVector()
+    {
+        var direction = GetTeleportDirection();
+        var distance = GetTeleportDistance(direction);
+        return direction * distance;
+    }
+
+
+    private float GetTeleportDistance(Vector3 direction)
     {
         // Find all the walls in the teleport's path.
         var start = gameObject.transform.position;
@@ -176,16 +184,69 @@ public class Teleport : MonoBehaviour, Rechargeable
         }
     }
 
+    private void ActivateTeleport(Vector3 teleportVector)
+    {
+        if (!Charging)
+        {
+            Charging = true;
+        }
+        currentCharges -= 1;
+
+        StartCoroutine(Vanish(teleportVector));
+    }
+
+    IEnumerator Vanish(Vector3 teleportVec)
+    {
+        teleporting = true;
+        walk.enabled = false;
+
+        float duration = 0.1f;
+
+        // Vanish phase
+        float endTime = Time.time + duration;
+        Vector3 scaleVec = transform.localScale;
+
+        Instantiate(poof, transform.position, transform.rotation);
+        while (Time.time <= endTime)
+        {
+            float factor = (endTime - Time.time) / duration;
+            transform.localScale = scaleVec * factor;
+            r.velocity = Vector2.zero;
+            yield return null;
+        }
+
+        // Reappear phase
+        gameObject.transform.position += teleportVec;
+        Navi.S.updatePosition();
+        endTime = Time.time + duration;
+
+        Instantiate(poof, transform.position, transform.rotation);
+        while (Time.time <= endTime)
+        {
+            float factor = (Time.time + duration - endTime) / duration;
+            transform.localScale = scaleVec * factor;
+            r.velocity = Vector2.zero;
+            yield return null;
+        }
+        transform.localScale = scaleVec;
+
+        r.velocity = teleportVec;
+
+        walk.enabled = true;
+        teleporting = false;
+    }
+
     private void Reset()
     {
         currentCharges = maxCharges;
         Charging = false;
+        teleporting = false;
     }
 
     public void Toggle(bool enable)
     {
-        this.enabled = enable;
+        enabled = enable;
         teleportUI.SetActive(enable);
-        dashIndicator.SetActive(enable);
+        //dashIndicator.SetActive(enable);
     }
 }

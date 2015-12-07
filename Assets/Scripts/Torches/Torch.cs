@@ -55,7 +55,6 @@ public class Torch : MonoBehaviour
     }
 
     void OnTriggerEnter2D(Collider2D other) {
-		print (other.name);
         // Destroy enemies that enter torche's light.
         if (active == false) return;
 

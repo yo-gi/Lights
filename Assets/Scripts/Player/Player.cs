@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
 	public int direction = 1;
 
     public int health;
+    private int regenStartHealth;
     private float lastDamage;
     private float regenStart;
 
@@ -57,8 +58,12 @@ public class Player : MonoBehaviour
         float time = Time.time;
         if (time >= lastDamage + regenDelay)
         {
-            if (regenStart == 0) regenStart = time;
-            health = Mathf.Min(maxHealth, health + (int)((time - regenStart) * regenRate));
+            if (regenStart == 0)
+            {
+                regenStart = time;
+                regenStartHealth = health;
+            }
+            health = Mathf.Min(maxHealth, regenStartHealth + (int)((time - regenStart) * regenRate));
         }
     }
 
@@ -117,6 +122,7 @@ public class Player : MonoBehaviour
         health = maxHealth;
         lastDamage = 0;
         regenStart = 0;
+        regenStartHealth = health;
     }
 }
 

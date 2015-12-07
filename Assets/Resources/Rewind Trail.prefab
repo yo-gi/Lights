@@ -1076,6 +1076,10 @@ Prefab:
       propertyPath: m_Positions.Array.data[121].y
       value: 36.9303856
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_UseLightProbes
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 182016}
