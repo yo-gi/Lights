@@ -18,6 +18,7 @@ public class Swim : MonoBehaviour
     private float lastDrownUpdate;
 
     private Rigidbody2D rigidBody;
+    private float originalGravityScale;
 
     public float BreathPercentage
     {
@@ -31,7 +32,7 @@ public class Swim : MonoBehaviour
     {
         S = this;
         rigidBody = GetComponent<Rigidbody2D>();
-        rigidBody.gravityScale = swimGravity;
+        originalGravityScale = rigidBody.gravityScale;
         OnReset();
         Events.Register<OnResetEvent>(OnReset);
         Events.Register<OnDeathEvent>(OnReset);
@@ -157,6 +158,8 @@ public class Swim : MonoBehaviour
     public void Enable(bool enable)
     {
         active = enable;
+        if (enable) rigidBody.gravityScale = swimGravity;
+        else rigidBody.gravityScale = originalGravityScale;
     }
 
     private void OnReset()
