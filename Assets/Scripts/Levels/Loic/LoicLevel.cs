@@ -1,15 +1,15 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class LoicLevel : MonoBehaviour {
 
     void Awake() {
-        this.Room0();
-    }
+        // ------------------------------  ROOM 0 ------------------------------
 
-    private void Room0() {
+        // Show a message after the open door cutscene.
         Events.Register<OnCutsceneEndEvent>(e => {
-            if (e.cutscene is LoicLevel0OnTorchLit) {
+            var cutscene = e.cutscene as LoicOpenDoorCutscene;
+
+            if (cutscene != null && cutscene.requiredGroup == TorchGroup.LoicLevel0) {
                 Navi.S.dialog.Queue(new Speech {
                     dialog = "Looks like the door opened!",
                     duration = 2f

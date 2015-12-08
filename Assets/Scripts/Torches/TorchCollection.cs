@@ -7,6 +7,7 @@ public enum TorchGroup {
     BossFight,
 
     LoicLevel0,
+    LoicLevel1,
 }
 
 public static class Torches {

@@ -13,7 +13,8 @@ public abstract class Cutscene : MonoBehaviour {
 
     public bool showOnce;
 
-    // Use this to update your cutscene. 
+    // Use this to update your cutscene.
+    protected virtual void InitializeCutscene() {}
     protected abstract void DefineCutscene();
 
     // ----------------------------------------------------------------
@@ -81,6 +82,8 @@ public abstract class Cutscene : MonoBehaviour {
 
     void Awake() {
         this.enabled = false;
+
+        this.InitializeCutscene();
     }
 
     void OnTriggerEnter2D(Collider2D other) {

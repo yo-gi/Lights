@@ -1,32 +1,32 @@
 ﻿using UnityEngine;
 
-public class LoicLevel0OnTorchLit : Cutscene {
+public class LoicOpenDoorCutscene : Cutscene {
 
-    public GameObject door;
-    
+   	public TorchGroup requiredGroup;
+
     private Vector3 initialDoorPos;
     private Vector3 finalDoorPos;
     private Vector3 doorLookPos;
 
-    void Start() {
-        initialDoorPos = door.transform.position;
+    protected override void InitializeCutscene() {
+        initialDoorPos = transform.position;
 
         finalDoorPos = initialDoorPos;
-        finalDoorPos.y += door.transform.localScale.y;
+        finalDoorPos.y += transform.localScale.y;
 
         Events.Register<OnTorchGroupLitEvent>(e => {
-            if (e.group == TorchGroup.LoicLevel0) return;
+            if (e.group != requiredGroup) return;
 
             StartCutscene();
         });
     }
 
     protected override void DefineCutscene() {
-        Do(duration: 0.1f, action: this.DoNothing);
-        Do(duration: 1f, action: this.LookAtDoor);
-        Do(duration: 2f, action: this.MoveDoor);
-        Do(duration: 1f, action: this.DoNothing);
-        Do(duration: 0.1f, action: this.LookAtPlayer);
+        Do(duration: 0.1f, action: DoNothing);
+        Do(duration: 1f, action: LookAtDoor);
+        Do(duration: 2f, action: MoveDoor);
+        Do(duration: 0.5f, action: DoNothing);
+        Do(duration: 0.1f, action: LookAtPlayer);
     }
 
     private void DoNothing() {}
@@ -37,7 +37,7 @@ public class LoicLevel0OnTorchLit : Cutscene {
 
     private void MoveDoor() {
         LockCamera(initialDoorPos, 15f);
-        Move(door, initialDoorPos, finalDoorPos);
+        Move(gameObject, initialDoorPos, finalDoorPos);
     }
 
     private void LookAtPlayer() {
