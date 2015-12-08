@@ -46,6 +46,10 @@ public class LoicLevel : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Alpha3)) {
             this.TeleportTo(3);
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha4)) {
+            this.TeleportTo(4);
+        }
     }
 
     private void TeleportTo(int room) {
@@ -53,7 +57,8 @@ public class LoicLevel : MonoBehaviour {
             new Vector3(1f, 0.5f, 0f),
             new Vector3(33f, 0.5f, 0f),
             new Vector3(69f, 0.5f, 0f),
-            new Vector3(109f, 0.5f, 0f)
+            new Vector3(109f, 0.5f, 0f),
+            new Vector3(100.5f, 15.5f, 0f)
         };
 
         Player.S.transform.position = positions[room];
