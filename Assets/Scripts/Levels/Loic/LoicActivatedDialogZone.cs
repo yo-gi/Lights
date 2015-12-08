@@ -1,15 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LoicRoom0ExitDialogZone : DialogZone {
+public class LoicActivatedDialogZone : DialogZone {
 
+    public TorchGroup requiredGroup;
     private bool activated = false;
 
     public void Awake() {
         base.Awake();
 
         Events.Register<OnTorchGroupLitEvent>(e => {
-            if (e.group != TorchGroup.LoicLevel0) return;
+            if (e.group != this.requiredGroup) return;
 
             this.activated = true;
         });
