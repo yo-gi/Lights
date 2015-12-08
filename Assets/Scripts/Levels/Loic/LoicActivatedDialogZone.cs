@@ -6,7 +6,7 @@ public class LoicActivatedDialogZone : DialogZone {
     public TorchGroup requiredGroup;
     private bool activated = false;
 
-    public void Awake() {
+    public override void Awake() {
         base.Awake();
 
         Events.Register<OnTorchGroupLitEvent>(e => {
@@ -16,7 +16,7 @@ public class LoicActivatedDialogZone : DialogZone {
         });
     }
 
-    public void OnTriggerEnter2D(Collider2D other) {
+    public override void OnTriggerEnter2D(Collider2D other) {
         if (this.activated) {
             base.OnTriggerEnter2D(other);
         }
