@@ -8,11 +8,11 @@ public class DialogZone : MonoBehaviour {
 	public bool showOnce;
 	public float minSeconds;
 
-	public void Awake() {
+	public virtual void Awake() {
 		this.dialog = this.dialog.Replace("\\n", "\n");
 	}
 
-	public void OnTriggerEnter2D(Collider2D other) {
+	public virtual void OnTriggerEnter2D(Collider2D other) {
 		if (other.gameObject == Player.S.gameObject) {
 			Navi.S.dialog.Queue(new Speech {
 				dialog = this.dialog,
