@@ -51,7 +51,7 @@ public class MainCam : MonoBehaviour
         }
 
         transform.position = Vector3.SmoothDamp(transform.position, new Vector3(targetPos.x, targetPos.y, transform.position.z), ref speed, dampTime);
-        cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetScale, 0.05f);
+        cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetScale, 0.2f);
 
         if (shakeDuration > 0) {
             transform.localPosition += Random.insideUnitSphere * shakeAmount;
