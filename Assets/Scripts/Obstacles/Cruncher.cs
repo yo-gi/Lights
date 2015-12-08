@@ -19,8 +19,7 @@ public class Cruncher : MonoBehaviour {
 	Vector3 start;
 	CruncherState state = CruncherState.Waiting;
 	Rigidbody2D r;
-
-
+	
 	// Use this for initialization
 	void Start () {
 		start = transform.position;
@@ -31,13 +30,20 @@ public class Cruncher : MonoBehaviour {
 		} else if (crunchAcceleration.y == 0) {
 			r.constraints |= RigidbodyConstraints2D.FreezePositionY;
 		}
+
+		Events.Register<OnDeathEvent>(() => {
+			transform.position = start;
+			state = CruncherState.Waiting;
+			r.velocity = Vector2.zero;
+		});
 	}
-	
+
 	// Update is called once per frame
 	void FixedUpdate () {
+		print (state);
 		switch(state) {
 		case CruncherState.Waiting:
-			var hit = Physics2D.Raycast(transform.position, Vector2.down, triggerDistance, collideMask);
+			var hit = Physics2D.Raycast(transform.position, crunchAcceleration.normalized, triggerDistance, collideMask);
 			if (hit.collider != null && hit.collider.gameObject == Player.S.gameObject) {
 				state = CruncherState.Crunching;
 			}
