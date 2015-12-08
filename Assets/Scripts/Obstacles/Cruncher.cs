@@ -40,7 +40,6 @@ public class Cruncher : MonoBehaviour {
 
 	// Update is called once per frame
 	void FixedUpdate () {
-		print (state);
 		switch(state) {
 		case CruncherState.Waiting:
 			var hit = Physics2D.Raycast(transform.position, crunchAcceleration.normalized, triggerDistance, collideMask);

@@ -34,7 +34,7 @@ GameObject:
   - 114: {fileID: 11463652}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -58,7 +58,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 165206}
   m_LocalRotation: {x: 1, y: 4.37113883e-08, z: 4.37113883e-08, w: 1.91068547e-15}
-  m_LocalPosition: {x: 12.9288845, y: 2.36451268, z: 0}
+  m_LocalPosition: {x: 30.3721924, y: 15.1022043, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 421234}
@@ -144,15 +144,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 610b56342fef2fe42bfdfdf120bc8513, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSpeed: 1
-  attackDamage: 4
-  attackRange: 1
+  attackSpeed: .25
+  attackDamage: 5
+  attackRange: 1.5
   sightRange: 10
   runSpeed: 2
   followSpeed: 3
   canFollow: 0
-  patrolStart: {x: 5, y: 2}
-  patrolEnd: {x: 10, y: 3}
+  patrolEnd: {x: 40, y: 15}
   deathSmoke: {fileID: 171992, guid: 3175100222abc234784a9ddd4498e3b3, type: 2}
   enemyLight: {fileID: 11486666}
   state: 0

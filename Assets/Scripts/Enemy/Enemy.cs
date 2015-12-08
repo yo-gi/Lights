@@ -19,7 +19,7 @@ public class Enemy : MonoBehaviour
 	public float followSpeed;
 
 	public bool canFollow = false;
-	public Vector2 patrolStart;
+	Vector2 patrolStart;
 	public Vector2 patrolEnd;
 
 	public GameObject deathSmoke;
@@ -39,12 +39,13 @@ public class Enemy : MonoBehaviour
 
 	public void Start()
 	{
+		patrolStart = transform.position;
 		Events.Register<OnDeathEvent>(() => {
 			transform.position = patrolStart;
 		});
 	}
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
 		if (state == EnemyState.Patrolling) {
 			// Reverse direction if at destination
@@ -75,5 +76,7 @@ public class Enemy : MonoBehaviour
 
 	public void die() {
 		Instantiate(deathSmoke, transform.position, transform.rotation);
+		MainCam.ShakeForSeconds(0.2f);
+		Destroy(this.gameObject);
 	}
 }
