@@ -2,21 +2,19 @@
 using UnityEngine;
 
 public class OnCutsceneStartEvent {
-    public int id;
+    public Cutscene cutscene;
 }
 
 public class OnCutsceneEndEvent {
-    public int id;
+    public Cutscene cutscene;
 }
 
 public abstract class Cutscene : MonoBehaviour {
 
-    public int id;
     public bool showOnce;
 
     // Use this to update your cutscene. 
     protected abstract void DefineCutscene();
-
 
     // ----------------------------------------------------------------
 
@@ -82,24 +80,13 @@ public abstract class Cutscene : MonoBehaviour {
     private bool locksCam = false;
 
     void Awake() {
-        if (this.GetComponent<CircleCollider2D>() == null
-            && this.GetComponent<BoxCollider2D>() == null) {
-            Debug.Log("Cutscene " + this.name + " does not have a collider!");
-        }
-
         this.enabled = false;
     }
 
     void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject != Player.S.gameObject) return;
 
-        Debug.Log(this.name);
-
-        this.enabled = true;
-        this.startTime = Time.time;
-
-        Events.Broadcast(new OnPauseEvent { paused = true });
-        Events.Broadcast(new OnCutsceneStartEvent { id = this.id });
+        this.StartCutscene();
     }
 
     void Update() {
@@ -119,12 +106,20 @@ public abstract class Cutscene : MonoBehaviour {
             // Clear Navi's dialog.
             Navi.S.dialog.textObject.text = "";
 
-            Events.Broadcast(new OnCutsceneEndEvent { id = this.id });
+            Events.Broadcast(new OnCutsceneEndEvent { cutscene = this });
             Events.Broadcast(new OnPauseEvent { paused = false });
 
             if (this.showOnce) {
                 Destroy(this.gameObject);
             }
         }
+    }
+
+    protected void StartCutscene() {
+        this.enabled = true;
+        this.startTime = Time.time;
+
+        Events.Broadcast(new OnPauseEvent { paused = true });
+        Events.Broadcast(new OnCutsceneStartEvent { cutscene = this });
     }
 }

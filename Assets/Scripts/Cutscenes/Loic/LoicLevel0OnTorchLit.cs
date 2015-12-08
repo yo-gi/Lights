@@ -13,6 +13,12 @@ public class LoicLevel0OnTorchLit : Cutscene {
 
         finalDoorPos = initialDoorPos;
         finalDoorPos.y += door.transform.localScale.y;
+
+        Events.Register<OnTorchGroupLitEvent>(e => {
+            if (e.group == TorchGroup.LoicLevel0) return;
+
+            StartCutscene();
+        });
     }
 
     protected override void DefineCutscene() {
@@ -20,7 +26,7 @@ public class LoicLevel0OnTorchLit : Cutscene {
         Do(duration: 1f, action: this.LookAtDoor);
         Do(duration: 2f, action: this.MoveDoor);
         Do(duration: 1f, action: this.DoNothing);
-        Do(duration: 2f, action: this.NaviSpeech);
+        Do(duration: 0.1f, action: this.LookAtPlayer);
     }
 
     private void DoNothing() {}
@@ -34,8 +40,7 @@ public class LoicLevel0OnTorchLit : Cutscene {
         Move(door, initialDoorPos, finalDoorPos);
     }
 
-    private void NaviSpeech() {
+    private void LookAtPlayer() {
         LockCamera(Player.S.transform.position);
-        NaviSay("Looks like the door opened!");
     }
 }
