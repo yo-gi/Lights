@@ -85,7 +85,7 @@ public class Teleport : MonoBehaviour, Rechargeable
         var teleportVector = GetTeleportVector();
 
         UpdateCharges();
-        //UpdateIndicator();
+        UpdateIndicator(teleportVector);
 
         if (CanTeleport() && Input.GetKeyDown(Key.Teleport) && teleportVector != Vector3.zero)
         {

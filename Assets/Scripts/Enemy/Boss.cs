@@ -28,11 +28,16 @@ public class Boss : MonoBehaviour
 
     float nextAttackTime;
 
+	bool ___________________;
+
+	public bool stageTwo;
+	public int health = 2;
+
     public void Awake()
     {
 		S = this;
 		Events.Register<OnTorchGroupLitEvent>((e) => {
-			if(e.group == TorchGroup.BossFight)
+			if(e.group == TorchGroup.BossFight) // Trigger Stage Two
 			{
 				GetComponent<Enemy>().enabled = true;
 				Navi.S.stolen = false;
@@ -58,7 +63,7 @@ public class Boss : MonoBehaviour
 	{
 		if (state == BossState.Waiting) {
 			//check if player is in sightrange and move to stealing if true
-			if(Vector2.Distance(Navi.S.transform.position, transform.position) < sightRange)
+			if(!stageTwo && Vector2.Distance(Navi.S.transform.position, transform.position) < sightRange)
 			{
 				print ("Stole navi!");
 				state = BossState.Stealing;
@@ -92,4 +97,10 @@ public class Boss : MonoBehaviour
 			Destroy(GameObject.Find("BossDoorExit"));
 		}
     }
+
+	public void takeDamage()
+	{
+		health -=1;
+		transform.localScale *= 0.5f;
+	}
 }
