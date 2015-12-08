@@ -22,6 +22,8 @@ public class Enemy : MonoBehaviour
 	public Vector2 patrolStart;
 	public Vector2 patrolEnd;
 
+	public GameObject deathSmoke;
+
     bool __________________;
 
     public RaycastHit hitInfo;
@@ -70,4 +72,8 @@ public class Enemy : MonoBehaviour
 			}
 		}
     }
+
+	public void die() {
+		Instantiate(deathSmoke, transform.position, transform.rotation);
+	}
 }

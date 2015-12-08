@@ -37,7 +37,7 @@ public class Cruncher : MonoBehaviour {
 	void FixedUpdate () {
 		switch(state) {
 		case CruncherState.Waiting:
-			var hit = Physics2D.Raycast(transform.position, Vector2.down, 20f, collideMask);
+			var hit = Physics2D.Raycast(transform.position, Vector2.down, triggerDistance, collideMask);
 			if (hit.collider != null && hit.collider.gameObject == Player.S.gameObject) {
 				state = CruncherState.Crunching;
 			}

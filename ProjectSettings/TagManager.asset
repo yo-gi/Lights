@@ -12,6 +12,7 @@ TagManager:
   - Torch
   - Checkpoint
   - Projectile
+  - Enemy
   layers:
   - Default
   - TransparentFX

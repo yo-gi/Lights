@@ -22,6 +22,10 @@ public class LightRay : MonoBehaviour {
 			triggered = true;
 			Boss.S.takeDamage();
 		}
+
+		if (other.gameObject.tag == "Enemy") {
+			other.gameObject.GetComponent<Enemy>().die();
+		}
 		
 	}
 }

@@ -9,10 +9,10 @@ GameObject:
   m_Component:
   - 4: {fileID: 471764}
   - 212: {fileID: 21244102}
-  - 60: {fileID: 6001450}
   - 114: {fileID: 11452376}
   - 114: {fileID: 11401394}
   - 50: {fileID: 5052772}
+  - 61: {fileID: 6146178}
   m_Layer: 8
   m_Name: Cruncher
   m_TagString: Untagged
@@ -48,23 +48,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 5
---- !u!60 &6001450
-PolygonCollider2D:
+--- !u!61 &6146178
+BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 199368}
   m_Enabled: 1
-  m_Material: {fileID: 6200000, guid: 1fbe3ef48ee7e4848b453a1392eb05ee, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0}
-  m_Points:
-    m_Paths:
-    - - {x: 0, y: 0}
-      - {x: 0, y: -1}
-      - {x: 1, y: -1}
-      - {x: 1, y: 0}
+  m_Offset: {x: .500976562, y: -.500976562}
+  serializedVersion: 2
+  m_Size: {x: 1.00195312, y: 1.00195312}
 --- !u!114 &11401394
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -76,9 +72,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6465dbc6b7bcef3458a7c24e1565bb48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crunchAcceleration: {x: 0, y: -1.5}
+  crunchAcceleration: {x: 0, y: -1}
   returnVelocity: 2
   triggerDistance: 10
+  damage: 34
 --- !u!114 &11452376
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -110,7 +107,9 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_MinimumChartSize: 4
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
@@ -124,7 +123,15 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: crunchAcceleration.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: damage
+      value: 34
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 199368}
