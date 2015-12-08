@@ -19,9 +19,16 @@ public class Dialog : MonoBehaviour {
     public float endTime;
 
     // Use this to queue messages to the dialog component.
-    public void Queue(Speech speech) {
+    public void Queue(Speech speech, bool force = false) {
         if (speech.duration < Dialog.MinDuration) {
             speech.duration = Dialog.MinDuration;
+        }
+
+        if (force) {
+            this.current = null;
+            this.endTime = 0f;
+
+            this.queue.Clear();
         }
 
         this.queue.Enqueue(speech);

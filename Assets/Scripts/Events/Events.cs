@@ -5,7 +5,7 @@ public class OnResetEvent { }
 public class OnTorchLitEvent { public Torch torch; }
 public class OnTorchUnlitEvent { public Torch torch; }
 public class OnTorchGroupLitEvent { public TorchGroup group; }
-public class OnAltarLitEvent { }
+public class OnAltarLitEvent { public Ability ability; }
 public class OnDeathEvent { }
 public class OnPauseEvent { public bool paused; }
 

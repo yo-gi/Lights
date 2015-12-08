@@ -1,9 +1,15 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class LoicActivatedDialogZone : DialogZone {
+///
+/// A dialog zone that can only activated once a specific torch group has been lit.
+///
+public class ActivatedDialogZone : DialogZone {
 
+    ///
+    /// The torch group that must lit for this dialog zone to be activated.
+    ///
     public TorchGroup requiredGroup;
+
     private bool activated = false;
 
     public override void Awake() {

@@ -57,7 +57,7 @@ public class Altar : MonoBehaviour {
         ToggleAbility(ability, true);
         active = true;
 
-        Events.Broadcast(new OnAltarLitEvent { });
+        Events.Broadcast(new OnAltarLitEvent { ability = ability });
     }
 
     private void Reset()

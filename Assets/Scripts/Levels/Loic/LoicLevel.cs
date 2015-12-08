@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class LoicLevel : MonoBehaviour {
 
@@ -16,5 +17,49 @@ public class LoicLevel : MonoBehaviour {
                 });
             }
         });
+
+        // -----------------------------  CORRIDOR -----------------------------
+
+        Events.Register<OnAltarLitEvent>(e => {
+            if (e.ability != Ability.Teleport) return;
+
+            Navi.S.dialog.Queue(new Speech {
+                dialog = "You unlocked the teleport ability!\nPress J to teleport forward!",
+                duration = 4f
+            });
+        });        
+    }
+
+    void Update() {
+        if (Input.GetKeyDown(KeyCode.Alpha0)) {
+            this.TeleportTo(0);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1)) {
+            this.TeleportTo(1);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2)) {
+            this.TeleportTo(2);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3)) {
+            this.TeleportTo(3);
+        }
+    }
+
+    private void TeleportTo(int room) {
+        var positions = new List<Vector3> {
+            new Vector3(1f, 0.5f, 0f),
+            new Vector3(33f, 0.5f, 0f),
+            new Vector3(69f, 0.5f, 0f),
+            new Vector3(109f, 0.5f, 0f)
+        };
+
+        Player.S.transform.position = positions[room];
+
+        if (room >= 3) {
+            Teleport.S.Toggle(true);
+        }
     }
 }
