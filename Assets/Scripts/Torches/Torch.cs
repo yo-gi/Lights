@@ -58,10 +58,10 @@ public class Torch : MonoBehaviour
         // Destroy enemies that enter torche's light.
         if (active == false) return;
 
-        /*if (other.GetComponent<Enemy>() != null || other.GetComponent<BossProjectile>()) {
+        if (other.gameObject.tag == "Enemy" || other.GetComponent<BossProjectile>()) {
 			print ("torched in torch!");
             Destroy(other.gameObject);
-        }*/
+        }
     }
 
     void OnTriggerStay2D(Collider2D other) {
