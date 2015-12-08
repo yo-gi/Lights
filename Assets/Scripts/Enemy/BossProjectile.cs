@@ -40,7 +40,6 @@ public class BossProjectile : MonoBehaviour {
 		// Destroy the projectile if it hits the player.
 		if (other.gameObject == Player.S.gameObject) {
 			Player.S.takeDamage(attackDamage);
-			MainCam.ShakeForSeconds(0.5f);
 			Destroy(this.gameObject);
 		}
 		else if(other.gameObject.name == "Torch"){

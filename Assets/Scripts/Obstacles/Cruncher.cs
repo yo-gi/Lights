@@ -9,12 +9,12 @@ public enum CruncherState {
 
 public class Cruncher : MonoBehaviour {
 
+	static int collideMask = 1 << LayerMask.NameToLayer("Player");
 
 	public Vector2 crunchAcceleration;
 	public float returnVelocity;
 	public float triggerDistance;
-	
-	static int collideMask = 1 << LayerMask.NameToLayer("Player");
+	public int damage;
 
 	Vector3 start;
 	CruncherState state = CruncherState.Waiting;
@@ -34,10 +34,11 @@ public class Cruncher : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		switch(state) {
 		case CruncherState.Waiting:
-			if (Vector3.Distance(Player.S.transform.position, transform.position) < triggerDistance) {
+			var hit = Physics2D.Raycast(transform.position, Vector2.down, 20f, collideMask);
+			if (hit.collider != null && hit.collider.gameObject == Player.S.gameObject) {
 				state = CruncherState.Crunching;
 			}
 			break;
@@ -59,7 +60,7 @@ public class Cruncher : MonoBehaviour {
 	{
 		if (c.gameObject == Player.S.gameObject)
 		{
-			Events.Broadcast(new OnDeathEvent());
+			Player.S.takeDamage(damage);
 			state = CruncherState.Returning;
 		} else {
 			state = CruncherState.Returning;

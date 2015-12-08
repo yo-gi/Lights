@@ -32,6 +32,7 @@ public class Boss : MonoBehaviour
 
 	public bool stageTwo;
 	public int health = 2;
+	Enemy enemyComponent;
 
     public void Awake()
     {
@@ -56,6 +57,7 @@ public class Boss : MonoBehaviour
 	public void Start()
 	{
 		state = BossState.Waiting;
+		enemyComponent = GetComponent<Enemy>();
 	}
 
     // Update is called once per frame
@@ -102,5 +104,12 @@ public class Boss : MonoBehaviour
 	{
 		health -=1;
 		transform.localScale *= 0.5f;
+		enemyLight.radius *= 0.5f;
+		enemyComponent.followSpeed *= 2;
+
+		if (health == 0) {
+			state = BossState.Dying;
+		}
+
 	}
 }

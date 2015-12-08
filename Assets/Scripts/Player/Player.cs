@@ -72,6 +72,7 @@ public class Player : MonoBehaviour
         lastDamage = Time.time;
         regenStart = 0;
         if (MainCam.S.invincible) return;
+		MainCam.ShakeForSeconds(0.5f);
         health = Mathf.Max(0, health - damage);
         if (health <= 0)
         {

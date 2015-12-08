@@ -63,7 +63,6 @@ public class Enemy : MonoBehaviour
 			if (Vector2.Distance(Player.S.transform.position, transform.position) > sightRange)
 				state = EnemyState.Patrolling;
 		}
-
 		if (Vector2.Distance(Player.S.transform.position, transform.position) < attackRange) {
 			if (Time.time > nextAttackTime) {
 				Player.S.takeDamage(attackDamage);
