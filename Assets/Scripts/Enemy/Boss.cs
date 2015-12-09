@@ -73,6 +73,7 @@ public class Boss : MonoBehaviour
 				print ("Stole navi!");
 				state = BossState.Stealing;
 				Navi.S.stolen = true;
+				Music.S.setBossMusic();
 			}
 		}
 		else if (state == BossState.Stealing) {
@@ -97,6 +98,7 @@ public class Boss : MonoBehaviour
 		}
 		if (state == BossState.Dying) {
 			Navi.S.stolen = false;
+			Music.S.setDefaultMusic();
 			MainCam.ShakeForSeconds(2f);
 			Destroy(gameObject);
 			Destroy(GameObject.Find("BossDoorExit"));
