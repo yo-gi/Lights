@@ -85,6 +85,7 @@ public class Teleport : MonoBehaviour, Rechargeable
         dashIndicator.SetActive(false);
 
         Events.Register<OnResetEvent>(Reset);
+        Events.Register<OnPauseEvent>(Pause);
     }
 
     void Update()
@@ -256,6 +257,11 @@ public class Teleport : MonoBehaviour, Rechargeable
         currentCharges = maxCharges;
         Charging = false;
         teleporting = false;
+    }
+
+    private void Pause(OnPauseEvent e)
+    {
+        this.enabled = ! e.paused;
     }
 
     public void Toggle(bool enable)
