@@ -22,7 +22,7 @@ public class Platforms : MonoBehaviour
         end = transform.position + end - start;
 		start = transform.position;
 
-        this.waitUntil = platformStartPauseTime;
+        waitUntil = Time.time + platformStartPauseTime;
     }
 
     void FixedUpdate()
