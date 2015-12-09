@@ -77,7 +77,7 @@ public class Teleport : MonoBehaviour, Rechargeable
         walk = gameObject.GetComponent<Walk>();
 
 		dashIndicator = GameObject.Find("Wall Indicator");
-		dashIndicatorParticles = GameObject.Find("Indicator particle glow");
+		dashIndicatorParticles = GameObject.Find("particle glow master");
         poof = (GameObject)Resources.Load("Poof");
 
         dashIndicator.SetActive(false);
