@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using LOS;
 using System;
-using System.Collections;
 
 public class Navi : MonoBehaviour
 {

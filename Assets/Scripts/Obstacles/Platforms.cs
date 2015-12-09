@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Platforms : MonoBehaviour
 {
@@ -19,6 +18,7 @@ public class Platforms : MonoBehaviour
     void Start()
     {
         player = GameObject.Find("Player");
+        end = transform.position + end - start;
 		start = transform.position;
     }
 
