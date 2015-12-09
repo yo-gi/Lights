@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
-public class LoicOpenDoorCutscene : Cutscene {
+public class LoicOpenDoorHorizontalCutscene : Cutscene {
 
    	public TorchGroup requiredGroup;
-    public bool down = false;
+    public bool right = false;
 
     private Vector3 initialDoorPos;
     private Vector3 finalDoorPos;
@@ -12,12 +12,12 @@ public class LoicOpenDoorCutscene : Cutscene {
     protected override void InitializeCutscene() {
         initialDoorPos = transform.position;
 
-        var finalDoorPosOffset = transform.localScale.y;
+        var finalDoorPosOffset = transform.localScale.x;
 
-        if (down) finalDoorPosOffset *= -1;
+        if (right == false) finalDoorPosOffset *= -1;
 
         finalDoorPos = initialDoorPos;
-        finalDoorPos.y += finalDoorPosOffset;
+        finalDoorPos.x += finalDoorPosOffset;
 
         Events.Register<OnTorchGroupLitEvent>(e => {
             if (e.group != requiredGroup) return;

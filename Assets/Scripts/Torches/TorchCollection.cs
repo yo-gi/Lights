@@ -8,6 +8,13 @@ public enum TorchGroup {
 
     LoicLevel0,
     LoicLevel1,
+
+    Group0,
+    Group1,
+    Group2,
+    Group3,
+    Group4,
+    Group5,
 }
 
 public static class Torches {
