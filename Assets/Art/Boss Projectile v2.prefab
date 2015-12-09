@@ -73,7 +73,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifetime: 7
-  attackDamage: 34
+  attackDamage: 15
   radius: 1
   targetPos: {x: 0, y: 22, z: 0}
   speed: {x: 0, y: 0, z: 0}
@@ -1150,7 +1150,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: attackDamage
-      value: 34
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: dampTime
