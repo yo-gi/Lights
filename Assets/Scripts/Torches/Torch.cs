@@ -57,7 +57,6 @@ public class Torch : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other) {
         // Destroy enemies that enter torche's light.
         if (active == false) return;
-		print ("ayy");
         if (other.gameObject.tag == "Enemy") {
             other.gameObject.GetComponent<Enemy>().die();
 		} else if (other.GetComponent<BossProjectile>() != null) {

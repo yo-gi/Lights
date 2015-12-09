@@ -1,15 +1,15 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &158426
+--- !u!1 &112822
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 446762}
-  - 198: {fileID: 19870416}
-  - 199: {fileID: 19975786}
+  - 4: {fileID: 459430}
+  - 198: {fileID: 19871802}
+  - 199: {fileID: 19936964}
   m_Layer: 0
   m_Name: Dash Indicator
   m_TagString: Untagged
@@ -17,24 +17,24 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &446762
+--- !u!4 &459430
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 158426}
+  m_GameObject: {fileID: 112822}
   m_LocalRotation: {x: 1, y: 3.13916473e-07, z: 1.19248806e-08, w: 3.74341637e-15}
-  m_LocalPosition: {x: 4.36999989, y: 4.88999987, z: 240.125305}
+  m_LocalPosition: {x: 4.5999999, y: 5.09000015, z: 240.125305}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!198 &19870416
+--- !u!198 &19871802
 ParticleSystem:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 158426}
+  m_GameObject: {fileID: 112822}
   lengthInSec: 1
   startDelay: 0
   speed: 1
@@ -46,7 +46,7 @@ ParticleSystem:
   InitialModule:
     enabled: 1
     startLifetime:
-      scalar: .5
+      scalar: .150000006
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -108,7 +108,7 @@ ParticleSystem:
           rgba: 4294967295
         key1:
           serializedVersion: 2
-          rgba: 4294926424
+          rgba: 4294967295
         key2:
           serializedVersion: 2
           rgba: 16735572
@@ -243,7 +243,7 @@ ParticleSystem:
       minMaxState: 3
     gravityModifier: 0
     inheritVelocity: 0
-    maxNumParticles: 32
+    maxNumParticles: 50
   ShapeModule:
     serializedVersion: 2
     enabled: 0
@@ -262,7 +262,7 @@ ParticleSystem:
     enabled: 1
     m_Type: 0
     rate:
-      scalar: 16
+      scalar: 64
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -306,27 +306,27 @@ ParticleSystem:
   SizeModule:
     enabled: 1
     curve:
-      scalar: .5
+      scalar: .150000006
       maxCurve:
         serializedVersion: 2
         m_Curve:
         - time: 0
-          value: .748936653
+          value: 1
           inSlope: .0651844367
           outSlope: .0651844367
           tangentMode: 0
-        - time: .404621989
-          value: .844127774
-          inSlope: .739884794
-          outSlope: .739884794
+        - time: .332696229
+          value: .751616776
+          inSlope: -2.45231652
+          outSlope: -2.45231652
           tangentMode: 0
-        - time: .573220849
-          value: 1
-          inSlope: -.00689732982
-          outSlope: -.00689732982
+        - time: .559299767
+          value: .167400867
+          inSlope: -.349151313
+          outSlope: -.349151313
           tangentMode: 0
         - time: 1
-          value: 1
+          value: .0837004483
           inSlope: 0
           outSlope: 0
           tangentMode: 0
@@ -379,10 +379,10 @@ ParticleSystem:
       maxGradient:
         key0:
           serializedVersion: 2
-          rgba: 16758964
+          rgba: 16777215
         key1:
           serializedVersion: 2
-          rgba: 4294914598
+          rgba: 4294967295
         key2:
           serializedVersion: 2
           rgba: 4278190080
@@ -1052,12 +1052,12 @@ ParticleSystem:
     subEmitterCollision1: {fileID: 0}
     subEmitterDeath: {fileID: 0}
     subEmitterDeath1: {fileID: 0}
---- !u!199 &19975786
+--- !u!199 &19936964
 ParticleSystemRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 158426}
+  m_GameObject: {fileID: 112822}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -1099,5 +1099,5 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 158426}
+  m_RootGameObject: {fileID: 112822}
   m_IsPrefabParent: 1
