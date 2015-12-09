@@ -90,7 +90,6 @@ public class Boss : MonoBehaviour
 			Music.S.setDefaultMusic();
 			MainCam.ShakeForSeconds(5f);
 			Destroy(gameObject);
-			Destroy(GameObject.Find("BossDoorExit"));
 		}
     }
 

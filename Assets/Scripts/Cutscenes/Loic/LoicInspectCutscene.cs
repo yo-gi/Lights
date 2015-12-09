@@ -5,6 +5,7 @@ public class LoicInspectCutscene : Cutscene {
 
     public string text;
     public float inspectionTime = 3f;
+    public float cameraSize = 8f;
     public List<GameObject> objects;
 
     protected override void DefineCutscene() {
@@ -16,7 +17,7 @@ public class LoicInspectCutscene : Cutscene {
             // Position *MUST* be stored outside of action closure here!
             var position = go.transform.position;
 
-            Do(duration: this.inspectionTime, action: () => LockCamera(position));
+            Do(duration: this.inspectionTime, action: () => LockCamera(position, cameraSize));
         }
     }
 }
