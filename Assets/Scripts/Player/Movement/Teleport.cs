@@ -261,7 +261,7 @@ public class Teleport : MonoBehaviour, Rechargeable
 
     private void Pause(OnPauseEvent e)
     {
-        this.enabled = ! e.paused;
+        //if (enabled) enabled = ! e.paused;
     }
 
     public void Toggle(bool enable)

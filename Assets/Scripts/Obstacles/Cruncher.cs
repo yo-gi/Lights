@@ -9,8 +9,8 @@ public enum CruncherState {
 
 public class Cruncher : MonoBehaviour {
 
-	static int collideMask = 1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("Terrain");
-	static int terrainCollideMask = 1 << LayerMask.NameToLayer("Terrain");
+    static int collideMask;
+    static int terrainCollideMask;
 
 	public Vector2 crunchAcceleration;
 	public float returnVelocity;
@@ -24,7 +24,9 @@ public class Cruncher : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		start = transform.position;
-		r = GetComponent<Rigidbody2D>();
+        collideMask = 1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("Terrain");
+        terrainCollideMask = 1 << LayerMask.NameToLayer("Terrain");
+        r = GetComponent<Rigidbody2D>();
 		Physics2D.IgnoreCollision(GetComponent<Collider2D>(), Navi.S.GetComponent<Collider2D>());
 		if (crunchAcceleration.x == 0) {
 			r.constraints |= RigidbodyConstraints2D.FreezePositionX;
