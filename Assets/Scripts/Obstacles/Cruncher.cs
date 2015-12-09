@@ -70,6 +70,7 @@ public class Cruncher : MonoBehaviour {
 		} else {
 			state = CruncherState.Returning;
 		}
+		MainCam.ShakeForSeconds(0.1f);
 	}
 	
 	void OnCollisionExit2D(Collision2D c)
