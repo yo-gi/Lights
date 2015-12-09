@@ -19,9 +19,10 @@ public class Platforms : MonoBehaviour
     void Start()
     {
         player = GameObject.Find("Player");
+		start = transform.position;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         var currentTime = Time.time;
 
