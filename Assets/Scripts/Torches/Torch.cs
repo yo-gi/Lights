@@ -55,6 +55,7 @@ public class Torch : MonoBehaviour
     }
 
     void OnTriggerEnter2D(Collider2D other) {
+        if (active) print(other.gameObject);
         // Destroy enemies that enter torche's light.
         if (active == false) return;
         if (other.gameObject.tag == "Enemy") {
@@ -66,7 +67,18 @@ public class Torch : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D other) {
         // Light up the torch when the player is near it.
-        if (active) return;
+        if (active)
+        {
+            if (other.gameObject.tag == "Enemy")
+            {
+                other.gameObject.GetComponent<Enemy>().die();
+            }
+            else if (other.GetComponent<BossProjectile>() != null)
+            {
+                Destroy(other.gameObject);
+            }
+            return;
+        }
 
         if (other.gameObject == Player.S.gameObject) {
             if (Vector3.Distance(transform.position, Player.S.transform.position) < activationRadius) {
