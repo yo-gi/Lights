@@ -75,8 +75,12 @@ public class Enemy : MonoBehaviour
     }
 
 	public void die() {
-		Instantiate(deathSmoke, transform.position, transform.rotation);
+		emitSmoke();
 		MainCam.ShakeForSeconds(0.2f);
 		Destroy(this.gameObject);
+	}
+
+	public void emitSmoke() {
+		Instantiate(deathSmoke, transform.position, transform.rotation);
 	}
 }

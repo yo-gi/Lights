@@ -43,6 +43,7 @@ public class Boss : MonoBehaviour
 			{
 				stageTwo = true;
 				enemyComponent.enabled = true;
+				enemyComponent.emitSmoke();
 				Navi.S.stolen = false;
 				MainCam.ShakeForSeconds(2f);
 				//state = BossState.Dying;
@@ -68,7 +69,7 @@ public class Boss : MonoBehaviour
     void Update()
 	{
 		if (stageTwo) {
-			if (Vector2.Distance(Player.S.transform.position, transform.position) > 20f) {
+			if (Vector2.Distance(Player.S.transform.position, transform.position) > 15f) {
 				enemyComponent.followSpeed = 20f;
 			} else {
 				enemyComponent.followSpeed = 3f;
