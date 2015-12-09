@@ -9,7 +9,7 @@ public enum CruncherState {
 
 public class Cruncher : MonoBehaviour {
 
-	static int collideMask = 1 << LayerMask.NameToLayer("Player");
+	static int collideMask = 1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("Terrain");
 	static int terrainCollideMask = 1 << LayerMask.NameToLayer("Terrain");
 
 	public Vector2 crunchAcceleration;
@@ -44,6 +44,7 @@ public class Cruncher : MonoBehaviour {
 		switch(state) {
 		case CruncherState.Waiting:
 			var hit = Physics2D.Raycast(transform.position, crunchAcceleration.normalized, triggerDistance, collideMask);
+			Debug.Log("Found: " + hit.collider.name);
 			if (hit.collider != null && hit.collider.gameObject == Player.S.gameObject) {
 				state = CruncherState.Crunching;
 			}
