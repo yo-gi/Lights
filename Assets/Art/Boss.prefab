@@ -48,7 +48,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 154238}
   m_LocalRotation: {x: 1, y: 4.37113883e-08, z: 4.37113883e-08, w: 1.91068547e-15}
-  m_LocalPosition: {x: -9, y: 36, z: 0}
+  m_LocalPosition: {x: 35, y: 38.2999992, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 1}
   m_Children:
   - {fileID: 489888}
@@ -141,7 +141,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 154238}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 610b56342fef2fe42bfdfdf120bc8513, type: 3}
   m_Name: 
@@ -153,8 +153,8 @@ MonoBehaviour:
   runSpeed: 5
   followSpeed: 7
   canFollow: 0
-  patrolStart: {x: -9, y: 36}
   patrolEnd: {x: -15, y: 36}
+  deathSmoke: {fileID: 0}
   enemyLight: {fileID: 0}
   state: 0
 --- !u!114 &11420598
@@ -209,9 +209,12 @@ MonoBehaviour:
   sightRange: 16
   naviStolenRange: 6
   attackSpeed: .200000003
-  projectile: {fileID: 160292, guid: 4d1c321826ddbd54b935a81080363525, type: 2}
+  projectile: {fileID: 147422, guid: 0706c9010c9aaa748a4cd9928640ba66, type: 2}
+  naviStolenOffset: {x: 0, y: 5, z: 0}
   naviStolenPos: {x: -9, y: 42, z: 0}
   enemyLight: {fileID: 11420598}
+  stageTwo: 0
+  health: 2
 --- !u!198 &19887576
 ParticleSystem:
   m_ObjectHideFlags: 1
