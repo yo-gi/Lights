@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class LightRay : MonoBehaviour {
 
@@ -10,6 +9,7 @@ public class LightRay : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		boss = GameObject.Find("Boss");
+        print(boss);
 	}
 	
 	// Update is called once per frame
@@ -18,7 +18,7 @@ public class LightRay : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
-		if (!triggered && other.gameObject == boss) {
+		if (!triggered && other.gameObject == Boss.S.gameObject) {
 			triggered = true;
 			Boss.S.takeDamage();
 		}

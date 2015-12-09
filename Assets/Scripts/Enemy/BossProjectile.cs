@@ -54,6 +54,7 @@ public class BossProjectile : MonoBehaviour {
 			DestroyImmediate(this.gameObject);
 			return;
 		}
+        // Use speed instead of damp time. If the target is further away, the projectile will move too fast
 		gameObject.transform.position =  Vector3.SmoothDamp(transform.position, targetPos, ref speed, dampTime);
 		if (Vector2.Distance (Player.S.transform.position, transform.position) < radius) {
 			Player.S.takeDamage(attackDamage);
