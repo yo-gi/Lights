@@ -75,7 +75,7 @@ public class Rewind : MonoBehaviour, Rechargeable
         Events.Register<OnDeathEvent>(Reset);
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (ShouldRewind()) RewindTime();
         else UpdateLocationHistory(gameObject.transform.position);

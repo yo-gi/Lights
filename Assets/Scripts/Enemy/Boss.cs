@@ -20,6 +20,7 @@ public class Boss : MonoBehaviour
     public float attackSpeed;
 	public GameObject projectile;
 
+	public Vector3 naviStolenOffset;
 	public Vector3 naviStolenPos;
 
     bool __________________;
@@ -58,6 +59,8 @@ public class Boss : MonoBehaviour
 	{
 		state = BossState.Waiting;
 		enemyComponent = GetComponent<Enemy>();
+
+		naviStolenPos = transform.position + naviStolenOffset;
 	}
 
     // Update is called once per frame

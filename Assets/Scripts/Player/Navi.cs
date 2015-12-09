@@ -20,8 +20,8 @@ public class Navi : MonoBehaviour
     public float startingLightRadius;
     public float finalLightRadius;
 
-    GameObject spriteObject;
-    SpriteRenderer sprite;
+    //GameObject spriteObject;
+    //SpriteRenderer sprite;
     public LOSRadialLight naviLight;
     public Dialog dialog;
 
@@ -58,8 +58,8 @@ public class Navi : MonoBehaviour
     
     void Start ()
     {
-        spriteObject = gameObject.transform.Find ("LightSprite").gameObject;
-        sprite = spriteObject.GetComponent<SpriteRenderer> ();
+        //spriteObject = gameObject.transform.Find ("LightSprite").gameObject;
+        //sprite = spriteObject.GetComponent<SpriteRenderer> ();
         naviLight = GameObject.Find("Navi Light").GetComponent<LOSRadialLight>();
         dialog = GetComponent<Dialog>();
 
@@ -121,7 +121,7 @@ public class Navi : MonoBehaviour
 
     public void ChangeColor (Color color)
     {
-        sprite.color = color;
+        //sprite.color = color;
         naviLight.color = color;
     }
 
@@ -148,12 +148,12 @@ public class Navi : MonoBehaviour
 
     void OnPause(OnPauseEvent e) {
         if (e.paused) {
-            Pauser.Pause(this.spriteObject);
+            //Pauser.Pause(this.spriteObject);
             Pauser.Pause(this);
         }
         else {
             Pauser.Resume(this);
-            Pauser.Resume(this.spriteObject);
+            //Pauser.Resume(this.spriteObject);
         }
     }
 
