@@ -70,7 +70,6 @@ public class Boss : MonoBehaviour
 			if(!stageTwo && Vector2.Distance(Navi.S.transform.position, transform.position) < sightRange)
 			{
 				state = BossState.Attacking;
-				Music.S.setBossMusic();
 			}
 		}
 		else if (state == BossState.Attacking) {
