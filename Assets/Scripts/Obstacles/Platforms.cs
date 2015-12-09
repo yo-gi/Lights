@@ -5,6 +5,7 @@ public class Platforms : MonoBehaviour
     public Vector3 start;
     public Vector3 end;
     public float lerpSpeed;
+    public float platformStartPauseTime = 0f;
     public float platformPauseTime;
 
     float startTime;
@@ -20,6 +21,8 @@ public class Platforms : MonoBehaviour
         player = GameObject.Find("Player");
         end = transform.position + end - start;
 		start = transform.position;
+
+        this.waitUntil = platformStartPauseTime;
     }
 
     void FixedUpdate()
