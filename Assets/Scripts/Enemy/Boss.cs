@@ -118,6 +118,7 @@ public class Boss : MonoBehaviour
 	public void takeDamage()
 	{
 		health -=1;
+		attackSpeed = 10000f;
 		transform.localScale *= 0.5f;
 		enemyLight.radius *= 0.5f;
 		enemyComponent.followSpeed *= 2;
