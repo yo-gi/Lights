@@ -73,11 +73,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifetime: 7
-  attackDamage: 10
+  attackDamage: 34
   radius: 1
   targetPos: {x: 0, y: 22, z: 0}
   speed: {x: 0, y: 0, z: 0}
-  dampTime: 4
+  dampTime: 2
 --- !u!198 &19854474
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -1147,6 +1147,14 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: InitialModule.startSize.scalar
       value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: attackDamage
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: dampTime
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
