@@ -40,9 +40,9 @@ public class Torch : MonoBehaviour
         if (this.groups != null && this.groups.Count > 0) {
             Torches.Register(this);
 
-            if (this.groups.Contains(TorchGroup.BossFight)) {
-                Events.Register<OnDeathEvent>(this.Reset);
-            }
+            // if (this.groups.Contains(TorchGroup.BossFight)) {
+            //     Events.Register<OnDeathEvent>(this.Reset);
+            // }
         }
 
         flame = transform.Find("Flame").gameObject;

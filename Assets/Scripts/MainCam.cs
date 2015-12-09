@@ -25,7 +25,7 @@ public class MainCam : MonoBehaviour
     public float defaultScale;
 
     private float shakeDuration = 0f;
-    private float shakeAmount = 0.2f;
+    private float shakeAmount = 0.4f;
 
     void Awake()
     {

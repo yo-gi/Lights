@@ -25,6 +25,7 @@ public class Music : MonoBehaviour {
 
 	public float volchangefreq;
 
+	bool isBossMusic = false;
 	float nextVolchangeTime;
 
 
@@ -46,11 +47,15 @@ public class Music : MonoBehaviour {
 
 	public void setBossMusic()
 	{
-		state = MusicState.defaultFadeOut;
+		if (isBossMusic == false) {
+			isBossMusic = true;
+			state = MusicState.defaultFadeOut;
+		}
 	}
 	
 	public void setDefaultMusic()
 	{
+		isBossMusic = false;
 		state = MusicState.bossFadeOut;
 	}
 

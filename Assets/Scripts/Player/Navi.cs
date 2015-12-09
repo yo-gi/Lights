@@ -34,8 +34,6 @@ public class Navi : MonoBehaviour
 
     public float nextMovetime;
 
-    public bool stolen = false;
-
     public Color currentColor;
     private int currentColorIndex;
 
@@ -94,13 +92,6 @@ public class Navi : MonoBehaviour
     // Update is called once per frame
     void Update ()
     {
-        if (stolen) {
-            Vector3.SmoothDamp(transform.position, Boss.S.naviStolenPos, ref speed, dampTime);
-            rb.velocity = speed;
-            naviLight.radius = deathThreshold + (maxLightRadius - deathThreshold) * Player.S.HealthPercentage * Swim.S.BreathPercentage;
-            return;
-        }
-
         if (Vector3.Distance(transform.position, Player.S.transform.position) > 10f) {
             // Navi may have gotten stuck. Teleport navi back to the player.
             this.updatePosition();
@@ -140,9 +131,7 @@ public class Navi : MonoBehaviour
 
     public void updatePosition()
     {
-        if (stolen == false) {
-            transform.position = Player.S.transform.position;
-        }
+        transform.position = Player.S.transform.position;
     }
 
     void OnPause(OnPauseEvent e) {

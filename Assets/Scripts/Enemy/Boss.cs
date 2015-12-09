@@ -4,7 +4,6 @@ using LOS;
 public enum BossState
 { 
 	Waiting,
-	Stealing,
 	Attacking,
 	Dying
 }
@@ -16,12 +15,8 @@ public class Boss : MonoBehaviour
 	public BossState state;
 	
 	public float sightRange;
-	public float naviStolenRange;
     public float attackSpeed;
 	public GameObject projectile;
-
-	public Vector3 naviStolenOffset;
-	public Vector3 naviStolenPos;
 
     bool __________________;
 
@@ -44,7 +39,6 @@ public class Boss : MonoBehaviour
 				stageTwo = true;
 				enemyComponent.enabled = true;
 				enemyComponent.emitSmoke();
-				Navi.S.stolen = false;
 				MainCam.ShakeForSeconds(2f);
 				//state = BossState.Dying;
 			}
@@ -52,8 +46,6 @@ public class Boss : MonoBehaviour
 
 		Events.Register<OnDeathEvent>(() => {
 			state = BossState.Waiting;
-
-			Navi.S.stolen = false;
 		});
     }
 
@@ -61,8 +53,6 @@ public class Boss : MonoBehaviour
 	{
 		state = BossState.Waiting;
 		enemyComponent = GetComponent<Enemy>();
-
-		naviStolenPos = transform.position + naviStolenOffset;
 	}
 
     // Update is called once per frame
@@ -79,17 +69,8 @@ public class Boss : MonoBehaviour
 			//check if player is in sightrange and move to stealing if true
 			if(!stageTwo && Vector2.Distance(Navi.S.transform.position, transform.position) < sightRange)
 			{
-				print ("Stole navi!");
-				state = BossState.Stealing;
-				Navi.S.stolen = true;
-				Music.S.setBossMusic();
-			}
-		}
-		else if (state == BossState.Stealing) {
-			if(Vector2.Distance(Navi.S.transform.position, transform.position) < naviStolenRange)
-			{
 				state = BossState.Attacking;
-				nextAttackTime = Time.time + attackSpeed;
+				Music.S.setBossMusic();
 			}
 		}
 		else if (state == BossState.Attacking) {
@@ -107,7 +88,6 @@ public class Boss : MonoBehaviour
 		}
 		if (state == BossState.Dying) {
 			enemyComponent.die();
-			Navi.S.stolen = false;
 			Music.S.setDefaultMusic();
 			MainCam.ShakeForSeconds(5f);
 			Destroy(gameObject);

@@ -77,7 +77,7 @@ public class Enemy : MonoBehaviour
 	public void die() {
 		emitSmoke();
 		MainCam.ShakeForSeconds(0.2f);
-		Destroy(this.gameObject);
+		this.gameObject.SetActive(false);
 	}
 
 	public void emitSmoke() {
