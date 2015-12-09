@@ -6,7 +6,8 @@ public class Teleport : MonoBehaviour, Rechargeable
     public static Teleport S;
 
     public GameObject teleportUI;
-    public GameObject dashIndicator;
+	public GameObject dashIndicator;
+	public GameObject dashIndicatorParticles;
 
     private float maxTeleportDistance = 3f;
 
@@ -75,7 +76,8 @@ public class Teleport : MonoBehaviour, Rechargeable
         r = GetComponent<Rigidbody2D>();
         walk = gameObject.GetComponent<Walk>();
 
-        dashIndicator = GameObject.Find("Wall Indicator");
+		dashIndicator = GameObject.Find("Wall Indicator");
+		dashIndicatorParticles = GameObject.Find("Indicator particle glow");
         poof = (GameObject)Resources.Load("Poof");
 
         dashIndicator.SetActive(false);
@@ -120,6 +122,14 @@ public class Teleport : MonoBehaviour, Rechargeable
         var indicatorPos2 = new Vector2(indicatorPos.x, indicatorPos.y);
 
         if (hit.collider != null && hit.point != indicatorPos2) {
+			if(currentCharges == 0)
+			{
+				dashIndicatorParticles.SetActive(false);
+			}
+			else
+			{
+				dashIndicatorParticles.SetActive(true);
+			}
             dashIndicator.SetActive(true);
             dashIndicator.transform.position = Vector3.Lerp(dashIndicator.transform.position, indicatorPos, 0.5f);
         }
