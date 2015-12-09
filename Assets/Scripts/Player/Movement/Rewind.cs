@@ -6,6 +6,7 @@ public class Rewind : MonoBehaviour, Rechargeable
     public static Rewind S;
 
     public GameObject rewindUI;
+    public AudioClip sound;
 
     private float maximumRewindInSeconds = 2f;
     private float rewindRate = 1f;
@@ -21,6 +22,8 @@ public class Rewind : MonoBehaviour, Rechargeable
     private Object trailPrefab;
     private Object trail;
     LineRenderer line;
+
+    AudioSource audio;
 
     public class Location
     {
@@ -67,6 +70,7 @@ public class Rewind : MonoBehaviour, Rechargeable
 
         trailPrefab = Resources.Load("Rewind Trail");
         line = ((GameObject)trailPrefab).GetComponent<LineRenderer>();
+        audio = GetComponent<AudioSource>();
 
         Reset();
         Toggle(false);
@@ -117,6 +121,7 @@ public class Rewind : MonoBehaviour, Rechargeable
         {
             SetGap();
             Rewinding = false;
+            audio.Stop();
         }
         float currentTime = Time.time;
         locationHistory.AddLast(CreateLocation());
@@ -128,6 +133,15 @@ public class Rewind : MonoBehaviour, Rechargeable
             Location first = locationHistory.First.Value;
             if (first.time < 0) timeGap += first.time;
             else if (first.time >= rewindTime) return;
+
+
+            if (first.time == 1f) {
+                var p = Player.S.transform.position;
+                Debug.Log("p.x: " + p.x + ", p.y: " + p.y + ", p.z: " + p.z);
+            }
+
+
+
             locationHistory.RemoveFirst();
         }
     }
@@ -142,6 +156,8 @@ public class Rewind : MonoBehaviour, Rechargeable
         {
             // This will correct invariants
             Rewinding = true;
+            audio.clip = sound;
+            audio.Play();
         }
         // Calculate the time we are rewinding to. We should rewind beyond locations above this maximum time.
         float currentTime = Time.time;
