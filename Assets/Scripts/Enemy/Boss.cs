@@ -41,8 +41,7 @@ public class Boss : MonoBehaviour
 		Events.Register<OnTorchGroupLitEvent>((e) => {
 			if(e.group == TorchGroup.BossFight) // Trigger Stage Two
 			{
-				stageTwo = true;
-				enemyComponent.enabled = true;
+				GetComponent<Enemy>().enabled = true;
 				Navi.S.stolen = false;
 				MainCam.ShakeForSeconds(2f);
 				//state = BossState.Dying;
@@ -67,13 +66,6 @@ public class Boss : MonoBehaviour
     // Update is called once per frame
     void Update()
 	{
-		if (stageTwo) {
-			if (Vector2.Distance(Player.S.transform.position, transform.position) > 20f) {
-				enemyComponent.followSpeed = 20f;
-			} else {
-				enemyComponent.followSpeed = 3f;
-			}
-		}
 		if (state == BossState.Waiting) {
 			//check if player is in sightrange and move to stealing if true
 			if(!stageTwo && Vector2.Distance(Navi.S.transform.position, transform.position) < sightRange)
@@ -105,10 +97,9 @@ public class Boss : MonoBehaviour
 			}
 		}
 		if (state == BossState.Dying) {
-			enemyComponent.die();
 			Navi.S.stolen = false;
 			Music.S.setDefaultMusic();
-			MainCam.ShakeForSeconds(5f);
+			MainCam.ShakeForSeconds(2f);
 			Destroy(gameObject);
 			Destroy(GameObject.Find("BossDoorExit"));
 		}
