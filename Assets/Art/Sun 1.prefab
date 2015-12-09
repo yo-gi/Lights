@@ -166,8 +166,8 @@ MonoBehaviour:
   orderInLayer: 0
   sortingLayer: 0
   radius: 120
-  flashFrequency: 0
-  flashOffset: 0
+  flashFrequency: 1
+  flashOffset: .00999999978
 --- !u!198 &19835784
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -2313,7 +2313,15 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: flashFrequency
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: flashOffset
+      value: .00999999978
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 125334}

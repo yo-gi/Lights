@@ -10,6 +10,7 @@ public enum CruncherState {
 public class Cruncher : MonoBehaviour {
 
 	static int collideMask = 1 << LayerMask.NameToLayer("Player");
+	static int terrainCollideMask = 1 << LayerMask.NameToLayer("Terrain");
 
 	public Vector2 crunchAcceleration;
 	public float returnVelocity;
@@ -67,7 +68,7 @@ public class Cruncher : MonoBehaviour {
 		{
 			Player.S.takeDamage(damage);
 			state = CruncherState.Returning;
-		} else {
+		} else if (LayerMask.LayerToName(c.gameObject.layer) == "Terrain") {
 			state = CruncherState.Returning;
 		}
 		MainCam.ShakeForSeconds(0.1f);
