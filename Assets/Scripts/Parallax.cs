@@ -2,22 +2,24 @@
 
 public class Parallax : MonoBehaviour
 {
-    private Vector3 originalPosition;
+    public float xCenter;
+    private float xOriginal;
     private float factor;
 
     // Use this for initialization
     void Start()
     {
-        originalPosition = transform.position;
-        factor = Mathf.Atan(originalPosition.z) * 2 / Mathf.PI;
+        xOriginal = transform.position.x;
+        factor = Mathf.Atan(transform.position.z) * 2 / Mathf.PI;
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         // Direction from original position to the camera
-        Vector3 direction = Vector3.zero;
-        direction.x = MainCam.S.transform.position.x - originalPosition.x;
-        transform.position = originalPosition + factor * direction;
+        float distance = MainCam.S.transform.position.x - xCenter;
+        Vector3 newPosition = transform.position;
+        newPosition.x = xOriginal + factor * distance;
+        transform.position = newPosition;
     }
 }

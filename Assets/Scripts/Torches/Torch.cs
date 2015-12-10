@@ -6,10 +6,12 @@ public class Torch : MonoBehaviour
 {
     public static int count = 0;
     public static int activated = 0;
+
 	public float radius;
 	public float maxRadius;
+    public float activationRadius;
 
-	public float recoveryAmount;
+    public float recoveryAmount;
 	public float recoveryFreq;
 	public float nextRecoveryTime;
 
@@ -19,8 +21,6 @@ public class Torch : MonoBehaviour
     public GameObject torchLight;
 
     public bool active;
-
-    float activationRadius = 1f;
     
     void Awake()
     {
@@ -52,17 +52,6 @@ public class Torch : MonoBehaviour
         active = false;
 
         Events.Register<OnResetEvent>(this.Reset);
-    }
-
-    void OnTriggerEnter2D(Collider2D other) {
-        if (active) print(other.gameObject);
-        // Destroy enemies that enter torche's light.
-        if (active == false) return;
-        if (other.gameObject.tag == "Enemy") {
-            other.gameObject.GetComponent<Enemy>().die();
-		} else if (other.GetComponent<BossProjectile>() != null) {
-			Destroy(other.gameObject);
-		}
     }
 
     void OnTriggerStay2D(Collider2D other) {

@@ -9,7 +9,6 @@ public class LightRay : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		boss = GameObject.Find("Boss");
-        print(boss);
 	}
 	
 	// Update is called once per frame

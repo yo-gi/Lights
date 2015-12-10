@@ -4,12 +4,13 @@ using System.Collections.Generic;
 public class Checkpoint : MonoBehaviour {
 	
 	float length;
-	static int collideMask = 1 << LayerMask.NameToLayer("Player");
+	static int collideMask;
 	static List<Vector3> checkpoints = new List<Vector3>();
 
 	// Use this for initialization
 	void Start () {
-		length = GetComponent<ParticleSystem>().startSpeed;
+        collideMask = 1 << LayerMask.NameToLayer("Player");
+        length = GetComponent<ParticleSystem>().startSpeed;
 	}
 	
 	// Update is called once per frame
