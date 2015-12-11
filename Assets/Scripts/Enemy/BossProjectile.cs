@@ -30,7 +30,6 @@ public class BossProjectile : MonoBehaviour {
 		}*/
 		if (other.tag == "Torch") {
 			if(!other.GetComponent<Torch>().active) return;
-			print("torched!");
 			other.GetComponent<Torch>().takeDamage(.2f);
 			Destroy(this.gameObject);
 		}

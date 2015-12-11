@@ -23,7 +23,7 @@ public class Teleport : MonoBehaviour, Rechargeable
 
     private GameObject poof;
     private Walk walk;
-    private AudioSource audio;
+    private AudioSource teleportAudio;
 
     public int MaxCharges
     {
@@ -77,7 +77,8 @@ public class Teleport : MonoBehaviour, Rechargeable
 
         r = GetComponent<Rigidbody2D>();
         walk = gameObject.GetComponent<Walk>();
-        audio = GetComponent<AudioSource>();
+        teleportAudio = GetComponent<AudioSource>();
+        teleportAudio.volume = 0.6f;
 
 		dashIndicator = GameObject.Find("Dash Indicator");
         poof = (GameObject)Resources.Load("Poof");
@@ -97,8 +98,8 @@ public class Teleport : MonoBehaviour, Rechargeable
 
         if (CanTeleport() && Input.GetKeyDown(Key.Teleport) && teleportVector != Vector3.zero)
         {
-            audio.clip = this.sound;
-            audio.Play();
+            teleportAudio.clip = this.sound;
+            teleportAudio.Play();
 
             ActivateTeleport(teleportVector);
         }

@@ -23,7 +23,7 @@ public class Rewind : MonoBehaviour, Rechargeable
     private Object trail;
     LineRenderer line;
 
-    AudioSource audio;
+    AudioSource rewindAudio;
 
     public class Location
     {
@@ -70,7 +70,7 @@ public class Rewind : MonoBehaviour, Rechargeable
 
         trailPrefab = Resources.Load("Rewind Trail");
         line = ((GameObject)trailPrefab).GetComponent<LineRenderer>();
-        audio = GetComponent<AudioSource>();
+        rewindAudio = GetComponent<AudioSource>();
 
         Reset();
         Toggle(false);
@@ -121,7 +121,7 @@ public class Rewind : MonoBehaviour, Rechargeable
         {
             SetGap();
             Rewinding = false;
-            audio.Stop();
+            rewindAudio.Stop();
         }
         float currentTime = Time.time;
         locationHistory.AddLast(CreateLocation());
@@ -156,8 +156,8 @@ public class Rewind : MonoBehaviour, Rechargeable
         {
             // This will correct invariants
             Rewinding = true;
-            audio.clip = sound;
-            audio.Play();
+            rewindAudio.clip = sound;
+            rewindAudio.Play();
         }
         // Calculate the time we are rewinding to. We should rewind beyond locations above this maximum time.
         float currentTime = Time.time;

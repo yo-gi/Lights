@@ -8,6 +8,7 @@ public class OpenDoor : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        endPos += transform.position - transform.localPosition;
         Events.Register<OnTorchGroupLitEvent>(e => {
             if (e.group == requiredGroup) StartOpening();
         });

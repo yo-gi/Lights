@@ -78,7 +78,6 @@ public class Player : MonoBehaviour
         {
             Events.Broadcast(new OnDeathEvent());
         }
-		print ("player hp: " + health);
     }
 
     void OnTriggerEnter2D(Collider2D collider)

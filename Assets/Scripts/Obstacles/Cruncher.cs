@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public enum CruncherState {
 	Crunching,
@@ -10,7 +9,6 @@ public enum CruncherState {
 public class Cruncher : MonoBehaviour {
 
     static int collideMask;
-    static int terrainCollideMask;
 
 	public Vector2 crunchAcceleration;
 	public float returnVelocity;
@@ -25,7 +23,6 @@ public class Cruncher : MonoBehaviour {
 	void Start () {
 		start = transform.position;
         collideMask = 1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("Terrain");
-        terrainCollideMask = 1 << LayerMask.NameToLayer("Terrain");
         r = GetComponent<Rigidbody2D>();
 		Physics2D.IgnoreCollision(GetComponent<Collider2D>(), Navi.S.GetComponent<Collider2D>());
 		if (crunchAcceleration.x == 0) {
@@ -74,9 +71,5 @@ public class Cruncher : MonoBehaviour {
 			state = CruncherState.Returning;
 		}
 		MainCam.ShakeForSeconds(0.1f);
-	}
-	
-	void OnCollisionExit2D(Collision2D c)
-	{
 	}
 }

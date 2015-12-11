@@ -84,9 +84,9 @@ public class Music : MonoBehaviour {
 				break;
 			case MusicState.bossFadeIn:
 				bossSource.volume += .05f;
-				if(bossSource.volume >= 1)
+				if(bossSource.volume >= .5f)
 				{
-					bossSource.volume = 1;
+					bossSource.volume = .5f;
 					state = MusicState.steady;
 				}
 				break;

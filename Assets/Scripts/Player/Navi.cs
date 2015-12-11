@@ -123,7 +123,6 @@ public class Navi : MonoBehaviour
 
     Vector3 playerRelativePosition()
     {
-        Vector3 player = Player.S.gameObject.transform.position;
         float theta = UnityEngine.Random.Range (-randThetaOffset, randThetaOffset) + (float)Math.PI/2;
         return new Vector3 ((float)((followDist + UnityEngine.Random.Range (-distanceOffset, distanceOffset)) * Math.Cos (theta)),
                             (float)((followDist + UnityEngine.Random.Range (-distanceOffset, distanceOffset)) * Math.Sin (theta)));
