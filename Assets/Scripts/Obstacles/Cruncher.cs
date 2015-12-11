@@ -10,31 +10,37 @@ public class Cruncher : MonoBehaviour {
 
     static int collideMask;
 
-	public Vector2 crunchAcceleration;
+	public Vector3 crunchAcceleration;
 	public float returnVelocity;
 	public float triggerDistance;
 	public int damage;
 
 	Vector3 start;
+    private Vector3 velocity;
 	CruncherState state = CruncherState.Waiting;
-	Rigidbody2D r;
+	// Rigidbody2D r;
 	
 	// Use this for initialization
 	void Start () {
 		start = transform.position;
+        velocity = Vector3.zero;
         collideMask = 1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("Terrain");
-        r = GetComponent<Rigidbody2D>();
+        // r = GetComponent<Rigidbody2D>();
 		Physics2D.IgnoreCollision(GetComponent<Collider2D>(), Navi.S.GetComponent<Collider2D>());
-		if (crunchAcceleration.x == 0) {
-			r.constraints |= RigidbodyConstraints2D.FreezePositionX;
-		} else if (crunchAcceleration.y == 0) {
-			r.constraints |= RigidbodyConstraints2D.FreezePositionY;
-		}
+		//if (crunchAcceleration.x == 0) {
+		//	r.constraints |= RigidbodyConstraints2D.FreezePositionX;
+		//} else if (crunchAcceleration.y == 0) {
+		//	r.constraints |= RigidbodyConstraints2D.FreezePositionY;
+		//}
+
+        transform.GetComponent<Renderer>().sortingLayerName = "Default";
+        transform.GetComponent<Renderer>().sortingOrder = 15;
 
 		Events.Register<OnDeathEvent>(() => {
 			transform.position = start;
+            velocity = Vector3.zero;
 			state = CruncherState.Waiting;
-			r.velocity = Vector2.zero;
+			//r.velocity = Vector2.zero;
 		});
 	}
 
@@ -48,7 +54,8 @@ public class Cruncher : MonoBehaviour {
 			}
 			break;
 		case CruncherState.Crunching:
-			r.velocity += crunchAcceleration;
+			velocity += crunchAcceleration;
+                transform.position += velocity * Time.fixedDeltaTime;
 			break;
 		case CruncherState.Returning:
 			transform.position = Vector3.MoveTowards(transform.position, start, returnVelocity * Time.deltaTime);
@@ -61,13 +68,15 @@ public class Cruncher : MonoBehaviour {
 		}
 	}
 
-	void OnCollisionEnter2D(Collision2D c)
+	void OnTriggerEnter2D(Collider2D c)
 	{
 		if (c.gameObject == Player.S.gameObject)
 		{
 			Player.S.takeDamage(damage);
+            velocity = Vector3.zero;
 			state = CruncherState.Returning;
 		} else if (LayerMask.LayerToName(c.gameObject.layer) == "Terrain") {
+            velocity = Vector3.zero;
 			state = CruncherState.Returning;
 		}
 		MainCam.ShakeForSeconds(0.1f);

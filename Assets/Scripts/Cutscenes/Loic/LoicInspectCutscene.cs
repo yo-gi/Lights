@@ -10,6 +10,7 @@ public class LoicInspectCutscene : Cutscene {
 
     protected override void DefineCutscene() {
         if (text != "") {
+            text = text.Replace("\\n", "\n");
             Do(duration: 2f, action: () => NaviSay(this.text));
         }
 

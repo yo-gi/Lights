@@ -82,7 +82,6 @@ public class Torch : MonoBehaviour
         ++activated;
         flame.SetActive(true);
         torchLight.SetActive(true);
-		radius = 2.5f;
 
         Events.Broadcast(new OnTorchLitEvent { torch = this });
     }

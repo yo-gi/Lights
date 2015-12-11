@@ -1430,7 +1430,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 125896}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -6, y: 96, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 470990}
@@ -2639,10 +2639,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6465dbc6b7bcef3458a7c24e1565bb48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crunchAcceleration: {x: 0, y: -1}
+  crunchAcceleration: {x: 0, y: -1, z: 0}
   returnVelocity: 2
   triggerDistance: 10
-  damage: 34
+  damage: 50
 --- !u!114 &11404390
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2750,10 +2750,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6465dbc6b7bcef3458a7c24e1565bb48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crunchAcceleration: {x: 0, y: -1}
+  crunchAcceleration: {x: 0, y: -1, z: 0}
   returnVelocity: 2
   triggerDistance: 10
-  damage: 34
+  damage: 50
 --- !u!114 &11427384
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2894,10 +2894,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6465dbc6b7bcef3458a7c24e1565bb48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crunchAcceleration: {x: 0, y: -1}
+  crunchAcceleration: {x: 0, y: -1, z: 0}
   returnVelocity: 2
   triggerDistance: 10
-  damage: 34
+  damage: 50
 --- !u!114 &11443834
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2931,10 +2931,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6465dbc6b7bcef3458a7c24e1565bb48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crunchAcceleration: {x: 0, y: -1}
+  crunchAcceleration: {x: 0, y: -1, z: 0}
   returnVelocity: 2
   triggerDistance: 10
-  damage: 34
+  damage: 50
 --- !u!114 &11452948
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2959,10 +2959,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6465dbc6b7bcef3458a7c24e1565bb48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crunchAcceleration: {x: 0, y: -1}
+  crunchAcceleration: {x: 0, y: -1, z: 0}
   returnVelocity: 2
   triggerDistance: 10
-  damage: 34
+  damage: 50
 --- !u!114 &11454860
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3091,10 +3091,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6465dbc6b7bcef3458a7c24e1565bb48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crunchAcceleration: {x: 0, y: -1}
+  crunchAcceleration: {x: 0, y: -1, z: 0}
   returnVelocity: 2
   triggerDistance: 10
-  damage: 34
+  damage: 50
 --- !u!114 &11468498
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3117,10 +3117,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6465dbc6b7bcef3458a7c24e1565bb48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crunchAcceleration: {x: 0, y: -1}
+  crunchAcceleration: {x: 0, y: -1, z: 0}
   returnVelocity: 2
   triggerDistance: 10
-  damage: 34
+  damage: 50
 --- !u!114 &11474358
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3276,10 +3276,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6465dbc6b7bcef3458a7c24e1565bb48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crunchAcceleration: {x: 0, y: -1}
+  crunchAcceleration: {x: 0, y: -1, z: 0}
   returnVelocity: 2
   triggerDistance: 10
-  damage: 34
+  damage: 50
 --- !u!114 &11493726
 MonoBehaviour:
   m_ObjectHideFlags: 1

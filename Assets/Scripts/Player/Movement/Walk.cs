@@ -12,11 +12,14 @@ public class Walk : MonoBehaviour
 
     public int surfaceMask;
 
+    private float distance;
+
     Rigidbody2D r;
 
 	public void Awake()
 	{
 		S = this;
+        distance = transform.lossyScale.y / 2 + 0.1f;
 
 		r = GetComponent<Rigidbody2D>();
         surfaceMask = 1 << LayerMask.NameToLayer("Terrain") | 1 << LayerMask.NameToLayer("Water");
@@ -66,9 +69,6 @@ public class Walk : MonoBehaviour
 	}
 
 	public bool IsGrounded() {
-		// Note the distance is *slightly* longer than the triangle's height.
-		var distance = 0.47f;
-
 		foreach (var hit in Physics2D.RaycastAll(transform.position, Vector2.down, distance, surfaceMask)) {
 			if (hit.collider != null) {
 				return true;

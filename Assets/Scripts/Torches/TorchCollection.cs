@@ -15,6 +15,8 @@ public enum TorchGroup {
     Group3,
     Group4,
     Group5,
+    Group6,
+    Group7,
 }
 
 public static class Torches {

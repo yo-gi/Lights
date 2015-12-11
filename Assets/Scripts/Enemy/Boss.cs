@@ -33,7 +33,11 @@ public class Boss : MonoBehaviour
     public void Awake()
     {
 		S = this;
-		Events.Register<OnTorchGroupLitEvent>((e) => {
+
+        transform.GetComponent<Renderer>().sortingLayerName = "Default";
+        transform.GetComponent<Renderer>().sortingOrder = 16;
+
+        Events.Register<OnTorchGroupLitEvent>((e) => {
 			if(e.group == TorchGroup.BossFight) // Trigger Stage Two
 			{
 				stageTwo = true;
@@ -43,6 +47,8 @@ public class Boss : MonoBehaviour
 				//state = BossState.Dying;
 			}
 		});
+
+        Events.Register<OnPauseEvent>(OnPause);
 
 		Events.Register<OnDeathEvent>(() => {
 			state = BossState.Waiting;
@@ -60,9 +66,9 @@ public class Boss : MonoBehaviour
 	{
 		if (stageTwo) {
 			if (Vector2.Distance(Player.S.transform.position, transform.position) > 15f) {
-				enemyComponent.followSpeed = 20f;
+				enemyComponent.followSpeed = 15f;
 			} else {
-				enemyComponent.followSpeed = 3f;
+				enemyComponent.followSpeed = 5f;
 			}
 		}
 		if (state == BossState.Waiting) {
@@ -97,8 +103,8 @@ public class Boss : MonoBehaviour
 	{
 		health -=1;
 		attackSpeed = 10000f;
-		transform.localScale *= 0.5f;
-		enemyLight.radius *= 0.5f;
+		transform.localScale *= 0.7f;
+		enemyLight.radius *= 0.7f;
 		enemyComponent.followSpeed *= 2;
 
 		if (health == 0) {
@@ -106,4 +112,10 @@ public class Boss : MonoBehaviour
 		}
 
 	}
+
+    void OnPause(OnPauseEvent e)
+    {
+        if (e.paused) Pauser.Pause(this);
+        else Pauser.Resume(this);
+    }
 }
