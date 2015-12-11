@@ -39,6 +39,8 @@ public class Dialog : MonoBehaviour {
                             .Find(Dialog.TextObjectName)
                             .GetComponent<TextMesh>();
 
+        textObject.GetComponent<Renderer>().sortingOrder = 20;
+
         Events.Register<OnPauseEvent>(this.OnPause);
     }
 

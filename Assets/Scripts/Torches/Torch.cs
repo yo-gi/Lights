@@ -62,10 +62,10 @@ public class Torch : MonoBehaviour
             {
                 other.gameObject.GetComponent<Enemy>().die();
             }
-            else if (other.GetComponent<BossProjectile>() != null)
-            {
-                Destroy(other.gameObject);
-            }
+            //else if (other.GetComponent<BossProjectile>() != null)
+            //{
+            //    Destroy(other.gameObject);
+            //}
             return;
         }
 

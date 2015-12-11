@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 
 public class MainCam : MonoBehaviour
 {
@@ -77,7 +76,6 @@ public class MainCam : MonoBehaviour
             Teleport.S.Toggle(enabled);
             Rewind.S.Toggle(enabled);
             Walk.S.ToggleDoubleJump(enabled);
-            Navi.S.maxLightRadius = Navi.S.finalLightRadius;
         }
         if (Input.GetKey(Key.Reset))
         {

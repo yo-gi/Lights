@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class BossProjectile : MonoBehaviour {
 
@@ -17,33 +16,19 @@ public class BossProjectile : MonoBehaviour {
 		lifetime = Time.time + 5f;
 	}
 	
-	void OnTriggerEnter2D(Collider2D other) {
-		// Destroy the projectile if it hits the player.
-		/*if (other.gameObject == Player.S.gameObject) {
-			Player.S.takeDamage(attackDamage);
-			MainCam.ShakeForSeconds(0.5f);
-			Destroy(this.gameObject);
-		}
-		else if(other.name == "Torch"){
-			// TODO: Why aren't torches triggering this?
-			Debug.Log(other.name);
-		}*/
-		if (other.tag == "Torch") {
-			if(!other.GetComponent<Torch>().active) return;
-			other.GetComponent<Torch>().takeDamage(.2f);
-			Destroy(this.gameObject);
-		}
-	}
+	//void OnTriggerEnter2D(Collider2D other) {
+	//	if (other.tag == "Torch") {
+	//		if(!other.GetComponent<Torch>().active) return;
+	//		other.GetComponent<Torch>().takeDamage(.2f);
+	//		Destroy(this.gameObject);
+	//	}
+	//}
 	
 	void OnCollisionEnter2D(Collision2D other) {
 		// Destroy the projectile if it hits the player.
 		if (other.gameObject == Player.S.gameObject) {
 			Player.S.takeDamage(attackDamage);
 			Destroy(this.gameObject);
-		}
-		else if(other.gameObject.name == "Torch"){
-			// TODO: Why aren't torches triggering this?
-			Debug.Log(other.gameObject.name);
 		}
 	}
 
