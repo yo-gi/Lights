@@ -72,7 +72,7 @@ public class Cruncher : MonoBehaviour {
 	{
 		if (c.gameObject == Player.S.gameObject)
 		{
-			Player.S.takeDamage(damage);
+			Player.S.TakeDamage(damage);
             velocity = Vector3.zero;
 			state = CruncherState.Returning;
 		} else if (LayerMask.LayerToName(c.gameObject.layer) == "Terrain") {

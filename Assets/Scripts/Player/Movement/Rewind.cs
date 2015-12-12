@@ -8,6 +8,7 @@ public class Rewind : MonoBehaviour, Rechargeable
     public GameObject rewindUI;
     public AudioClip sound;
 
+    private bool activated = false;
     private float maximumRewindInSeconds = 2f;
     private float rewindRate = 1f;
 
@@ -75,12 +76,14 @@ public class Rewind : MonoBehaviour, Rechargeable
         Reset();
         Toggle(false);
 
+        Events.Register<OnPauseEvent>(Pause);
         Events.Register<OnResetEvent>(Reset);
         Events.Register<OnDeathEvent>(Reset);
     }
 
     void FixedUpdate()
     {
+        if (activated == false) return;
         if (ShouldRewind()) RewindTime();
         else UpdateLocationHistory(gameObject.transform.position);
         UpdateTrail();
@@ -226,6 +229,10 @@ public class Rewind : MonoBehaviour, Rechargeable
         timeGap += addedGap;
     }
 
+    private void Pause(OnPauseEvent e) {
+        activated = ! e.paused;
+    }
+
     private void Reset()
     {
         ResetLocationHistory();
@@ -268,6 +275,7 @@ public class Rewind : MonoBehaviour, Rechargeable
     public void Toggle(bool enable)
     {
         enabled = enable;
+        activated = enable;
         rewindUI.SetActive(enable);
         if (enable) ResetLocationHistory();
         else Destroy(trail);

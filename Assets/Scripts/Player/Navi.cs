@@ -93,7 +93,7 @@ public class Navi : MonoBehaviour
         }
 
 
-        naviLight.radius = deathThreshold + (maxLightRadius - deathThreshold) * Player.S.HealthPercentage * Swim.S.BreathPercentage;
+        naviLight.radius = deathThreshold + (maxLightRadius - deathThreshold) * Player.S.HealthPercentage;
     }
 
     //public void ChangeColor (Color color)

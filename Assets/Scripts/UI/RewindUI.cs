@@ -1,8 +1,7 @@
 ﻿public class RewindUI : RechargeableUI {
 
 	// Use this for initialization
-	protected override void Awake () {
-        base.Awake();
+	protected void Start () {
         ability = Player.S.GetComponent<Rewind>();
 	}
 }

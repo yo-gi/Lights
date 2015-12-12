@@ -11,6 +11,8 @@ public class OnCutsceneEndEvent {
 
 public abstract class Cutscene : MonoBehaviour {
 
+    public static Cutscene current = null;
+
     public bool showOnce;
 
     // Use this to update your cutscene.
@@ -99,22 +101,7 @@ public abstract class Cutscene : MonoBehaviour {
         this.DefineCutscene();
 
         if (this.currentTime > this.previousGroupEndTime) {
-            this.enabled = false;
-
-            // Release the camera lock if we have one.
-            if (this.locksCam) {
-                MainCam.S.ReleaseCameraLock();
-            }
-
-            // Clear Navi's dialog.
-            Navi.S.dialog.textObject.text = "";
-
-            Events.Broadcast(new OnCutsceneEndEvent { cutscene = this });
-            Events.Broadcast(new OnPauseEvent { paused = false });
-
-            if (this.showOnce) {
-                Destroy(this.gameObject);
-            }
+            this.EndCutscene();
         }
     }
 
@@ -122,7 +109,30 @@ public abstract class Cutscene : MonoBehaviour {
         this.enabled = true;
         this.startTime = Time.time;
 
+        Cutscene.current = this;
+
         Events.Broadcast(new OnPauseEvent { paused = true });
         Events.Broadcast(new OnCutsceneStartEvent { cutscene = this });
+    }
+
+    protected void EndCutscene() {
+        this.enabled = false;
+
+        Cutscene.current = null;
+
+        // Release the camera lock if we have one.
+        if (this.locksCam) {
+            MainCam.S.ReleaseCameraLock();
+        }
+
+        // Clear Navi's dialog.
+        Navi.S.dialog.textObject.text = "";
+
+        Events.Broadcast(new OnCutsceneEndEvent { cutscene = this });
+        Events.Broadcast(new OnPauseEvent { paused = false });
+
+        if (this.showOnce) {
+            Destroy(this.gameObject);
+        }
     }
 }

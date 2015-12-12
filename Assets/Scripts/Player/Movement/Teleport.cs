@@ -12,6 +12,7 @@ public class Teleport : MonoBehaviour, Rechargeable
 
     private float maxTeleportDistance = 3f;
 
+    private bool activated = false;
     private int maxCharges = 2;
     private int currentCharges;
     private float cooldown = 2f;
@@ -91,6 +92,8 @@ public class Teleport : MonoBehaviour, Rechargeable
 
     void Update()
     {
+        if (activated == false) return;
+
         var teleportVector = GetTeleportVector();
 
         UpdateCharges();
@@ -129,14 +132,6 @@ public class Teleport : MonoBehaviour, Rechargeable
         var indicatorPos2 = new Vector2(indicatorPos.x, indicatorPos.y);
 
         if (hit.collider != null && hit.point != indicatorPos2) {
-			if(currentCharges == 0)
-			{
-				//dashIndicatorParticles.SetActive(false);
-			}
-			else
-			{
-				//dashIndicatorParticles.SetActive(true);
-			}
             dashIndicator.SetActive(true);
             dashIndicator.transform.position = Vector3.Lerp(dashIndicator.transform.position, indicatorPos, 0.5f);
         }
@@ -247,9 +242,13 @@ public class Teleport : MonoBehaviour, Rechargeable
         }
         transform.localScale = scaleVec;
 
-        r.velocity = teleportVec;
+        // Only enable walking if we're not in a cutscene.
+        if (Cutscene.current == null) {
+            r.velocity = teleportVec;
 
-        walk.enabled = true;
+            walk.enabled = true;
+        }
+
         teleporting = false;
     }
 
@@ -262,11 +261,12 @@ public class Teleport : MonoBehaviour, Rechargeable
 
     private void Pause(OnPauseEvent e)
     {
-        //if (enabled) enabled = ! e.paused;
+        activated = ! e.paused;
     }
 
     public void Toggle(bool enable)
     {
+        activated = enable;
         enabled = enable;
         teleportUI.SetActive(enable);
     }
