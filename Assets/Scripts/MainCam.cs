@@ -108,5 +108,6 @@ public class MainCam : MonoBehaviour
     {
         Player.S.transform.position = Checkpoint.getClosestCheckpoint();
         Navi.S.resetNavi();
+        Events.Broadcast(new OnResetEvent());
     }
 }

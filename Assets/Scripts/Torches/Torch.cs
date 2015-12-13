@@ -50,8 +50,6 @@ public class Torch : MonoBehaviour
         torchLight = transform.Find("Torchlight").gameObject;
         torchLight.SetActive(false);
         active = false;
-
-        Events.Register<OnResetEvent>(this.Reset);
     }
 
     void OnTriggerStay2D(Collider2D other) {

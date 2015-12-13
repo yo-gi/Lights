@@ -21,6 +21,8 @@ public class Player : MonoBehaviour
     private float lastDamage;
     private float regenStart;
 
+    private Vector3 scale;
+
     public float HealthPercentage
     {
         get
@@ -33,6 +35,7 @@ public class Player : MonoBehaviour
     {
         S = this;
         r = gameObject.GetComponent<Rigidbody2D>();
+        scale = transform.localScale;
 
         OnReset();
     }
@@ -94,6 +97,7 @@ public class Player : MonoBehaviour
         lastDamage = 0;
         regenStart = 0;
         regenStartHealth = health;
+        transform.localScale = scale;
     }
 }
 
