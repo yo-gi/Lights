@@ -1,28 +1,29 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class BossProjectile : MonoBehaviour {
 
 	public float lifetime;
+    public float fadeDuration;
 
 	public int attackDamage;
-	public float radius;
+    
+    public float speed;
+	public Vector3 velocity;
 
-	public Vector3 targetPos;
-	public Vector3 speed;
-	public float dampTime;
+    private ParticleSystem ps;
+    private Color color;
 
 	// Use this for initialization
 	void Start () {
-		lifetime = Time.time + 5f;
+		lifetime += Time.time;
+        ps = gameObject.GetComponent<ParticleSystem>();
+        color = ps.startColor;
+        velocity = Player.S.transform.position - transform.position;
+        velocity = velocity.normalized * speed;
+
+        Events.Register<OnPauseEvent>(OnPause);
 	}
-	
-	//void OnTriggerEnter2D(Collider2D other) {
-	//	if (other.tag == "Torch") {
-	//		if(!other.GetComponent<Torch>().active) return;
-	//		other.GetComponent<Torch>().takeDamage(.2f);
-	//		Destroy(this.gameObject);
-	//	}
-	//}
 	
 	void OnCollisionEnter2D(Collision2D other) {
 		// Destroy the projectile if it hits the player.
@@ -33,15 +34,34 @@ public class BossProjectile : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		if (Time.time > lifetime) {
-			DestroyImmediate(this.gameObject);
-			return;
+            StartCoroutine(Fade());
 		}
-        // Use speed instead of damp time. If the target is further away, the projectile will move too fast
-		gameObject.transform.position =  Vector3.SmoothDamp(transform.position, targetPos, ref speed, dampTime);
-		if (Vector2.Distance (Player.S.transform.position, transform.position) < radius) {
-			Player.S.TakeDamage(attackDamage);
-		}
+        transform.position += velocity * Time.fixedDeltaTime;
 	}
+
+    IEnumerator Fade()
+    {
+        float endTime = Time.time + fadeDuration;
+        while (Time.time < endTime)
+        {
+            color.a = (endTime - Time.time) / fadeDuration;
+            ps.startColor = color;
+            yield return null;
+        }
+        Destroy(gameObject);
+    }
+
+    void OnPause(OnPauseEvent e)
+    {
+        if (e.paused)
+        {
+            Pauser.Pause(this);
+        }
+        else
+        {
+            Pauser.Resume(this);
+        }
+    }
 }

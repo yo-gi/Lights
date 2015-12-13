@@ -6,13 +6,14 @@ public class Teleport : MonoBehaviour, Rechargeable
     public static Teleport S;
 
     public GameObject teleportUI;
-	public GameObject dashIndicator;
+    public GameObject dashIndicator;
 
     public AudioClip sound;
 
     private float maxTeleportDistance = 3f;
 
     private bool activated = false;
+    private float pauseTime;
     private int maxCharges = 2;
     private int currentCharges;
     private float cooldown = 2f;
@@ -81,12 +82,13 @@ public class Teleport : MonoBehaviour, Rechargeable
         teleportAudio = GetComponent<AudioSource>();
         teleportAudio.volume = 0.6f;
 
-		dashIndicator = GameObject.Find("Dash Indicator");
+        dashIndicator = GameObject.Find("Dash Indicator");
         poof = (GameObject)Resources.Load("Poof");
 
         dashIndicator.SetActive(false);
 
         Events.Register<OnResetEvent>(Reset);
+        Events.Register<OnDeathEvent>(Reset);
         Events.Register<OnPauseEvent>(Pause);
     }
 
@@ -131,11 +133,13 @@ public class Teleport : MonoBehaviour, Rechargeable
         var indicatorPos = Player.S.transform.position + teleportVector;
         var indicatorPos2 = new Vector2(indicatorPos.x, indicatorPos.y);
 
-        if (hit.collider != null && hit.point != indicatorPos2) {
+        if (hit.collider != null && hit.point != indicatorPos2)
+        {
             dashIndicator.SetActive(true);
             dashIndicator.transform.position = Vector3.Lerp(dashIndicator.transform.position, indicatorPos, 0.5f);
         }
-        else {
+        else
+        {
             dashIndicator.transform.position = indicatorPos;
             dashIndicator.SetActive(false);
         }
@@ -242,13 +246,14 @@ public class Teleport : MonoBehaviour, Rechargeable
         }
         transform.localScale = scaleVec;
 
-        // Only enable walking if we're not in a cutscene.
-        if (Cutscene.current == null) {
-            r.velocity = teleportVec;
-
-            walk.enabled = true;
+        while (Cutscene.current != null)
+        {
+            yield return null;
         }
 
+        r.velocity = teleportVec;
+
+        walk.enabled = true;
         teleporting = false;
     }
 
@@ -261,7 +266,16 @@ public class Teleport : MonoBehaviour, Rechargeable
 
     private void Pause(OnPauseEvent e)
     {
-        activated = ! e.paused;
+        if (e.paused)
+        {
+            activated = false;
+            pauseTime = Time.time;
+        }
+        else
+        {
+            activated = true;
+            lastCharge += Time.time - pauseTime;
+        }
     }
 
     public void Toggle(bool enable)

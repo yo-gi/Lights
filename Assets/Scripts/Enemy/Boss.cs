@@ -5,6 +5,7 @@ public enum BossState
 { 
 	Waiting,
 	Attacking,
+    Chasing,
 	Dying
 }
 
@@ -23,10 +24,10 @@ public class Boss : MonoBehaviour
     public LOSRadialLight enemyLight;
 
     float nextAttackTime;
+    float pauseTime;
 
 	bool ___________________;
-
-	public bool stageTwo;
+    
 	public int health = 2;
 	Enemy enemyComponent;
 
@@ -40,7 +41,7 @@ public class Boss : MonoBehaviour
         Events.Register<OnTorchGroupLitEvent>((e) => {
 			if(e.group == TorchGroup.BossFight) // Trigger Stage Two
 			{
-				stageTwo = true;
+				state = BossState.Chasing;
 				enemyComponent.enabled = true;
 				enemyComponent.emitSmoke();
 				MainCam.ShakeForSeconds(2f);
@@ -49,31 +50,21 @@ public class Boss : MonoBehaviour
 		});
 
         Events.Register<OnPauseEvent>(OnPause);
-
-		Events.Register<OnDeathEvent>(() => {
-			state = BossState.Waiting;
-		});
     }
 
 	public void Start()
 	{
 		state = BossState.Waiting;
 		enemyComponent = GetComponent<Enemy>();
+        enemyComponent.enabled = false;
 	}
 
     // Update is called once per frame
     void Update()
 	{
-		if (stageTwo) {
-			if (Vector2.Distance(Player.S.transform.position, transform.position) > 15f) {
-				enemyComponent.followSpeed = 15f;
-			} else {
-				enemyComponent.followSpeed = 5f;
-			}
-		}
 		if (state == BossState.Waiting) {
 			//check if player is in sightrange and move to stealing if true
-			if(!stageTwo && Vector2.Distance(Navi.S.transform.position, transform.position) < sightRange)
+			if(Vector2.Distance(Navi.S.transform.position, transform.position) < sightRange)
 			{
 				state = BossState.Attacking;
 			}
@@ -86,12 +77,21 @@ public class Boss : MonoBehaviour
 				//spawn enemy
 				GameObject proj = Instantiate(projectile);
 				proj.transform.position = this.transform.position;
-				BossProjectile script = proj.GetComponent<BossProjectile>();
-				script.targetPos = Player.S.transform.position + 4*(Player.S.transform.position - transform.position);
 				nextAttackTime = Time.time + attackSpeed;
 			}
-		}
-		if (state == BossState.Dying) {
+        }
+        else if (state == BossState.Chasing)
+        {
+            if (Vector2.Distance(Player.S.transform.position, transform.position) > 15f)
+            {
+                enemyComponent.followSpeed = 17f;
+            }
+            else
+            {
+                enemyComponent.followSpeed = 6f;
+            }
+        }
+        if (state == BossState.Dying) {
 			enemyComponent.die();
 			Music.S.setDefaultMusic();
 			MainCam.ShakeForSeconds(5f);
@@ -105,7 +105,6 @@ public class Boss : MonoBehaviour
 		attackSpeed = 10000f;
 		transform.localScale *= 0.7f;
 		enemyLight.radius *= 0.7f;
-		enemyComponent.followSpeed *= 2;
 
 		if (health == 0) {
 			state = BossState.Dying;
@@ -115,7 +114,15 @@ public class Boss : MonoBehaviour
 
     void OnPause(OnPauseEvent e)
     {
-        if (e.paused) Pauser.Pause(this);
-        else Pauser.Resume(this);
+        if (e.paused)
+        {
+            pauseTime = Time.time;
+            Pauser.Pause(this);
+        }
+        else
+        {
+            nextAttackTime += Time.time - pauseTime;
+            Pauser.Resume(this);
+        }
     }
 }

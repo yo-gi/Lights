@@ -15,6 +15,7 @@ public class Rewind : MonoBehaviour, Rechargeable
     // timeGap accounts for discontinuities in the timeline caused from rewinding
     private float timeGap;
     private float rewindStart;
+    private float pauseStart;
 
     private float percentage;
 
@@ -230,7 +231,18 @@ public class Rewind : MonoBehaviour, Rechargeable
     }
 
     private void Pause(OnPauseEvent e) {
-        activated = ! e.paused;
+        if (e.paused)
+        {
+            activated = false;
+            pauseStart = Time.time;
+        }
+        else
+        {
+            activated = true;
+            float gap = Time.time - pauseStart;
+            locationHistory.AddLast(CreateGapLocation(gap));
+            timeGap += gap;
+        }
     }
 
     private void Reset()
@@ -277,7 +289,7 @@ public class Rewind : MonoBehaviour, Rechargeable
         enabled = enable;
         activated = enable;
         rewindUI.SetActive(enable);
-        if (enable) ResetLocationHistory();
+        if (enable) Reset();
         else Destroy(trail);
     }
 }

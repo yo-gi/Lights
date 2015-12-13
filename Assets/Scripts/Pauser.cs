@@ -6,12 +6,14 @@ public static class Pauser {
     private static Dictionary<GameObject, State> states = new Dictionary<GameObject, State>();
 
     public static void Pause(MonoBehaviour item) {
+        if (item == null) return;
         item.enabled = false;
 
         Pauser.Pause(item.gameObject);
     }
 
     public static void Pause(GameObject item) {
+        if (item == null) return;
         var state = new State();
 
         // Pause animations.

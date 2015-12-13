@@ -467,7 +467,6 @@ GameObject:
   - 4: {fileID: 404030}
   - 212: {fileID: 21219974}
   - 60: {fileID: 6087346}
-  - 114: {fileID: 11426640}
   - 114: {fileID: 11408888}
   m_Layer: 8
   m_Name: Platform
@@ -1036,7 +1035,6 @@ GameObject:
   - 4: {fileID: 457808}
   - 212: {fileID: 21247596}
   - 60: {fileID: 6069946}
-  - 114: {fileID: 11492562}
   - 114: {fileID: 11472660}
   m_Layer: 8
   m_Name: Platform (4)
@@ -1490,7 +1488,6 @@ GameObject:
   - 4: {fileID: 460734}
   - 212: {fileID: 21271740}
   - 60: {fileID: 6076366}
-  - 114: {fileID: 11435878}
   - 114: {fileID: 11409606}
   m_Layer: 8
   m_Name: Platform (1)
@@ -1615,7 +1612,6 @@ GameObject:
   - 4: {fileID: 430096}
   - 212: {fileID: 21227472}
   - 60: {fileID: 6034524}
-  - 114: {fileID: 11444416}
   - 114: {fileID: 11487634}
   m_Layer: 8
   m_Name: Platform (4)
@@ -3467,7 +3463,7 @@ Transform:
   m_GameObject: {fileID: 115244}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -14, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 13, z: 1}
+  m_LocalScale: {x: 3, y: 13.1000004, z: 1}
   m_Children: []
   m_Father: {fileID: 410998}
   m_RootOrder: 2
@@ -3987,7 +3983,7 @@ Transform:
   m_GameObject: {fileID: 139240}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -22, y: 0, z: 0}
-  m_LocalScale: {x: 8.10000038, y: 13, z: 1}
+  m_LocalScale: {x: 8.10000038, y: 13.1000004, z: 1}
   m_Children: []
   m_Father: {fileID: 410998}
   m_RootOrder: 4
@@ -4791,8 +4787,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 132174}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.82999992, y: 3.97000003, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 1}
+  m_LocalPosition: {x: 11, y: 3.97000003, z: 0}
+  m_LocalScale: {x: 4, y: 10, z: 1}
   m_Children: []
   m_Father: {fileID: 473826}
   m_RootOrder: 12
@@ -4882,7 +4878,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -4
 --- !u!23 &2323300
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -4908,7 +4904,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -4
 --- !u!23 &2399228
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -5161,7 +5157,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 116100}
   m_Enabled: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
@@ -7096,7 +7092,7 @@ MonoBehaviour:
   crunchAcceleration: {x: 0, y: -2, z: 0}
   returnVelocity: 10
   triggerDistance: 40
-  damage: 50
+  damage: 40
 --- !u!114 &11405516
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7203,9 +7199,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6465dbc6b7bcef3458a7c24e1565bb48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crunchAcceleration: {x: -.100000001, y: 0, z: 0}
-  returnVelocity: 15
-  triggerDistance: 40
+  crunchAcceleration: {x: -.150000006, y: 0, z: 0}
+  returnVelocity: 18
+  triggerDistance: 16
   damage: 100
 --- !u!114 &11412890
 MonoBehaviour:
@@ -7281,10 +7277,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6465dbc6b7bcef3458a7c24e1565bb48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crunchAcceleration: {x: 0, y: -2, z: 0}
-  returnVelocity: 20
+  crunchAcceleration: {x: 0, y: -1.5, z: 0}
+  returnVelocity: 15
   triggerDistance: 40
-  damage: 50
+  damage: 40
 --- !u!114 &11420074
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7317,14 +7313,14 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 116100}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 610b56342fef2fe42bfdfdf120bc8513, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSpeed: .200000003
-  attackDamage: 5
-  attackRange: 2.5
+  attackSpeed: .0500000007
+  attackDamage: 1
+  attackRange: 6
   sightRange: 200
   runSpeed: 5
   followSpeed: 3
@@ -7422,19 +7418,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98a2c3e897e4442f890ae5e010fd95d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11426640
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 117762}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce56005f84bc24bd4b5dfd672a1db5fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isStatic: 0
-  offScreenDistance: 3
 --- !u!114 &11427182
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7554,7 +7537,7 @@ MonoBehaviour:
     m_Bits: 1280
   color: {r: 1, g: 1, b: 1, a: 1}
   material: {fileID: 2100000, guid: 2e91f08796cbd44849f1e15382cade3d, type: 2}
-  orderInLayer: 0
+  orderInLayer: -4
   sortingLayer: 0
   radius: 134.320007
   flashFrequency: 1
@@ -7631,19 +7614,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98a2c3e897e4442f890ae5e010fd95d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11435878
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 152196}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce56005f84bc24bd4b5dfd672a1db5fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isStatic: 0
-  offScreenDistance: 3
 --- !u!114 &11435930
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7776,19 +7746,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStatic: 1
-  offScreenDistance: 3
---- !u!114 &11444416
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 157316}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce56005f84bc24bd4b5dfd672a1db5fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isStatic: 0
   offScreenDistance: 3
 --- !u!114 &11445458
 MonoBehaviour:
@@ -7943,10 +7900,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6465dbc6b7bcef3458a7c24e1565bb48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crunchAcceleration: {x: 0, y: -2, z: 0}
-  returnVelocity: 20
+  crunchAcceleration: {x: 0, y: -1.5, z: 0}
+  returnVelocity: 15
   triggerDistance: 40
-  damage: 75
+  damage: 70
 --- !u!114 &11455230
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7981,7 +7938,7 @@ MonoBehaviour:
     m_Bits: 1280
   color: {r: 1, g: 1, b: 1, a: 1}
   material: {fileID: 2100000, guid: 2e91f08796cbd44849f1e15382cade3d, type: 2}
-  orderInLayer: 0
+  orderInLayer: -4
   sortingLayer: 0
   radius: 120
   flashFrequency: 1
@@ -8047,10 +8004,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6465dbc6b7bcef3458a7c24e1565bb48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crunchAcceleration: {x: 0, y: -2, z: 0}
-  returnVelocity: 20
+  crunchAcceleration: {x: 0, y: -1.5, z: 0}
+  returnVelocity: 15
   triggerDistance: 40
-  damage: 50
+  damage: 40
 --- !u!114 &11459268
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8488,10 +8445,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6465dbc6b7bcef3458a7c24e1565bb48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crunchAcceleration: {x: 0, y: -2, z: 0}
-  returnVelocity: 20
+  crunchAcceleration: {x: 0, y: -1.5, z: 0}
+  returnVelocity: 15
   triggerDistance: 40
-  damage: 50
+  damage: 40
 --- !u!114 &11487078
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8572,19 +8529,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStatic: 1
-  offScreenDistance: 3
---- !u!114 &11492562
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 136720}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce56005f84bc24bd4b5dfd672a1db5fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isStatic: 0
   offScreenDistance: 3
 --- !u!114 &11494634
 MonoBehaviour:
@@ -8672,11 +8616,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  sightRange: 25
-  attackSpeed: 1
+  sightRange: 20
+  attackSpeed: .800000012
   projectile: {fileID: 147422, guid: 0706c9010c9aaa748a4cd9928640ba66, type: 2}
   enemyLight: {fileID: 11424410}
-  stageTwo: 0
   health: 2
 --- !u!114 &11496848
 MonoBehaviour:
@@ -8703,7 +8646,7 @@ MonoBehaviour:
   crunchAcceleration: {x: 0, y: -2, z: 0}
   returnVelocity: 10
   triggerDistance: 40
-  damage: 50
+  damage: 40
 --- !u!114 &11498052
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8728,10 +8671,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6465dbc6b7bcef3458a7c24e1565bb48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crunchAcceleration: {x: 0, y: -2, z: 0}
-  returnVelocity: 20
+  crunchAcceleration: {x: 0, y: -1.5, z: 0}
+  returnVelocity: 15
   triggerDistance: 40
-  damage: 50
+  damage: 40
 --- !u!114 &11499000
 MonoBehaviour:
   m_ObjectHideFlags: 1

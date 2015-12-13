@@ -286,7 +286,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 427278}
   m_Layer: 0
-  m_Name: Platform
+  m_Name: Platforms
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1771,11 +1771,11 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: .0500000007
   m_GravityScale: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 5
+  m_Constraints: 7
 --- !u!50 &5036330
 Rigidbody2D:
   serializedVersion: 2
@@ -1787,11 +1787,11 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: .0500000007
   m_GravityScale: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 5
+  m_Constraints: 7
 --- !u!50 &5039470
 Rigidbody2D:
   serializedVersion: 2
@@ -1803,11 +1803,11 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: .0500000007
   m_GravityScale: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 5
+  m_Constraints: 7
 --- !u!50 &5067072
 Rigidbody2D:
   serializedVersion: 2
@@ -1819,11 +1819,11 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: .0500000007
   m_GravityScale: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 5
+  m_Constraints: 7
 --- !u!50 &5067616
 Rigidbody2D:
   serializedVersion: 2
@@ -1835,11 +1835,11 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: .0500000007
   m_GravityScale: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 5
+  m_Constraints: 7
 --- !u!50 &5072926
 Rigidbody2D:
   serializedVersion: 2
@@ -1851,11 +1851,11 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: .0500000007
   m_GravityScale: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 5
+  m_Constraints: 7
 --- !u!50 &5076558
 Rigidbody2D:
   serializedVersion: 2
@@ -1867,11 +1867,11 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: .0500000007
   m_GravityScale: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 5
+  m_Constraints: 7
 --- !u!50 &5098334
 Rigidbody2D:
   serializedVersion: 2
@@ -1883,11 +1883,11 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: .0500000007
   m_GravityScale: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 5
+  m_Constraints: 7
 --- !u!58 &5801768
 CircleCollider2D:
   m_ObjectHideFlags: 1
@@ -1896,7 +1896,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 158714}
   m_Enabled: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
@@ -1909,7 +1909,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 152962}
   m_Enabled: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
@@ -1922,7 +1922,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 183802}
   m_Enabled: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
@@ -1935,7 +1935,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 131938}
   m_Enabled: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
@@ -1948,7 +1948,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 110434}
   m_Enabled: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
@@ -1961,7 +1961,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 156004}
   m_Enabled: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
@@ -1974,7 +1974,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 194678}
   m_Enabled: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
@@ -1987,7 +1987,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 123426}
   m_Enabled: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
@@ -2640,7 +2640,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crunchAcceleration: {x: 0, y: -1, z: 0}
-  returnVelocity: 2
+  returnVelocity: 5
   triggerDistance: 10
   damage: 50
 --- !u!114 &11404390
@@ -2751,7 +2751,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crunchAcceleration: {x: 0, y: -1, z: 0}
-  returnVelocity: 2
+  returnVelocity: 5
   triggerDistance: 10
   damage: 50
 --- !u!114 &11427384
@@ -2895,7 +2895,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crunchAcceleration: {x: 0, y: -1, z: 0}
-  returnVelocity: 2
+  returnVelocity: 5
   triggerDistance: 10
   damage: 50
 --- !u!114 &11443834
@@ -2932,7 +2932,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crunchAcceleration: {x: 0, y: -1, z: 0}
-  returnVelocity: 2
+  returnVelocity: 5
   triggerDistance: 10
   damage: 50
 --- !u!114 &11452948
@@ -2960,7 +2960,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crunchAcceleration: {x: 0, y: -1, z: 0}
-  returnVelocity: 2
+  returnVelocity: 5
   triggerDistance: 10
   damage: 50
 --- !u!114 &11454860
@@ -3092,7 +3092,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crunchAcceleration: {x: 0, y: -1, z: 0}
-  returnVelocity: 2
+  returnVelocity: 5
   triggerDistance: 10
   damage: 50
 --- !u!114 &11468498
@@ -3118,7 +3118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crunchAcceleration: {x: 0, y: -1, z: 0}
-  returnVelocity: 2
+  returnVelocity: 5
   triggerDistance: 10
   damage: 50
 --- !u!114 &11474358
@@ -3277,7 +3277,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crunchAcceleration: {x: 0, y: -1, z: 0}
-  returnVelocity: 2
+  returnVelocity: 5
   triggerDistance: 10
   damage: 50
 --- !u!114 &11493726

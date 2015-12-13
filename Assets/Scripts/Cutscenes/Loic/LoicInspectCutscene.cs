@@ -5,13 +5,14 @@ public class LoicInspectCutscene : Cutscene {
 
     public string text;
     public float inspectionTime = 3f;
+    public float messageTime = 3f;
     public float cameraSize = 8f;
     public List<GameObject> objects;
 
     protected override void DefineCutscene() {
         if (text != "") {
             text = text.Replace("\\n", "\n");
-            Do(duration: 2f, action: () => NaviSay(this.text));
+            Do(duration: messageTime, action: () => NaviSay(this.text));
         }
 
         foreach (var go in objects) {

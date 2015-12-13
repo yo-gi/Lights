@@ -10,7 +10,6 @@ GameObject:
   - 4: {fileID: 490432}
   - 212: {fileID: 21227266}
   - 60: {fileID: 6065816}
-  - 114: {fileID: 11498896}
   - 114: {fileID: 11469690}
   m_Layer: 8
   m_Name: Platform
@@ -64,19 +63,6 @@ MonoBehaviour:
   lerpSpeed: .125
   platformStartPauseTime: 0
   platformPauseTime: 2
---- !u!114 &11498896
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 190318}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce56005f84bc24bd4b5dfd672a1db5fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isStatic: 0
-  offScreenDistance: 3
 --- !u!212 &21227266
 SpriteRenderer:
   m_ObjectHideFlags: 1
