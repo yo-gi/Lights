@@ -84,7 +84,7 @@ public class Boss : MonoBehaviour
         {
             if (Vector2.Distance(Player.S.transform.position, transform.position) > 15f)
             {
-                enemyComponent.followSpeed = 17f;
+                enemyComponent.followSpeed = 16f;
             }
             else
             {

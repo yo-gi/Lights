@@ -339,10 +339,11 @@ var UnityObject2 = function (config) {
                 wk : /webkit/i.test(a) ? parseFloat(a.replace(/^.*webkit\/(\d+(\.\d+)?).*$/i, "$1")) : false,
                 x64 : /win64/i.test(a) && /x64/i.test(a),
                 moz : /mozilla/i.test(a) ? parseFloat(a.replace(/^.*mozilla\/([0-9]+(\.[0-9]+)?).*$/i, "$1")) : 0,
-                mobile: /ipad/i.test(p) || /iphone/i.test(p) || /ipod/i.test(p) || /android/i.test(a) || /windows phone/i.test(a)
+                mobile: /ipad/i.test(p) || /iphone/i.test(p) || /ipod/i.test(p) || /android/i.test(a) || /windows phone/i.test(a),
+                edge : /edge/i.test(a) ? parseFloat(a.replace(/^.*edge\/(\d+(\.\d+)?).*$/i, "$1")) : false
             };
             
-            ua.clientBrand = ua.ch ? 'ch' : ua.ff ? 'ff' : ua.sf ? 'sf' : ua.ie ? 'ie' : ua.op ? 'op' : '??';
+            ua.clientBrand = ua.edge ? 'edge' : ua.ch ? 'ch' : ua.ff ? 'ff' : ua.sf ? 'sf' : ua.ie ? 'ie' : ua.op ? 'op' : '??';
             ua.clientPlatform = ua.win ? 'win' : ua.mac ? 'mac' : '???';
             
             // get base url
@@ -1563,6 +1564,56 @@ var UnityObject2 = function (config) {
             jQuery(document).trigger(event, params);
         },        
 
+		displayDeprecatedBanner: function (targetEl, contentStr) {
+			// Query if the frame is already inserted
+			var objDoc = doc.getElementById("ThisBrowserDoesNotSupportUnityPlayer");
+			if (!objDoc)
+			{
+				var jDiv = $( "<div id='ThisBrowserDoesNotSupportUnityPlayer'>" );
+
+				// Set frame properties and add it to the body.
+				jDiv
+					.css( "width", "100%" )
+					.css( "height", "200px" )
+					.css( "background", "#f9f8e6")
+					.css( "background", "rgba(231,228,157,.25)")
+					.css( "border-color", "#fcfbf1")
+					.css( "border-color", "rgba(231,228,157,.15)")
+					.css( "border-style", "solid")
+					.css( "border-width", "5x")
+					.css( "color", "#595959")
+					.css( "color", "rgba(0,0,0,.65)")
+					.css( "text-align", "left")
+					.css( "padding", "10px")
+					.appendTo( targetEl )
+				;
+
+				var shownMessage = 
+				"<img src='https://files.unity3d.com/UnityObject2/resources/other_browser.jpg' style='float: left; margin-right: 15px;' />" +
+					"<div style='overflow:hidden;'>" +
+						"<div style='height:202px; display:inline-block; vertical-align:middle;'></div>" +
+						"<div style='display:inline-block;'>" +
+							"<div style='display:inline-block; vertical-align:middle;'>" +
+								contentStr +
+							"</div>" +
+						"</div>" +
+					"</div>";
+
+				jDiv.html(shownMessage);
+			}
+		},
+		
+		displayCantRunBanner: function (targetEl, browserName, altBrowsers) {
+			var shownMessage = 
+				"<span style='font-weight:bold; font-size: 1.1em;'>Sorry, " + browserName + " can't run this app</span>" +
+				"<p>"+
+					"You are using " + browserName + " that does not support the Unity Web Player plugin needed to run this app.<br/>" +
+					"We recommend using another browser, such as " + altBrowsers + "." +
+				"</p>";
+			
+			this.displayDeprecatedBanner (targetEl, shownMessage);
+		},
+		
         /**
          * Notify observers about onProgress event
          * @public
@@ -1585,72 +1636,59 @@ var UnityObject2 = function (config) {
                 
                 if (pluginStatus === kMissing) {
                     
-                    // We are dealing with Chrome v42 and newer
-                    var showDeprecated = ua.ch && (ua.ch_v > 41);
-					
-                    if (showDeprecated && cfg.enableBrowserDeprecatedWarning)
-                    {
-                        payload.pluginStatus = kUnsupported;
-                    
-                        // Query if the frame is already inserted
-                        var objDoc = doc.getElementById("ChromeMissingUnityPlayer");
-                        if (!objDoc)
-                        {
-                            var jDiv = $( "<div id='ChromeMissingUnityPlayer'>" );
+					if (ua.edge)
+					{
+						payload.pluginStatus = kUnsupported;
+						
+						var	browserList = "<a href='http://windows.microsoft.com/en-us/internet-explorer/'>Internet Explorer</a>, <a href='http://www.mozilla.org/firefox'>Firefox</a> or <a href='http://www.opera.com/'>Opera</a>";
+						
+						this.displayCantRunBanner (targetEl, "Microsoft Edge", browserList);
+					}
+					else // Some other browser, not Microsoft Edge
+					{
+						// We are dealing with Chrome v42 and newer
+						var showDeprecated = ua.ch && (ua.ch_v > 41);
+						
+						if (showDeprecated && cfg.enableBrowserDeprecatedWarning)
+						{
+							payload.pluginStatus = kUnsupported;
+						
+							var browserList = "";
+							if (ua.win)
+							{
+								browserList = "<a href='http://windows.microsoft.com/en-us/internet-explorer/'>Internet Explorer</a>, <a href='http://www.mozilla.org/firefox'>Firefox</a> or <a href='http://www.opera.com/'>Opera</a>";
+							}
+							else
+							{
+								browserList = "<a href='http://www.mozilla.org/firefox'>Firefox</a>, <a href='https://www.apple.com/safari/'>Safari</a>";
+							}
 
-                            // Set frame properties and add it to the body.
-                            jDiv
-                                .css( "width", "100%" )
-                                .css( "height", "200px" )
-                                .css( "background", "#f9f8e6")
-                                .css( "background", "rgba(231,228,157,.25)")
-                                .css( "border-color", "#fcfbf1")
-                                .css( "border-color", "rgba(231,228,157,.15)")
-                                .css( "border-style", "solid")
-                                .css( "border-width", "5x")
-                                .css( "color", "#595959")
-                                .css( "color", "rgba(0,0,0,.65)")
-                                .css( "text-align", "left")
-                                .css( "padding", "10px")
-                                .appendTo( targetEl )
-                            ;
-                            
-                            var browserList = "";
-                            if (ua.win)
-                            {
-                                browserList = "<a href='http://windows.microsoft.com/en-us/internet-explorer/'>Internet Explorer</a>, <a href='http://www.mozilla.org/firefox'>Firefox</a> or <a href='http://www.opera.com/'>Opera</a>";
-                            }
-                            else
-                            {
-                                browserList = "<a href='http://www.mozilla.org/firefox'>Firefox</a>, <a href='https://www.apple.com/safari/'>Safari</a>";
-                            }
-
-                            var shownMessage = 
-                            "<img src='https://files.unity3d.com/UnityObject2/resources/other_browser.jpg' style='float: left; margin-right: 15px;' />" +
-                                "<div style='overflow:hidden;'>" +
-                                    "<div style='height:202px; display:inline-block; vertical-align:middle;'></div>" +
-                                    "<div style='display:inline-block;'>" +
-                                        "<div style='display:inline-block; vertical-align:middle;'>" +
-                                            "<span style='font-weight:bold; font-size: 1.1em;'>Sorry, Chrome can't run this app</span>" +
-                                            "<p>"+
-                                                "You are using a version of Chrome that does not currently support the Unity Web Player plugin needed to run this app.<br/>" +
-                                                "We recommend using another browser, such as " + browserList + ".<br/>" +
-                                                "Alternatively, you can enable NPAPI plugins at chrome://flags/#enable-npapi (requires browser relaunch)." +
-											"</p>" +
-											"<p>" +
-                                                "If you enabled the NPAPI flag and the plugin still does not work for you, try <a href=\"" + this.getPluginURL() + "\">manual install</a>." +
-                                            "</p>" +
-                                        "</div>" +
-                                    "</div>" +
-                                "</div>";
-
-                            jDiv.html(shownMessage);
-                        }
-                    }
-                    else
-                    {
-                        payload.bestMethod = this.getBestInstallMethod();
-                    }
+							// We show deprecated message only for Chrome < v45; for later versions won't work at all
+							if (ua.ch_v < 45)
+							{
+								var shownMessage = 
+									"<span style='font-weight:bold; font-size: 1.1em;'>Sorry, Chrome can't run this app</span>" +
+									"<p>"+
+										"You are using a version of Chrome that does not currently support the Unity Web Player plugin needed to run this app.<br/>" +
+										"We recommend using another browser, such as " + browserList + ".<br/>" +
+										"Alternatively, you can enable NPAPI plugins at chrome://flags/#enable-npapi (requires browser relaunch)." +
+									"</p>" +
+									"<p>" +
+										"If you enabled the NPAPI flag and the plugin still does not work for you, try <a href=\"" + this.getPluginURL() + "\">manual install</a>." +
+									"</p>";
+							
+								this.displayDeprecatedBanner (targetEl, shownMessage);
+							}
+							else // Very new Google Chrome. No longer supports NPAPI
+							{
+								this.displayCantRunBanner (targetEl, "Google Chrome", browserList);
+							}
+						}
+						else
+						{
+							payload.bestMethod = this.getBestInstallMethod();
+						}
+					}
                 }
                 
                 if (latestStatus !== pluginStatus) { //Execute only on state change
