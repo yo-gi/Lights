@@ -7,13 +7,13 @@ public class Torch : MonoBehaviour
     public static int count = 0;
     public static int activated = 0;
 
-	public float radius;
-	public float maxRadius;
+    public float radius;
+    public float maxRadius;
     public float activationRadius;
 
     public float recoveryAmount;
-	public float recoveryFreq;
-	public float nextRecoveryTime;
+    public float recoveryFreq;
+    public float nextRecoveryTime;
 
     public List<TorchGroup> groups;
 
@@ -27,12 +27,12 @@ public class Torch : MonoBehaviour
         ++count;
     }
 
-	public void takeDamage(float damage)
-	{
-		radius -= damage;
-		GetComponent<CircleCollider2D> ().radius = radius;
-		torchLight.GetComponent<LOSRadialLight> ().radius = radius;
-	}
+    public void takeDamage(float damage)
+    {
+        radius -= damage;
+        GetComponent<CircleCollider2D> ().radius = radius;
+        torchLight.GetComponent<LOSRadialLight> ().radius = radius;
+    }
 
     void Start()
     {
@@ -99,23 +99,23 @@ public class Torch : MonoBehaviour
         Events.Broadcast(new OnTorchUnlitEvent{torch = this});
     }
 
-	void Update()
-	{
-		if (!active)
-			return;
-		if (Time.time > nextRecoveryTime) {
-			nextRecoveryTime = Time.time + recoveryFreq;
-			radius += recoveryAmount;
-			if(radius > maxRadius)
-			{
-				radius = maxRadius;
-			}
+    void Update()
+    {
+        if (!active)
+            return;
+        if (Time.time > nextRecoveryTime) {
+            nextRecoveryTime = Time.time + recoveryFreq;
+            radius += recoveryAmount;
+            if(radius > maxRadius)
+            {
+                radius = maxRadius;
+            }
 
             GetComponent<CircleCollider2D> ().radius = radius;
             torchLight.GetComponent<LOSRadialLight> ().radius = radius;
-		}
-		if (radius < 1f) {
+        }
+        if (radius < 1f) {
             this.Reset();
-		}
-	}
+        }
+    }
 }

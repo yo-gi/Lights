@@ -138,14 +138,6 @@ public class Rewind : MonoBehaviour, Rechargeable
             if (first.time < 0) timeGap += first.time;
             else if (first.time >= rewindTime) return;
 
-
-            if (first.time == 1f) {
-                var p = Player.S.transform.position;
-                Debug.Log("p.x: " + p.x + ", p.y: " + p.y + ", p.z: " + p.z);
-            }
-
-
-
             locationHistory.RemoveFirst();
         }
     }
