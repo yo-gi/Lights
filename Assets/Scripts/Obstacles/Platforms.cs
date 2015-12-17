@@ -27,6 +27,7 @@ public class Platforms : MonoBehaviour
         Reset();
 
         Events.Register<OnDeathEvent>(Reset);
+        Events.Register<OnResetEvent>(Reset);
     }
 
     void FixedUpdate()
