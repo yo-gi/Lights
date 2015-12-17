@@ -11,6 +11,7 @@ public class Walk : MonoBehaviour
 	public bool doubleJump = false;
 
     public int surfaceMask;
+	public Object doubleJumpSmoke;
 
     private float distance;
 
@@ -25,6 +26,7 @@ public class Walk : MonoBehaviour
         surfaceMask = 1 << LayerMask.NameToLayer("Terrain") | 1 << LayerMask.NameToLayer("Water");
 
         Events.Register<OnDeathEvent>(() => { r.velocity = Vector3.zero; });
+		doubleJumpSmoke = Resources.Load("Jump Smoke");
     }
 
 	void Update() {
@@ -61,6 +63,7 @@ public class Walk : MonoBehaviour
 			if (grounded == false && doubleJump) {
 				r.velocity = new Vector2 (r.velocity.x, jumpVelocity);
 				doubleJump = false;
+				Instantiate(doubleJumpSmoke, transform.position, Quaternion.identity);
 			}
 			else if (grounded == true) {
 				r.velocity = new Vector2 (r.velocity.x, jumpVelocity);
