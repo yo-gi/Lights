@@ -20,8 +20,7 @@ public class Navi : MonoBehaviour
     
     public LOSRadialLight naviLight;
     public Dialog dialog;
-
-    //public Color waterColor;
+    public ParticleSystem ps;
 
     public float moveFreq;
     public Vector3 targetPos;
@@ -29,8 +28,6 @@ public class Navi : MonoBehaviour
     public bool ____________________;
 
     public float nextMovetime;
-
-    //public Color currentColor;
 
     float startTime;
     float length;
@@ -44,12 +41,9 @@ public class Navi : MonoBehaviour
     
     void Start ()
     {
-        //spriteObject = gameObject.transform.Find ("LightSprite").gameObject;
-        //sprite = spriteObject.GetComponent<SpriteRenderer> ();
         naviLight = GameObject.Find("Navi Light").GetComponent<LOSRadialLight>();
         dialog = GetComponent<Dialog>();
-
-        //ChangeColor(currentColor);
+        ps = GameObject.Find("particle glow master").GetComponent<ParticleSystem>();
 
         Events.Register<OnPauseEvent>(OnPause);
         Events.Register<OnDeathEvent>(() => {
@@ -63,18 +57,6 @@ public class Navi : MonoBehaviour
         nextMovetime = Time.time + moveFreq;
         targetPos = playerRelativePosition();
     }
-
-    //void OnTriggerEnter2D(Collider2D collider) {
-    //    if (collider.tag == "water") {
-    //        ChangeColor(waterColor);
-    //    }
-    //}
-
-    //void OnTriggerExit2D(Collider2D collider) {
-    //    if (collider.tag == "water") {
-    //        ChangeColor(currentColor);
-    //    }
-    //}
 
     // Update is called once per frame
     void Update ()
@@ -91,16 +73,16 @@ public class Navi : MonoBehaviour
             Vector3.SmoothDamp(transform.position, targetPos + Player.S.gameObject.transform.position, ref speed, dampTime);
             rb.velocity = speed;
         }
-
-
+        
         naviLight.radius = deathThreshold + (maxLightRadius - deathThreshold) * Player.S.HealthPercentage;
+        ChangeColor(Player.S.naviColor);
     }
 
-    //public void ChangeColor (Color color)
-    //{
-    //    //sprite.color = color;
-    //    naviLight.color = color;
-    //}
+    void ChangeColor (Color color)
+    {
+        naviLight.color = color;
+        ps.startColor = color;
+    }
 
     public void resetNavi()
     {

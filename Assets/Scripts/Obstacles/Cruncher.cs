@@ -14,6 +14,7 @@ public class Cruncher : MonoBehaviour {
 	public float returnVelocity;
 	public float triggerDistance;
 	public int damage;
+    private Vector2 size;
 
 	Vector3 start;
     private Vector3 velocity;
@@ -27,11 +28,13 @@ public class Cruncher : MonoBehaviour {
         collideMask = 1 << LayerMask.NameToLayer("Player") | 1 << LayerMask.NameToLayer("Terrain");
         // r = GetComponent<Rigidbody2D>();
 		Physics2D.IgnoreCollision(GetComponent<Collider2D>(), Navi.S.GetComponent<Collider2D>());
-		//if (crunchAcceleration.x == 0) {
-		//	r.constraints |= RigidbodyConstraints2D.FreezePositionX;
-		//} else if (crunchAcceleration.y == 0) {
-		//	r.constraints |= RigidbodyConstraints2D.FreezePositionY;
-		//}
+        //if (crunchAcceleration.x == 0) {
+        //	r.constraints |= RigidbodyConstraints2D.FreezePositionX;
+        //} else if (crunchAcceleration.y == 0) {
+        //	r.constraints |= RigidbodyConstraints2D.FreezePositionY;
+        //}
+        float radius = GetComponent<CircleCollider2D>().radius;
+        size = new Vector2(radius, radius);
 
         transform.GetComponent<Renderer>().sortingLayerName = "Default";
         transform.GetComponent<Renderer>().sortingOrder = 15;
@@ -48,7 +51,7 @@ public class Cruncher : MonoBehaviour {
 	void FixedUpdate () {
 		switch(state) {
 		case CruncherState.Waiting:
-            var hit = Physics2D.BoxCast(transform.position, 2*transform.lossyScale, 0, crunchAcceleration.normalized, triggerDistance, collideMask);
+            var hit = Physics2D.BoxCast(transform.position, size, 0, crunchAcceleration.normalized, triggerDistance, collideMask);
 			if (hit.collider != null && hit.collider.gameObject == Player.S.gameObject) {
 				state = CruncherState.Crunching;
 			}

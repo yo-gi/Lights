@@ -21,6 +21,12 @@ public class Player : MonoBehaviour
     private float lastDamage;
     private float regenStart;
 
+    public Color naviColor;
+    private float displayedDamage;
+    private float damageToDisplay;
+    private float flashTime = 0.2f;
+    private float flashDampTime = 1f;
+
     private Vector3 scale;
 
     public float HealthPercentage
@@ -54,9 +60,26 @@ public class Player : MonoBehaviour
     void FixedUpdate()
     {
         float time = Time.time;
+        if (time <= lastDamage + flashTime)
+        {
+            float percentage = (time - lastDamage) / flashTime;
+            displayedDamage += (damageToDisplay - displayedDamage) * percentage;
+            UpdateNaviColor();
+        }
+        else if (displayedDamage > 0)
+        {
+            float percentage = (time - lastDamage - flashTime) / flashDampTime;
+            displayedDamage = damageToDisplay * (1 - percentage);
+            if (displayedDamage <= 0)
+            {
+                displayedDamage = 0;
+                damageToDisplay = 0;
+            }
+            UpdateNaviColor();
+        }
         if (time >= lastDamage + regenDelay)
         {
-            if (regenStart <= 0.01f)
+            if (regenStart == 0)
             {
                 regenStart = time;
                 regenStartHealth = health;
@@ -71,11 +94,17 @@ public class Player : MonoBehaviour
         regenStart = 0;
         if (MainCam.S.invincible) return;
         MainCam.ShakeForSeconds(0.5f);
+        damageToDisplay += damage;
         health = Mathf.Max(0, health - damage);
         if (health <= 0)
         {
             Events.Broadcast(new OnDeathEvent());
         }
+    }
+
+    void UpdateNaviColor()
+    {
+        naviColor = Color.Lerp(Color.white, Color.red, displayedDamage / maxHealth);
     }
 
     void OnPause(OnPauseEvent e) {
@@ -98,6 +127,9 @@ public class Player : MonoBehaviour
         regenStart = 0;
         regenStartHealth = health;
         transform.localScale = scale;
+        naviColor = Color.white;
+        displayedDamage = 0;
+        damageToDisplay = 0;
     }
 }
 
