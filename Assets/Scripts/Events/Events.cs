@@ -75,17 +75,26 @@ public class EventStore
     {
         var type = typeof(T);
         if (handlers.ContainsKey(type) == false) return;
-        foreach (var callback in handlers[type])
+        for (int i = 0; i < handlers[type].Count; ++i)
         {
-            var parameterlessHandler = callback as Action;
-            if (parameterlessHandler == null)
+            var callback = handlers[type][i];
+            var paramaterlessHandler = callback as Action;
+            try
             {
-                var handler = (Action<T>)callback;
-                handler(e);
+                if (paramaterlessHandler == null)
+                {
+                    var handler = (Action<T>)callback;
+                    handler(e);
+                }
+                else
+                {
+                    paramaterlessHandler();
+                }
             }
-            else
+            catch
             {
-                parameterlessHandler();
+                handlers[type].Remove(callback);
+                --i;
             }
         }
     }
