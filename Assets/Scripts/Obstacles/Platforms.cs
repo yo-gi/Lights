@@ -9,6 +9,8 @@ public class Platforms : MonoBehaviour
     public float platformPauseTime;
 
     float startTime;
+    Vector3 startOriginal;
+    Vector3 endOriginal;
 
     GameObject player;
     bool colliding = false;
@@ -19,10 +21,12 @@ public class Platforms : MonoBehaviour
     void Start()
     {
         player = GameObject.Find("Player");
-        end = transform.position + end - start;
-		start = transform.position;
+        endOriginal = transform.position + end - start;
+		startOriginal = transform.position;
 
-        waitUntil = Time.time + platformStartPauseTime;
+        Reset();
+
+        Events.Register<OnDeathEvent>(Reset);
     }
 
     void FixedUpdate()
@@ -68,5 +72,14 @@ public class Platforms : MonoBehaviour
         {
             colliding = false;
         }
+    }
+
+    void Reset()
+    {
+        transform.position = startOriginal;
+        start = startOriginal;
+        end = endOriginal;
+        startTime = Time.time + platformStartPauseTime;
+        waitUntil = platformPauseTime + startTime;
     }
 }

@@ -8195,8 +8195,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   start: {x: 83, y: 8, z: 0}
   end: {x: 83, y: 25, z: 0}
-  lerpSpeed: .125
-  platformStartPauseTime: 3
+  lerpSpeed: .1875
+  platformStartPauseTime: 2
   platformPauseTime: .5
 --- !u!114 &11473902
 MonoBehaviour:
@@ -8488,7 +8488,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   start: {x: 75, y: 0, z: 0}
   end: {x: 75, y: 15, z: 0}
-  lerpSpeed: .109999999
+  lerpSpeed: .165000007
   platformStartPauseTime: 0
   platformPauseTime: .5
 --- !u!114 &11490026
