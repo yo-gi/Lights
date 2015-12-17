@@ -88,7 +88,7 @@ public class Boss : MonoBehaviour
             }
             else
             {
-                enemyComponent.followSpeed = 6f;
+                enemyComponent.followSpeed = 5.5f;
             }
         }
         if (state == BossState.Dying) {
