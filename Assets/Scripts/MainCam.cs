@@ -88,6 +88,26 @@ public class MainCam : MonoBehaviour
 
             Events.Broadcast(new OnPauseEvent { paused = this.paused });
         }
+        if (Input.GetKey(KeyCode.Alpha1))
+        {
+            Player.S.transform.position = new Vector3(1.5f, 1.5f, 0);
+            transform.position = new Vector3(1.5f, 1.5f, -10f);
+        }
+        else if (Input.GetKey(KeyCode.Alpha2))
+        {
+            Player.S.transform.position = new Vector3(86.5f, 14.5f, 0);
+            transform.position = new Vector3(86.5f, 14.5f, -10f);
+        }
+        else if (Input.GetKey(KeyCode.Alpha3))
+        {
+            Player.S.transform.position = new Vector3(91.5f, 67.5f, 0);
+            transform.position = new Vector3(91.5f, 67.5f, -10f);
+        }
+        else if (Input.GetKey(KeyCode.Alpha4))
+        {
+            Player.S.transform.position = new Vector3(7f, 100.5f, 0);
+            transform.position = new Vector3(7f, 100.5f, -10f);
+        }
     }
 
     public void LockCamera(Vector3 position, float scale) {
